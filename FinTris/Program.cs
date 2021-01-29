@@ -10,6 +10,7 @@ namespace FinTris
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("TESTTTTTTTT");
         }
     }
 }
