@@ -48,7 +48,9 @@
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TetrimnoType.cs" />
     <Compile Include="Tetromino.cs" />
+    <Compile Include="RotationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

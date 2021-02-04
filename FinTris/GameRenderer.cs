@@ -26,7 +26,43 @@ namespace FinTris
 
         public void Refresh()
         {
+            RotationState rot = RotationState.Rotation1;
 
+            int startX = 0;
+            int startY = 0;
+
+            int endX = 0;
+            int endY = 0;
+
+            switch (rot)
+            {
+                case RotationState.Rotation0:
+                    startX = 0;
+                    startY = 0;
+                    break;
+                case RotationState.Rotation1:
+                    startX = 3;
+                    startY = 0;
+                    break;
+                case RotationState.Rotation2:
+                    startX = 0;
+                    startY = 3;
+                    break;
+                case RotationState.Rotation3:
+                    startX = 3;
+                    startY = 3;
+                    break;
+                default:
+                    break;
+            }
+
+            for (int i = startY; i < endY; i++)
+            {
+                for (int f = startX; f < endX; f++)
+                {
+
+                }
+            }
         }
     }
 }

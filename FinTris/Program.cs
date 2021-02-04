@@ -5,7 +5,7 @@ namespace FinTris
 {
     class Program
     {
-        static Tetromino tet = new Tetromino(TetrominoType.BLUE, 0, 0);
+        static Tetromino tet = new Tetromino(TetrominoType.Snake, 0, 0);
         static Timer timer;
         static int y;
         static void Main(string[] args)
@@ -14,7 +14,10 @@ namespace FinTris
 
             timer = new Timer(500);
             timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            //timer.Start();
+
+            tet.Rotation = RotationState.Rotation1;
+            Timer_Elapsed(null, null);
 
             y = 0;
             ConsoleKey input;
@@ -37,12 +40,58 @@ namespace FinTris
         {
             Console.Clear();
             y++;
-            for (int y = 0; y < tet.blocks.GetLength(1); y++)
+
+            int startX;
+            int startY;
+
+            int endX;
+            int endY;
+
+            switch (tet.Rotation)
             {
-                for (int x = 0; x < tet.blocks.GetLength(0); x++)
+                default:
+                case RotationState.Rotation0:
+                    startX = 0;
+                    startY = 0;
+                    endX = 4;
+                    endY = 4;
+                    break;
+                case RotationState.Rotation1:
+                    startX = 4;
+                    startY = 0;
+                    endX = 0;
+                    endY = 4;
+                    break;
+                case RotationState.Rotation2:
+                    startX = 0;
+                    startY = 4;
+                    endX = 4;
+                    endY = 0;
+                    break;
+                case RotationState.Rotation3:
+                    startX = 4;
+                    startY = 4;
+                    endX = 0;
+                    endY = 0;
+                    break;
+            }
+
+
+            int stepX = tet.Rotation == RotationState.Rotation1 ? -1 : 1;
+            int stepY= tet.Rotation == RotationState.Rotation2 ? -1 : 1;
+
+            //int maxX = 0;
+            //int maxY = 0;
+
+            for (int j = 0; j < tet.Blocks.GetLength(1); j++)
+            {
+                for (int i = 0; i < tet.Blocks.GetLength(0); i++)
                 {
-                    Console.SetCursorPosition(tet.X + x, tet.Y + y);
-                    Console.Write(tet.blocks[x, y] == 1 ? "#" : " ");
+                    if (tet.Blocks[i, j] != 0)
+                    {
+                        Console.SetCursorPosition(i, j);
+                        Console.Write(tet.Blocks[i, j] == 1 ? "#" : ".");
+                    }
                 }
             }
             tet.Y++;
