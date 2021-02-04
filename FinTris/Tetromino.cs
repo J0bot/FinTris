@@ -10,12 +10,11 @@ namespace FinTris
         {
             { TetrominoType.Squarie, new byte[,]
                 { 
-                    {1, 1, 0, 0}, 
-                    {1, 1, 0, 0}, 
-                    {0, 0, 0, 0}, 
-                    {0, 0, 0, 0} 
+                    {1, 1}, 
+                    {1, 1},                    
                 }
             },
+            //Snake
             { TetrominoType.Snake, new byte[,]
                 {
                     {1 ,0},
@@ -23,56 +22,136 @@ namespace FinTris
                     {0, 1},
                 }
             },
-            { TetrominoType.Lawlet, new byte[,]
+            { TetrominoType.Snake1, new byte[,]
                 {
-                    {1 ,0 ,0 ,0},
-                    {1, 0, 0, 0},
-                    {1, 1, 0, 0},
-                    {0, 0, 0, 0}
+                    {0, 1, 1},
+                    {1, 1, 0},
+                    
                 }
             },
             { TetrominoType.ISnake, new byte[,]
                 {
-                    {0 ,1 ,0 ,0},
-                    {1, 1, 0, 0},
-                    {1, 0, 0, 0},
-                    {0, 0, 0, 0}
+                    {0 ,1},
+                    {1, 1},
+                    {1, 0},
                 }
             },
+            { TetrominoType.ISnake1, new byte[,]
+                {
+                    {1, 1, 0},
+                    {0, 1, 1},
+
+                }
+            },
+
+            //Lawlet
+            { TetrominoType.Lawlet, new byte[,]
+                {
+                    {1 ,0},
+                    {1, 0},
+                    {1, 1},
+                }
+            },
+            { TetrominoType.Lawlet1, new byte[,]
+                {
+                    {1 ,1, 1},
+                    {1, 0, 0},
+                    
+                }
+            },
+            { TetrominoType.Lawlet2, new byte[,]
+                {
+                    {1 ,1},
+                    {0, 1},
+                    {0, 1},
+                }
+            },
+            { TetrominoType.Lawlet3, new byte[,]
+                {
+
+                    {1 ,0, 0},
+                    {1, 1, 1},
+                }
+            },
+
             { TetrominoType.ILawlet, new byte[,]
                 {
-                    {0 ,1 ,0 ,0},
-                    {0, 1, 0, 0},
-                    {1, 1, 0, 0},
-                    {0, 0, 0, 0}
+                    {0 ,1},
+                    {0, 1},
+                    {1, 1},
                 }
             },
+            { TetrominoType.ILawlet1, new byte[,]
+                {
+                    {1 ,0, 0},
+                    {1, 1, 1},
+
+                }
+            },
+            { TetrominoType.ILawlet2, new byte[,]
+                {
+                    {1 ,1},
+                    {1, 0},
+                    {1, 0},
+                }
+            },
+            { TetrominoType.ILawlet3, new byte[,]
+                {
+
+                    {1 ,1, 1},
+                    {1, 0, 0},
+                }
+            },
+
+            //Pyramid
             { TetrominoType.Pyramid, new byte[,]
                 {
-                    {0 ,1 ,0 ,0},
-                    {1, 1, 1, 0},
-                    {0, 0, 0, 0},
-                    {0, 0, 0, 0}
+                    {0 ,1 ,0},
+                    {1, 1, 1},
                 }
             },
+            { TetrominoType.Pyramid1, new byte[,]
+                {
+                    {1, 0},
+                    {1, 1},
+                    {1, 0}
+                }
+            },
+            { TetrominoType.Pyramid2, new byte[,]
+                {
+                    {1 ,1 ,1},
+                    {0, 1, 0},
+                }
+            },
+            { TetrominoType.Pyramid3, new byte[,]
+                {
+                    {0, 1},
+                    {1, 1},
+                    {0, 1}
+                }
+            },
+
+            //Malong
             { TetrominoType.Malong, new byte[,]
                 {
-                    {1 ,0 ,0 ,0},
-                    {1, 0, 0, 0},
-                    {1, 0, 0, 0},
-                    {1, 0, 0, 0}
+                    {1},
+                    {1},
+                    {1},
+                    {1}
+                }
+            },
+            { TetrominoType.Malong1, new byte[,]
+                {
+                    {1,1,1,1},
                 }
             },
         };
 
-        public RotationState Rotation { get; set; }
-        public TetrominoType Type { get; }
+        public RotationState Rotation { get; private set; }
+        public TetrominoType Type { get; private set; }
         public int X { get; set; }
         public int Y { get; set; }
-        public byte[,] Blocks { get; }
-
-
-
+        public byte[,] Blocks { get; private set; }
 
         /// <summary>
         /// Constructor
@@ -90,6 +169,26 @@ namespace FinTris
 
             Rotation = (RotationState)random.Next(4); //On balance notre rotation aléatoirement
 
+        }
+
+        public void Rotate()
+        {
+            int max = 1;
+            int intType = (int)Type;
+
+            if (intType > 0)
+            {
+                max = 2;
+            }
+            else if (intType > 6)
+            {
+                max = 4;
+            }
+
+            intType = (intType + 1) % max;
+            Type = (TetrominoType)intType;
+            Rotation = (RotationState)((((int)Rotation) + 1) % 4);
+            Blocks = tetrominoShapes[(TetrominoType)(intType)];
         }
                                   
     }
