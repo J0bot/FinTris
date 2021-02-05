@@ -44,8 +44,6 @@ namespace FinTris
             Console.Clear();
             y++;
 
-            
-
             //int startX;
             //int startY;
 
