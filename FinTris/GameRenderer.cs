@@ -6,7 +6,6 @@ namespace FinTris
     public class GameRenderer
     {        
         private Game _game;
-
         public GameRenderer(Game game)
         {
             _game = game;
@@ -21,6 +20,8 @@ namespace FinTris
 
         public void Refresh(SquareState[,] board)
         {
+            BorderStyle();
+
             #region tests
             //int startX = 0;
             //int startY = 0;
@@ -51,6 +52,7 @@ namespace FinTris
             //}
             #endregion
 
+            Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
             for (int j = 0; j < _game.Rows; j++)
             {
                 for (int i = 0; i < _game.Cols; i++)
@@ -62,11 +64,21 @@ namespace FinTris
                     Console.Write(board[i,j] ==0 ? "  " : "██");
                 }
             }
+            Console.ResetColor();
         }
 
+        //C'est la fonction qui permet de créer le tour du jeu
         private void BorderStyle()
         {
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < 22; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(new string(' ', 22) + "██");
+            }
 
+            Console.WriteLine(new string('█', 24));
+            Console.ResetColor();
         }
     }
 }

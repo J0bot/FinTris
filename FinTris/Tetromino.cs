@@ -78,6 +78,7 @@ namespace FinTris
         public int Y { get; set; }
         public byte[,] Blocks { get; private set; }
         public TetrominoState State { get; set; }
+        public ConsoleColor TetrominoColor { get; set; }
 
         /// <summary>
         /// Constructor
@@ -85,7 +86,7 @@ namespace FinTris
         /// <param name="type">Type de notre tetromino (Square, L, Malong, etc...)</param>
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
-        public Tetromino(TetrominoType type, int x, int y)
+        public Tetromino(TetrominoType type, int x, int y, ConsoleColor tetrominoColor = ConsoleColor.Blue)
         {
             Random random = new Random();
             Type = type;
@@ -95,6 +96,7 @@ namespace FinTris
 
             Rotation = (RotationState)random.Next(4); //On balance notre rotation aléatoirement
 
+            TetrominoColor = (ConsoleColor)random.Next(9,15);
         }
 
         /// <summary>
@@ -119,6 +121,5 @@ namespace FinTris
             Rotation = (RotationState)((((int)Rotation) + 1) % 4);
             Blocks = tetrominoShapes[(TetrominoType)(intType)];
         }
-                                  
     }
 }
