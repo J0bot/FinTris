@@ -26,9 +26,9 @@ namespace FinTris
                 {
                     {0, 1, 1},
                     {1, 1, 0},
-                    
                 }
             },
+
             { TetrominoType.ISnake, new byte[,]
                 {
                     {0 ,1},
@@ -147,11 +147,17 @@ namespace FinTris
             },
         };
 
+        //private List<int> SnakeRot = new List<int>
+        //{
+        //    1,2
+        //};
+
         public RotationState Rotation { get; private set; }
         public TetrominoType Type { get; private set; }
         public int X { get; set; }
         public int Y { get; set; }
         public byte[,] Blocks { get; private set; }
+        public TetrominoState State { get; set; }
 
         /// <summary>
         /// Constructor
@@ -171,6 +177,9 @@ namespace FinTris
 
         }
 
+        /// <summary>
+        /// Fonction qui permet de faire tourner le tetrominos
+        /// </summary>
         public void Rotate()
         {
             int max = 1;
@@ -184,7 +193,7 @@ namespace FinTris
             {
                 max = 4;
             }
-
+            
             intType = (intType + 1) % max;
             Type = (TetrominoType)intType;
             Rotation = (RotationState)((((int)Rotation) + 1) % 4);

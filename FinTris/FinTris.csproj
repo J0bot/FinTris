@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>FinTris</RootNamespace>
     <AssemblyName>FinTris</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -51,6 +51,8 @@
     <Compile Include="TetrimnoType.cs" />
     <Compile Include="Tetromino.cs" />
     <Compile Include="RotationState.cs" />
+    <Compile Include="SquareState.cs" />
+    <Compile Include="TetrominoState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
