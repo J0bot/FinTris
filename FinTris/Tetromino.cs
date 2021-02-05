@@ -22,25 +22,12 @@ namespace FinTris
                     {0, 1},
                 }
             },
-            { TetrominoType.Snake1, new byte[,]
-                {
-                    {0, 1, 1},
-                    {1, 1, 0},
-                }
-            },
 
             { TetrominoType.ISnake, new byte[,]
                 {
                     {0 ,1},
                     {1, 1},
                     {1, 0},
-                }
-            },
-            { TetrominoType.ISnake1, new byte[,]
-                {
-                    {1, 1, 0},
-                    {0, 1, 1},
-
                 }
             },
 
@@ -52,54 +39,12 @@ namespace FinTris
                     {1, 1},
                 }
             },
-            { TetrominoType.Lawlet1, new byte[,]
-                {
-                    {1 ,1, 1},
-                    {1, 0, 0},
-                    
-                }
-            },
-            { TetrominoType.Lawlet2, new byte[,]
-                {
-                    {1 ,1},
-                    {0, 1},
-                    {0, 1},
-                }
-            },
-            { TetrominoType.Lawlet3, new byte[,]
-                {
-
-                    {1 ,0, 0},
-                    {1, 1, 1},
-                }
-            },
 
             { TetrominoType.ILawlet, new byte[,]
                 {
                     {0 ,1},
                     {0, 1},
                     {1, 1},
-                }
-            },
-            { TetrominoType.ILawlet1, new byte[,]
-                {
-                    {1 ,0, 0},
-                    {1, 1, 1},
-
-                }
-            },
-            { TetrominoType.ILawlet2, new byte[,]
-                {
-                    {1 ,1},
-                    {1, 0},
-                    {1, 0},
-                }
-            },
-            { TetrominoType.ILawlet3, new byte[,]
-                {
-
-                    {1 ,1, 1},
-                    {1, 0, 0},
                 }
             },
 
@@ -110,26 +55,6 @@ namespace FinTris
                     {1, 1, 1},
                 }
             },
-            { TetrominoType.Pyramid1, new byte[,]
-                {
-                    {1, 0},
-                    {1, 1},
-                    {1, 0}
-                }
-            },
-            { TetrominoType.Pyramid2, new byte[,]
-                {
-                    {1 ,1 ,1},
-                    {0, 1, 0},
-                }
-            },
-            { TetrominoType.Pyramid3, new byte[,]
-                {
-                    {0, 1},
-                    {1, 1},
-                    {0, 1}
-                }
-            },
 
             //Malong
             { TetrominoType.Malong, new byte[,]
@@ -138,11 +63,6 @@ namespace FinTris
                     {1},
                     {1},
                     {1}
-                }
-            },
-            { TetrominoType.Malong1, new byte[,]
-                {
-                    {1,1,1,1},
                 }
             },
         };

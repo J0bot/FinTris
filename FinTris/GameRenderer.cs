@@ -7,8 +7,6 @@ namespace FinTris
     {        
         private Game _game;
 
-        
-
         public GameRenderer(Game game)
         {
             _game = game;
@@ -64,6 +62,11 @@ namespace FinTris
                     Console.Write(board[i,j] ==0 ? "  " : "██");
                 }
             }
+        }
+
+        private void BorderStyle()
+        {
+
         }
     }
 }
