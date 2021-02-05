@@ -51,6 +51,8 @@
     <Compile Include="TetrimnoType.cs" />
     <Compile Include="Tetromino.cs" />
     <Compile Include="RotationState.cs" />
+    <Compile Include="SquareState.cs" />
+    <Compile Include="TetrominoState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

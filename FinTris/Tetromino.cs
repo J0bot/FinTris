@@ -157,6 +157,7 @@ namespace FinTris
         public int X { get; set; }
         public int Y { get; set; }
         public byte[,] Blocks { get; private set; }
+        public TetrominoState State { get; set; }
 
         /// <summary>
         /// Constructor

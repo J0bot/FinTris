@@ -1,66 +1,67 @@
 ﻿using System.Timers;
+using System;
 
 namespace FinTris
 {
     public class GameRenderer
-    {
-        public const int MS = 500;
-        private Timer _gameTimer;
+    {        
+        private Game _game;
 
-        public Timer GameTimer
+        
+
+        public GameRenderer(Game game)
         {
-            get { return _gameTimer; }
-            set { _gameTimer = value; }
+            _game = game;
+
+            _game.BoardChanged += _game_PositionChanged;
         }
 
-        public GameRenderer()
+        private void _game_PositionChanged(object sender, SquareState[,] board)
         {
-            _gameTimer = new Timer(MS);
-            _gameTimer.Elapsed += timerHandler;
+            Refresh(board);
         }
 
-        private void timerHandler(object sender, ElapsedEventArgs e)
+        public void Refresh(SquareState[,] board)
         {
-            Refresh();
-        }
+            #region tests
+            //int startX = 0;
+            //int startY = 0;
 
-        public void Refresh()
-        {
-            RotationState rot = RotationState.Rotation1;
+            //int endX = 0;
+            //int endY = 0;
 
-            int startX = 0;
-            int startY = 0;
+            //switch (rot)
+            //{
+            //    case RotationState.Rotation0:
+            //        startX = 0;
+            //        startY = 0;
+            //        break;
+            //    case RotationState.Rotation1:
+            //        startX = 3;
+            //        startY = 0;
+            //        break;
+            //    case RotationState.Rotation2:
+            //        startX = 0;
+            //        startY = 3;
+            //        break;
+            //    case RotationState.Rotation3:
+            //        startX = 3;
+            //        startY = 3;
+            //        break;
+            //    default:
+            //        break;
+            //}
+            #endregion
 
-            int endX = 0;
-            int endY = 0;
-
-            switch (rot)
+            for (int j = 0; j < _game.Rows; j++)
             {
-                case RotationState.Rotation0:
-                    startX = 0;
-                    startY = 0;
-                    break;
-                case RotationState.Rotation1:
-                    startX = 3;
-                    startY = 0;
-                    break;
-                case RotationState.Rotation2:
-                    startX = 0;
-                    startY = 3;
-                    break;
-                case RotationState.Rotation3:
-                    startX = 3;
-                    startY = 3;
-                    break;
-                default:
-                    break;
-            }
-
-            for (int i = startY; i < endY; i++)
-            {
-                for (int f = startX; f < endX; f++)
+                for (int i = 0; i < _game.Cols; i++)
                 {
+                    int x = i;
+                    int y = j;
 
+                    Console.SetCursorPosition(x * 2, y);
+                    Console.Write(board[i,j] ==0 ? "  " : "██");
                 }
             }
         }
