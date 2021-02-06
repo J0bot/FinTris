@@ -17,7 +17,7 @@ Pour ce faire, nous avons utilisé :
 
 Voici le lien pour avoir un accès readonly à notre OneNote :
 
-[OneNote Fintris](https://eduvaud-my.sharepoint.com/:o:/g/personal/px01evl_eduvaud_ch/El_ACEKErYlNokXGlRkm3YABwHaYFge-tylSLna_fGiRfw?e=CcQzBv)$
+[OneNote Fintris](https://eduvaud-my.sharepoint.com/:o:/g/personal/px01evl_eduvaud_ch/El_ACEKErYlNokXGlRkm3YABwHaYFge-tylSLna_fGiRfw?e=CcQzBv)
 
 Si le lien ne fonctionne pas, c'est parce que vous ne faites pas partie de l'ETML.
 
