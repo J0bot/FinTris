@@ -15,7 +15,6 @@ namespace FinTris
         private SquareState[,] board;
 
         public event EventHandler<SquareState[,]> BoardChanged;
-        public event EventHandler TetrominoStopped;
 
         public int Cols
         {
@@ -25,8 +24,7 @@ namespace FinTris
         public int Rows
         {
             get { return _rows; }
-        }
-        
+        }        
 
         public Tetromino CurrentTetromino
         {
@@ -52,13 +50,10 @@ namespace FinTris
 
         public void MoveRight()
         {
-            if (_tetromino.X + 1 <= _rows)
+            if (_tetromino.X + _tetromino.Blocks.GetLength(0) < _cols)
             {
                 _tetromino.X++;
             }
-            
-            
-            
         }
 
         public void MoveLeft()
@@ -103,7 +98,6 @@ namespace FinTris
             {
                 _tetromino.Y++;
 
-
                 // Reset du tableau
                 for (int i = 0; i < board.GetLength(0); i++)
                 {
@@ -116,15 +110,14 @@ namespace FinTris
                     }
                 }
 
-                Tetromino tetromino = CurrentTetromino;
-                byte[,] dataBoard = tetromino.Blocks;
+                byte[,] dataBoard = CurrentTetromino.Blocks;
 
                 // On implémente notre tetromino dans notre board
                 for (int y = 0; y < dataBoard.GetLength(1); y++)
                 {
                     for (int x = 0; x < dataBoard.GetLength(0); x++)
                     {
-                        board[x+tetromino.X, y + tetromino.Y] = dataBoard[x, y] == 0 ? SquareState.Empty : SquareState.MovingBlock;
+                        board[x + CurrentTetromino.X, y + CurrentTetromino.Y] = dataBoard[x, y] == 0 ? SquareState.Empty : SquareState.MovingBlock;
                     }
                 }
 

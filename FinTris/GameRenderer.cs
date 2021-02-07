@@ -89,7 +89,7 @@ namespace FinTris
                     int y = (SHIFT_Y + 1) + j;
 
                     Console.SetCursorPosition(x, y);
-                    Console.Write(board[i,j] == 0 ? "xx" : "██");
+                    Console.Write(board[i,j] == 0 ? "  " : "██");
                 }
             }
         }
