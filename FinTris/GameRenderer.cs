@@ -4,16 +4,18 @@ using System;
 namespace FinTris
 {
     public class GameRenderer
-    {        
-        private Game _game;
-
-        
+    {
+        const int SHIFT_X = 5;
+        const int SHIFT_Y = 3;
+        private Game _game;        
 
         public GameRenderer(Game game)
         {
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
+
+            // TODO: dessiner la bordure.
         }
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
@@ -57,13 +59,14 @@ namespace FinTris
             {
                 for (int i = 0; i < _game.Cols; i++)
                 {
-                    int x = i;
-                    int y = j;
+                    int x = SHIFT_X + i * 2;
+                    int y = SHIFT_Y + j;
 
-                    Console.SetCursorPosition(x * 2, y);
-                    Console.Write(board[i,j] ==0 ? "  " : "██");
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(board[i,j] == 0 ? "  " : "██");
                 }
             }
+
         }
     }
 }
