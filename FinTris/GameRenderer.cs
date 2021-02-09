@@ -6,6 +6,9 @@ namespace FinTris
     public class GameRenderer
     {        
         private Game _game;
+        private const int SHIFTX = 30;
+        private const int SHIFTY = 2;
+
         public GameRenderer(Game game)
         {
             _game = game;
@@ -15,12 +18,12 @@ namespace FinTris
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
+            BorderStyle();
             Refresh(board);
         }
 
         public void Refresh(SquareState[,] board)
         {
-            BorderStyle();
 
             #region tests
             //int startX = 0;
@@ -60,7 +63,7 @@ namespace FinTris
                     int x = i;
                     int y = j;
 
-                    Console.SetCursorPosition(x * 2, y);
+                    Console.SetCursorPosition(x * 2 +SHIFTX +2, y + SHIFTY+1);
                     Console.Write(board[i,j] ==0 ? "  " : "██");
                 }
             }
@@ -70,15 +73,19 @@ namespace FinTris
         //C'est la fonction qui permet de créer le tour du jeu
         private void BorderStyle()
         {
-            Console.SetCursorPosition(0, 0);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(SHIFTX, SHIFTY);
+            Console.Write(new string('█', 26));
+
             for (int i = 0; i < 22; i++)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(new string(' ', 22) + "██");
+                Console.SetCursorPosition(SHIFTX, i + SHIFTY+1);
+                Console.Write("██"+ new string(' ', 22) + "██");
             }
+            Console.SetCursorPosition(SHIFTX, 22 + SHIFTY + 1);
+            Console.Write(new string('█', 26));
 
-            Console.WriteLine(new string('█', 24));
-            Console.ResetColor();
+            Console.ResetColor();   
         }
     }
 }
