@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# FinTris specific files, ignore .cache files as they are not necessary to the project
+*.cache
+
 # User-specific files
 *.rsuser
 *.suo
