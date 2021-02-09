@@ -27,6 +27,8 @@ namespace FinTris
             int width = (_game.Cols + 1) * 2;
             int height = _game.Rows + 2;
 
+            Console.ForegroundColor = ConsoleColor.Blue;
+
             for (int y = 0; y < height; y++)
             {
                 if (y > 0 && y < height - 1)
@@ -42,6 +44,7 @@ namespace FinTris
                     Console.Write((y == 0 ? "╔" : "╚") + new string('═', width - 2) + (y == 0 ? "╗" : "╝"));
                 }
             }
+            Console.ResetColor();
         }
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
@@ -51,6 +54,7 @@ namespace FinTris
 
         public void Refresh(SquareState[,] board)
         {
+            
             #region tests
             //int startX = 0;
             //int startY = 0;

@@ -11,6 +11,7 @@ namespace FinTris
         private Timer _gameTimer;
         private int _rows;
         private int _cols;
+        private Random random;
 
         private SquareState[,] board;
 
@@ -39,7 +40,9 @@ namespace FinTris
 
         public Game()
         {
-            _tetromino = new Tetromino(TetrominoType.ILawlet3, 0, 0);
+            random = new Random();
+
+            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _gameTimer = new Timer(MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = 22;
@@ -83,7 +86,7 @@ namespace FinTris
             // Si on touche le bas du tableau
             if (_tetromino.Blocks.GetLength(1) + _tetromino.Y >= _rows)
             {
-                 _tetromino = new Tetromino(TetrominoType.Squarie, 0,0);
+                 _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
                 for (int i = 0; i < board.GetLength(0); i++)
                 {
                     for (int j = 0; j < board.GetLength(1); j++)
