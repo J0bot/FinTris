@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\Menu.cs" />
+    <Compile Include="Interface\MenuEntry.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Program.cs" />
