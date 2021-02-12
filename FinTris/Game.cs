@@ -71,6 +71,18 @@ namespace FinTris
                 UpdateBoard();
             }
         }
+
+        public void MoveDown()
+        {
+            if (_tetromino.Blocks.GetLength(1) + _tetromino.Y + 1 <= _rows)
+            {
+                _gameTimer.Stop();
+                _tetromino.Y++;
+                UpdateBoard();
+                _gameTimer.Start();
+            }
+        }
+
         public void Start()
         {
             _gameTimer.Start();
@@ -139,7 +151,6 @@ namespace FinTris
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
             BoardChanged.Invoke(this, board);
         }
-
 
         public void Rotate()
         {

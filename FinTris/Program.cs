@@ -75,6 +75,10 @@ namespace FinTris
                     _game.Rotate();
 
                 }
+                else if(input == ConsoleKey.DownArrow)
+                {
+                    _game.MoveDown();
+                }
 
             } while (input != ConsoleKey.Escape);
         }
