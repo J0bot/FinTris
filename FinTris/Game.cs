@@ -98,7 +98,8 @@ namespace FinTris
             // Si on touche le bas du tableau
             if (_tetromino.Blocks.GetLength(1) + _tetromino.Y >= _rows)
             {
-
+                _tetromino.State = TetrominoState.Stopped;
+                
                 //On va spawn une nouvelle pièce random
 
                  _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
@@ -156,6 +157,10 @@ namespace FinTris
         {
         }
 
+        private void NextTetromino()
+        {
+
+        }
 
 
     }

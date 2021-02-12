@@ -121,5 +121,11 @@ namespace FinTris
              
             Console.ResetColor();   
         }
+
+        private void NextTetrominoRender()
+        {
+
+        }
+
     }
 }

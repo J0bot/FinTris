@@ -82,13 +82,14 @@ namespace FinTris
         public TetrominoState State { get; set; }
         public ConsoleColor TetrominoColor { get; set; }
 
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="type">Type de notre tetromino (Square, L, Malong, etc...)</param>
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
-        public Tetromino(TetrominoType type, int x, int y, ConsoleColor tetrominoColor = ConsoleColor.Blue)
+        public Tetromino(TetrominoType type, int x, int y, ConsoleColor tetrominoColor = ConsoleColor.Blue, TetrominoState tetrominoState = TetrominoState.Moving)
         {
             Random random = new Random();
             Type = type;
