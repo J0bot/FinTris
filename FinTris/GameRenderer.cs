@@ -9,7 +9,6 @@ namespace FinTris
         private readonly Game _game;
         private const int SHIFT_X = 30;
         private const int SHIFT_Y = 2;
-        private int refreshCounter = 0;
 
         public GameRenderer(Game game)
         {
@@ -53,25 +52,13 @@ namespace FinTris
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
+            Refresh(board);
 
-            if (refreshCounter<10)
-            {
-                refreshCounter++;
-                BorderStyle();
-                Refresh(board);
-            }
-            else if (refreshCounter==10)
-            {
-                refreshCounter = 0;
-                Console.Clear();
-                BorderStyle();
-                Refresh(board);
-            }
-            
         }
 
         public void Refresh(SquareState[,] board)
         {
+
             #region tests
             //int startX = 0;
             //int startY = 0;
@@ -101,17 +88,20 @@ namespace FinTris
             //        break;
             //}
             #endregion
-
-            Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
-            for (int j = 0; j < _game.Rows; j++)
+            lock (this)
             {
-                for (int i = 0; i < _game.Cols; i++)
+                Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
+                for (int j = 0; j < _game.Rows; j++)
                 {
-                    Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
-                    Console.Write(board[i,j] ==0 ? "  " : "██");
+                    for (int i = 0; i < _game.Cols; i++)
+                    {
+                        Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
+                        Console.Write(board[i,j] ==0 ? "  " : "██");
+                    }
                 }
+                Console.ResetColor();
             }
-            Console.ResetColor();
+            
         }
 
         //C'est la fonction qui permet de créer le tour du jeu
@@ -128,7 +118,7 @@ namespace FinTris
             }
             Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
             Console.Write(new string('█', 26));
-
+             
             Console.ResetColor();   
         }
     }
