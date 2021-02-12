@@ -1,7 +1,6 @@
 # Bienvenue
 
-Vous êtes dans la branche de main
-
+Vous êtes dans la branche main
 
 L'idée est de pouvoir créer un jeu du Tetris dans la console.
 

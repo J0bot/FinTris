@@ -17,15 +17,16 @@ namespace FinTris
 
         public event EventHandler<SquareState[,]> BoardChanged;
 
+        //public event EventHandler TetrominoStopped;
+
         public int Cols
         {
             get { return _cols; }
         }
-
         public int Rows
         {
             get { return _rows; }
-        }        
+        }
 
         public Tetromino CurrentTetromino
         {
@@ -40,9 +41,11 @@ namespace FinTris
 
         public Game()
         {
+            //On va spawn une pièce random
             random = new Random();
 
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+
             _gameTimer = new Timer(MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = 22;
@@ -57,9 +60,9 @@ namespace FinTris
             {
                 _tetromino.X++;
                 UpdateBoard();
-            }
-        }
+            }                        
 
+        }
         public void MoveLeft()
         {
             if (_tetromino.X - 1 >= 0)
@@ -67,13 +70,22 @@ namespace FinTris
                 _tetromino.X--;
                 UpdateBoard();
             }
-            
+        }
+
+        public void MoveDown()
+        {
+            if (_tetromino.Blocks.GetLength(1) + _tetromino.Y + 1 <= _rows)
+            {
+                _gameTimer.Stop();
+                _tetromino.Y++;
+                UpdateBoard();
+                _gameTimer.Start();
+            }
         }
 
         public void Start()
         {
             _gameTimer.Start();
-
         }
 
         /// <summary>
@@ -86,7 +98,11 @@ namespace FinTris
             // Si on touche le bas du tableau
             if (_tetromino.Blocks.GetLength(1) + _tetromino.Y >= _rows)
             {
+
+                //On va spawn une nouvelle pièce random
+
                  _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+
                 for (int i = 0; i < board.GetLength(0); i++)
                 {
                     for (int j = 0; j < board.GetLength(1); j++)
@@ -139,5 +155,8 @@ namespace FinTris
         public void Rotate()
         {
         }
+
+
+
     }
 }

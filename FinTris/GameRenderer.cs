@@ -4,11 +4,11 @@ using System;
 namespace FinTris
 {
     public class GameRenderer
-    {
-        const int SHIFT_X = 5;
-        const int SHIFT_Y = 3;
 
-        private readonly Game _game;        
+    {        
+        private readonly Game _game;
+        private const int SHIFT_X = 30;
+        private const int SHIFT_Y = 2;
 
         public GameRenderer(Game game)
         {
@@ -16,9 +16,11 @@ namespace FinTris
 
             _game.BoardChanged += _game_PositionChanged;
 
-            DrawBorders();
+
+            BorderStyle();
         }
 
+        #region Ahmad way
         private void DrawBorders()
         {
             // On ajoute des colonnes/lignes parce qu'on ne veut pas les dimensions exactes du plateau sinon
@@ -34,9 +36,9 @@ namespace FinTris
                 if (y > 0 && y < height - 1)
                 {
                     Console.SetCursorPosition(SHIFT_X, SHIFT_Y + y);
-                    Console.Write('║');
+                    Console.Write("██");
                     Console.SetCursorPosition(SHIFT_X + width - 1, SHIFT_Y + y);
-                    Console.Write('║');
+                    Console.Write("██");
                 }
                 else
                 {
@@ -46,15 +48,17 @@ namespace FinTris
             }
             Console.ResetColor();
         }
+        #endregion
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
             Refresh(board);
+
         }
 
         public void Refresh(SquareState[,] board)
         {
-            
+
             #region tests
             //int startX = 0;
             //int startY = 0;
@@ -84,18 +88,38 @@ namespace FinTris
             //        break;
             //}
             #endregion
-
-            for (int j = 0; j < _game.Rows; j++)
+            lock (this)
             {
-                for (int i = 0; i < _game.Cols; i++)
+                Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
+                for (int j = 0; j < _game.Rows; j++)
                 {
-                    int x = (SHIFT_X + 1) + (i * 2);
-                    int y = (SHIFT_Y + 1) + j;
-
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(board[i,j] == 0 ? "  " : "██");
+                    for (int i = 0; i < _game.Cols; i++)
+                    {
+                        Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
+                        Console.Write(board[i,j] ==0 ? "  " : "██");
+                    }
                 }
+                Console.ResetColor();
             }
+            
+        }
+
+        //C'est la fonction qui permet de créer le tour du jeu
+        private void BorderStyle()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(SHIFT_X, SHIFT_Y);
+            Console.Write(new string('█', 26));
+
+            for (int i = 0; i < 22; i++)
+            {
+                Console.SetCursorPosition(SHIFT_X, i + SHIFT_Y+1);
+                Console.Write("██"+ new string(' ', 22) + "██");
+            }
+            Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
+            Console.Write(new string('█', 26));
+             
+            Console.ResetColor();   
         }
     }
 }
