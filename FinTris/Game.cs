@@ -51,6 +51,18 @@ namespace FinTris
             board = new SquareState[_cols, _rows];
         }
 
+        internal void MoveDown()
+        {
+            if (_tetromino.Y + _tetromino.Blocks.GetLength(1) < _rows)
+            {
+                GameTimer.Stop();
+                _tetromino.Y++;
+                UpdateBoard();
+                GameTimer.Start();
+            }
+            
+        }
+
         public void MoveRight()
         {
             if (_tetromino.X + _tetromino.Blocks.GetLength(0) < _cols)
