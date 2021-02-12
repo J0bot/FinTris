@@ -4,27 +4,74 @@ using System;
 namespace FinTris
 {
     public class GameRenderer
+
     {        
-        private Game _game;
-        private const int SHIFTX = 30;
-        private const int SHIFTY = 2;
+        private readonly Game _game;
+        private const int SHIFT_X = 30;
+        private const int SHIFT_Y = 2;
+        private int refreshCounter = 0;
 
         public GameRenderer(Game game)
         {
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
+
+
+            BorderStyle();
         }
+
+        #region Ahmad way
+        private void DrawBorders()
+        {
+            // On ajoute des colonnes/lignes parce qu'on ne veut pas les dimensions exactes du plateau sinon
+            // le plateau va ecraser les bordures.
+
+            int width = (_game.Cols + 1) * 2;
+            int height = _game.Rows + 2;
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+
+            for (int y = 0; y < height; y++)
+            {
+                if (y > 0 && y < height - 1)
+                {
+                    Console.SetCursorPosition(SHIFT_X, SHIFT_Y + y);
+                    Console.Write("██");
+                    Console.SetCursorPosition(SHIFT_X + width - 1, SHIFT_Y + y);
+                    Console.Write("██");
+                }
+                else
+                {
+                    Console.SetCursorPosition(SHIFT_X, SHIFT_Y + y);
+                    Console.Write((y == 0 ? "╔" : "╚") + new string('═', width - 2) + (y == 0 ? "╗" : "╝"));
+                }
+            }
+            Console.ResetColor();
+        }
+        #endregion
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
-            BorderStyle();
-            Refresh(board);
+
+            if (refreshCounter<10)
+            {
+                refreshCounter++;
+                BorderStyle();
+                Refresh(board);
+            }
+            else if (refreshCounter==10)
+            {
+                refreshCounter = 0;
+                Console.Clear();
+                BorderStyle();
+                Refresh(board);
+            }
+            
         }
 
         public void Refresh(SquareState[,] board)
         {
-
             #region tests
             //int startX = 0;
             //int startY = 0;
@@ -60,10 +107,7 @@ namespace FinTris
             {
                 for (int i = 0; i < _game.Cols; i++)
                 {
-                    int x = i;
-                    int y = j;
-
-                    Console.SetCursorPosition(x * 2 +SHIFTX +2, y + SHIFTY+1);
+                    Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
                     Console.Write(board[i,j] ==0 ? "  " : "██");
                 }
             }
@@ -74,15 +118,15 @@ namespace FinTris
         private void BorderStyle()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.SetCursorPosition(SHIFTX, SHIFTY);
+            Console.SetCursorPosition(SHIFT_X, SHIFT_Y);
             Console.Write(new string('█', 26));
 
             for (int i = 0; i < 22; i++)
             {
-                Console.SetCursorPosition(SHIFTX, i + SHIFTY+1);
+                Console.SetCursorPosition(SHIFT_X, i + SHIFT_Y+1);
                 Console.Write("██"+ new string(' ', 22) + "██");
             }
-            Console.SetCursorPosition(SHIFTX, 22 + SHIFTY + 1);
+            Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
             Console.Write(new string('█', 26));
 
             Console.ResetColor();   

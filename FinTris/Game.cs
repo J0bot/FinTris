@@ -16,6 +16,7 @@ namespace FinTris
         private SquareState[,] board;
 
         public event EventHandler<SquareState[,]> BoardChanged;
+
         //public event EventHandler TetrominoStopped;
 
         public int Cols
@@ -26,6 +27,7 @@ namespace FinTris
         {
             get { return _rows; }
         }
+
         public Tetromino CurrentTetromino
         {
             get { return _tetromino; }
@@ -42,10 +44,7 @@ namespace FinTris
             //On va spawn une pièce random
             random = new Random();
 
-            int randomTetromino = random.Next(7);
-            int randomPosX = random.Next(0, 5);
-
-            _tetromino = new Tetromino((TetrominoType)randomTetromino, 2 * randomPosX, 0);
+            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
 
             _gameTimer = new Timer(MS);
             _gameTimer.Elapsed += timerHandler;
@@ -62,10 +61,11 @@ namespace FinTris
                 _tetromino.X++;
                 UpdateBoard();
             }                        
+
         }
         public void MoveLeft()
         {
-            if (_tetromino.X - 1 >=0)
+            if (_tetromino.X - 1 >= 0)
             {
                 _tetromino.X--;
                 UpdateBoard();
@@ -86,11 +86,10 @@ namespace FinTris
             // Si on touche le bas du tableau
             if (_tetromino.Blocks.GetLength(1) + _tetromino.Y >= _rows)
             {
-                //On va spawn une nouvelle pièce random
-                int randomTetromino = random.Next(0,7);
-                int randomPosX = random.Next(0,4);
 
-                _tetromino = new Tetromino((TetrominoType)randomTetromino, 2*randomPosX, 0);
+                //On va spawn une nouvelle pièce random
+
+                 _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
 
                 for (int i = 0; i < board.GetLength(0); i++)
                 {

@@ -23,6 +23,7 @@ namespace FinTris
                 }
             },
 
+
             { TetrominoType.ISnake, new byte[,]
                 {
                     {0 ,1},
@@ -39,6 +40,7 @@ namespace FinTris
                     {1, 1},
                 }
             },
+
 
             { TetrominoType.ILawlet, new byte[,]
                 {
