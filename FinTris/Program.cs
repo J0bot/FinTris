@@ -8,7 +8,6 @@ namespace FinTris
         static Game _game;
         static GameRenderer _gameRenderer;
 
-
         static void Main(string[] args)
         {
             Console.CursorVisible = false;

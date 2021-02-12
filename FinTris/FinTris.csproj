@@ -48,11 +48,11 @@
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TetrimnoType.cs" />
+    <Compile Include="Enums\TetrimnoType.cs" />
     <Compile Include="Tetromino.cs" />
     <Compile Include="RotationState.cs" />
-    <Compile Include="SquareState.cs" />
-    <Compile Include="TetrominoState.cs" />
+    <Compile Include="Enums\SquareState.cs" />
+    <Compile Include="Enums\TetrominoState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

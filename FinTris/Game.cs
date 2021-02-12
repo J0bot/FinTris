@@ -11,11 +11,11 @@ namespace FinTris
         private Timer _gameTimer;
         private int _rows;
         private int _cols;
+        private Random random;
 
         private SquareState[,] board;
 
         public event EventHandler<SquareState[,]> BoardChanged;
-        public event EventHandler TetrominoStopped;
 
         public int Cols
         {
@@ -25,8 +25,7 @@ namespace FinTris
         public int Rows
         {
             get { return _rows; }
-        }
-        
+        }        
 
         public Tetromino CurrentTetromino
         {
@@ -41,7 +40,9 @@ namespace FinTris
 
         public Game()
         {
-            _tetromino = new Tetromino(TetrominoType.ILawlet3, 0, 0);
+            random = new Random();
+
+            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _gameTimer = new Timer(MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = 22;
@@ -52,20 +53,19 @@ namespace FinTris
 
         public void MoveRight()
         {
-            if (_tetromino.X + 1 <= _rows)
+            if (_tetromino.X + _tetromino.Blocks.GetLength(0) < _cols)
             {
                 _tetromino.X++;
+                UpdateBoard();
             }
-            
-            
-            
         }
 
         public void MoveLeft()
         {
-            if (_tetromino.X - 1 >=0)
+            if (_tetromino.X - 1 >= 0)
             {
                 _tetromino.X--;
+                UpdateBoard();
             }
             
         }
@@ -86,7 +86,7 @@ namespace FinTris
             // Si on touche le bas du tableau
             if (_tetromino.Blocks.GetLength(1) + _tetromino.Y >= _rows)
             {
-                 _tetromino = new Tetromino(TetrominoType.Squarie, 0,0);
+                 _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
                 for (int i = 0; i < board.GetLength(0); i++)
                 {
                     for (int j = 0; j < board.GetLength(1); j++)
@@ -103,36 +103,37 @@ namespace FinTris
             {
                 _tetromino.Y++;
 
+                UpdateBoard();
+            }            
+        }
 
-                // Reset du tableau
-                for (int i = 0; i < board.GetLength(0); i++)
+        private void UpdateBoard()
+        {
+            // Reset du tableau
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    for (int j = 0; j < board.GetLength(1); j++)
+                    if (board[i, j] != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste
                     {
-                        if (board[i, j] != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste
-                        {
-                            board[i, j] = SquareState.Empty;
-                        }
+                        board[i, j] = SquareState.Empty;
                     }
                 }
-
-                Tetromino tetromino = CurrentTetromino;
-                byte[,] dataBoard = tetromino.Blocks;
-
-                // On implémente notre tetromino dans notre board
-                for (int y = 0; y < dataBoard.GetLength(1); y++)
-                {
-                    for (int x = 0; x < dataBoard.GetLength(0); x++)
-                    {
-                        board[x+tetromino.X, y + tetromino.Y] = dataBoard[x, y] == 0 ? SquareState.Empty : SquareState.MovingBlock;
-                    }
-                }
-
-                // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
-                BoardChanged.Invoke(this, board);
             }
 
-            
+            byte[,] dataBoard = CurrentTetromino.Blocks;
+
+            // On implémente notre tetromino dans notre board
+            for (int y = 0; y < dataBoard.GetLength(1); y++)
+            {
+                for (int x = 0; x < dataBoard.GetLength(0); x++)
+                {
+                    board[x + CurrentTetromino.X, y + CurrentTetromino.Y] = dataBoard[x, y] == 0 ? SquareState.Empty : SquareState.MovingBlock;
+                }
+            }
+
+            // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
+            BoardChanged.Invoke(this, board);
         }
 
         public void Rotate()
