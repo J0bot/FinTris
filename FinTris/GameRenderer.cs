@@ -54,17 +54,21 @@ namespace FinTris
 
         public void Refresh(SquareState[,] board)
         {
-            for (int j = 0; j < _game.Rows; j++)
+            lock (this)
             {
-                for (int i = 0; i < _game.Cols; i++)
+                for (int j = 0; j < _game.Rows; j++)
                 {
-                    int x = (SHIFT_X + 1) + (i * 2);
-                    int y = (SHIFT_Y + 1) + j;
+                    for (int i = 0; i < _game.Cols; i++)
+                    {
+                        int x = (SHIFT_X + 1) + (i * 2);
+                        int y = (SHIFT_Y + 1) + j;
 
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(board[i,j] == 0 ? "  " : "██");
+                        Console.SetCursorPosition(x, y);
+                        Console.Write(board[i, j] == 0 ? "  " : "██");
+                    }
                 }
             }
+            
         }
     }
 }
