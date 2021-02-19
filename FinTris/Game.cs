@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
+using System.Diagnostics;
 
 namespace FinTris
 {
@@ -118,14 +119,55 @@ namespace FinTris
             // Si on ne touche rien
             else
             {
+                for (int i = 0; i < _tetromino.Blocks.GetLength(0); i++)
+                {
+                    //Debug.WriteLine($"{_tetromino.X + i} {_tetromino.Y + _tetromino.Blocks.GetLength(1) + 1}");
+                    byte data = _tetromino.Blocks[i, _tetromino.Blocks.GetLength(1) - 1];
+                    if ((data == 1 && board[_tetromino.X + i, _tetromino.Y + _tetromino.Blocks.GetLength(1)] == SquareState.SolidBlock))
+                    {
+                        _tetromino.State = TetrominoState.Stopped;
+
+                        //On va spawn une nouvelle pièce random
+
+                        _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+
+                        for (int a = 0; a < board.GetLength(0); a++)
+                        {
+                            for (int j = 0; j < board.GetLength(1); j++)
+                            {
+                                if (board[a, j] == SquareState.MovingBlock)
+                                {
+                                    board[a, j] = SquareState.SolidBlock;
+                                }
+                            }
+                        }
+                    }
+                }
+                #region way
+                //for (int y = 0; y < _tetromino.Blocks.GetLength(1); y++)
+                //{
+                //    for (int x = 0; x < _tetromino.Blocks.GetLength(0); x++)
+                //    {
+                //        int x2 = _tetromino.X + x;
+                //        int y2 = _tetromino.Y + y;
+
+                //        if (board[x2, y2 + 1] == SquareState.SolidBlock && _tetromino.Blocks[x, y] != 1)
+                //        {
+
+                //        }
+                //    }
+                //}
+                #endregion
                 _tetromino.Y++;
 
-                UpdateBoard();
-            }            
+                
+            }
+            UpdateBoard();
         }
 
         private void UpdateBoard()
-        {
+        {         
+
             // Reset du tableau
             for (int i = 0; i < board.GetLength(0); i++)
             {

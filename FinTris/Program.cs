@@ -64,7 +64,6 @@ namespace FinTris
                 if (input == ConsoleKey.RightArrow)
                 {
                     _game.MoveRight();
-
                 }
                 else if (input == ConsoleKey.LeftArrow)
                 {
@@ -73,7 +72,6 @@ namespace FinTris
                 else if (input == ConsoleKey.Spacebar)
                 {
                     _game.Rotate();
-
                 }
                 else if(input == ConsoleKey.DownArrow)
                 {
