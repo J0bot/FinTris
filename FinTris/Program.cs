@@ -18,6 +18,7 @@ namespace FinTris
             _game.Start();          
 
             ConsoleKey input;
+
             do
             {
                 input = Console.ReadKey(true).Key;

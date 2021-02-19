@@ -1,10 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Timers;
 
 namespace FinTris
 {
     public class Game
     {
+        private static readonly Matrix2[] RotationMatricies = new Matrix2[]
+        {
+            new Matrix2(1, 0, 0, -1), // 0
+            new Matrix2(0, -1, 1, 0), // 90
+            new Matrix2(-1, 0, 0, 1), // 180
+            new Matrix2(0, 1, -1, 0) // 270
+        };
+
         public const int MS = 500;
 
         private Tetromino _tetromino;
@@ -136,11 +145,12 @@ namespace FinTris
             byte[,] dataBoard = CurrentTetromino.Blocks;
 
             // On implémente notre tetromino dans notre board
-            for (int y = 0; y < dataBoard.GetLength(1); y++)
+            for (int y = 0; y < CurrentTetromino.Blocks.GetLength(1); y++)
             {
-                for (int x = 0; x < dataBoard.GetLength(0); x++)
+                for (int x = 0; x < CurrentTetromino.Blocks.GetLength(0); x++)
                 {
-                    board[x + CurrentTetromino.X, y + CurrentTetromino.Y] = dataBoard[x, y] == 0 ? SquareState.Empty : SquareState.MovingBlock;
+                    Vector2 vecBlock = new Vector2(x, y) * RotationMatricies[(int)CurrentTetromino.Rotation];
+                    board[vecBlock.X + CurrentTetromino.X, vecBlock.Y + CurrentTetromino.Y] = dataBoard[x, y] == 0 ? SquareState.Empty : SquareState.MovingBlock;
                 }
             }
 
@@ -150,6 +160,9 @@ namespace FinTris
 
         public void Rotate()
         {
+            _tetromino.Rotate();
+
+            UpdateBoard();
         }
     }
 }

@@ -98,31 +98,24 @@ namespace FinTris
             Y = y;
             Blocks = tetrominoShapes[type];
 
-            Rotation = (RotationState)random.Next(4); //On balance notre rotation aléatoirement
+            Rotation = (RotationState)random.Next(4); // On balance notre rotation aléatoirement
 
         }
 
         /// <summary>
-        /// Fonction qui permet de faire tourner le tetrominos
+        /// Fonction qui permet de faire tourner le tetromino
         /// </summary>
         public void Rotate()
         {
-            int max = 1;
-            int intType = (int)Type;
-
-            if (intType > 0)
-            {
-                max = 2;
-            }
-            else if (intType > 6)
-            {
-                max = 4;
-            }
-            
-            intType = (intType + 1) % max;
-            Type = (TetrominoType)intType;
-            Rotation = (RotationState)((((int)Rotation) + 1) % 4);
-            Blocks = tetrominoShapes[(TetrominoType)(intType)];
+            Rotation = (RotationState)(((int)Rotation + 1) % 4);
+            //byte[,] newBytes = new byte[Blocks.GetLength(1), Blocks.GetLength(0)];
+            //for (int y = 0; y < newBytes.GetLength(1); y++)
+            //{
+            //    for (int x = 0; x < newBytes.GetLength(0); x++)
+            //    {
+            //        newBytes[x, y] = 
+            //    }
+            //}
         }
                                   
     }
