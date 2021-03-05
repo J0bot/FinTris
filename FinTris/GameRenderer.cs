@@ -52,6 +52,7 @@ namespace FinTris
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
+
             Refresh(board);
 
         }
@@ -121,5 +122,11 @@ namespace FinTris
              
             Console.ResetColor();   
         }
+
+        private void NextTetrominoRender()
+        {
+
+        }
+
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="RotationState.cs" />
     <Compile Include="Enums\SquareState.cs" />
     <Compile Include="Enums\TetrominoState.cs" />
+    <Compile Include="Vector2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
