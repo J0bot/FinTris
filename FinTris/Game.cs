@@ -57,7 +57,6 @@ namespace FinTris
             board = new SquareState[_cols, _rows];
         }
 
-
         public void MoveRight()
         {
             Vector2 nextPos = _tetromino.Position + Vector2.Right;
@@ -145,12 +144,6 @@ namespace FinTris
             }
             else
             {
-                _tetromino.State = TetrominoState.Stopped;
-                //On va spawn une nouvelle pièce random
-
-                _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-                //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
-
                 for (int a = 0; a < board.GetLength(0); a++)
                 {
                     for (int j = 0; j < board.GetLength(1); j++)
@@ -161,24 +154,34 @@ namespace FinTris
                         }
                     }
                 }
+
+                CheckForFullRows();
+
+                _tetromino.State = TetrominoState.Stopped;
+                //On va spawn une nouvelle pièce random
+
+                _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+                //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
+
+
             }
 
-                #region way
-                //for (int y = 0; y < _tetromino.Blocks.GetLength(1); y++)
-                //{
-                //    for (int x = 0; x < _tetromino.Blocks.GetLength(0); x++)
-                //    {
-                //        int x2 = _tetromino.X + x;
-                //        int y2 = _tetromino.Y + y;
+            #region way
+            //for (int y = 0; y < _tetromino.Blocks.GetLength(1); y++)
+            //{
+            //    for (int x = 0; x < _tetromino.Blocks.GetLength(0); x++)
+            //    {
+            //        int x2 = _tetromino.X + x;
+            //        int y2 = _tetromino.Y + y;
 
-                //        if (board[x2, y2 + 1] == SquareState.SolidBlock && _tetromino.Blocks[x, y] != 1)
-                //        {
+            //        if (board[x2, y2 + 1] == SquareState.SolidBlock && _tetromino.Blocks[x, y] != 1)
+            //        {
 
-                //        }
-                //    }
-                //}
-                #endregion
-                //_tetromino.Position -= Vector2.down;
+            //        }
+            //    }
+            //}
+            #endregion
+            //_tetromino.Position -= Vector2.down;
 
 
             UpdateBoard();
@@ -247,6 +250,29 @@ namespace FinTris
 
             return pos.x >= 0 && pos.x < _cols && pos.y >= 0 && pos.y < _rows ;
 
+        }
+
+        private void CheckForFullRows()
+        {
+            for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
+            {
+                bool isfull = true;
+                for (byte x = 0; x < _cols; x++)
+                {
+                    if (!board[x, y].Equals(SquareState.SolidBlock))
+                    {
+                        isfull = false;
+                    }
+                }
+                if (isfull)
+                {
+                    Debug.WriteLine("The row {0} is full.", y);
+                }
+                else
+                {
+                    Debug.WriteLine("The row {0} is NOT full.", y);
+                }
+            }
         }
 
     }
