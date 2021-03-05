@@ -102,53 +102,55 @@ namespace FinTris
         /// <param name="e"></param>
         private void timerHandler(object sender, ElapsedEventArgs e)
         {
-            // Si on touche le bas du tableau
-            if (_tetromino.Height + _tetromino.Position.y >= _rows)
+            #region ancient colisions wey
+            //// Si on touche le bas du tableau
+            //if (_tetromino.Height + _tetromino.Position.y >= _rows)
+            //{
+            //    _tetromino.State = TetrominoState.Stopped;
+
+            //    //On va spawn une nouvelle pièce random
+
+            //     _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+
+            //    for (int i = 0; i < board.GetLength(0); i++)
+            //    {
+            //        for (int j = 0; j < board.GetLength(1); j++)
+            //        {
+            //            if (board[i, j] == SquareState.MovingBlock)
+            //            {
+            //                board[i, j] = SquareState.SolidBlock;
+            //            }
+            //        }
+            //    }
+            //}
+            //// Si on ne touche rien
+            //else
+            //{
+            #endregion
+            Vector2 nextPos = _tetromino.Position - Vector2.Down;
+
+            if (!CollideAt(nextPos))
+            {
+                _tetromino.Position = nextPos;
+            }
+            else
             {
                 _tetromino.State = TetrominoState.Stopped;
-                
                 //On va spawn une nouvelle pièce random
 
-                 _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+                        _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
 
-                for (int i = 0; i < board.GetLength(0); i++)
+                for (int a = 0; a < board.GetLength(0); a++)
                 {
                     for (int j = 0; j < board.GetLength(1); j++)
                     {
-                        if (board[i, j] == SquareState.MovingBlock)
+                        if (board[a, j] == SquareState.MovingBlock)
                         {
-                            board[i, j] = SquareState.SolidBlock;
+                            board[a, j] = SquareState.SolidBlock;
                         }
                     }
                 }
             }
-            // Si on ne touche rien
-            else
-            {
-                Vector2 nextPos = _tetromino.Position - Vector2.Down;
-
-                if (!CollideAt(nextPos))
-                {
-                    _tetromino.Position = nextPos;
-                }
-                else
-                {
-                    _tetromino.State = TetrominoState.Stopped;
-                    //On va spawn une nouvelle pièce random
-
-                            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-
-                    for (int a = 0; a < board.GetLength(0); a++)
-                    {
-                        for (int j = 0; j < board.GetLength(1); j++)
-                        {
-                            if (board[a, j] == SquareState.MovingBlock)
-                            {
-                                board[a, j] = SquareState.SolidBlock;
-                            }
-                        }
-                    }
-                }
 
                 #region way
                 //for (int y = 0; y < _tetromino.Blocks.GetLength(1); y++)
@@ -168,7 +170,6 @@ namespace FinTris
                 //_tetromino.Position -= Vector2.down;
 
 
-            }
             UpdateBoard();
         }
 
@@ -218,7 +219,7 @@ namespace FinTris
             {
                 //Conversion des coordonées de blocs à des coordonées relatives au plateau
                 Vector2 pos = tetroPos + bloc;
-                if (!WithinRange(bloc) || board[pos.x,pos.y]==SquareState.SolidBlock)
+                if (!WithinRange(pos) || board[pos.x,pos.y] ==SquareState.SolidBlock)
                 {
                     return true;
                 }
