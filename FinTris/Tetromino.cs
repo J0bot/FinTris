@@ -51,10 +51,10 @@ namespace FinTris
             },
 
             //Pyramid
-            { TetrominoType.Pyramid, new byte[,]
+            { TetrominoType.Pyramid, new byte[2, 3]
                 {
-                    {0 ,1 ,0},
                     {1, 1, 1},
+                    {0 ,1 ,0},
                 }
             },
 
@@ -74,8 +74,8 @@ namespace FinTris
         //    1,2
         //};
 
-        public int Width { get;private set; }
-        public int Height { get;private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public RotationState Rotation { get; private set; }
         public TetrominoType Type { get; private set; }
 
@@ -128,7 +128,7 @@ namespace FinTris
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    if (data[x,y] == 1)
+                    if (data[x, y] == 1)
                     {
                         _blocks.Add(new Vector2(x, y));
                     }
@@ -166,7 +166,29 @@ namespace FinTris
         
         public void Rotate()
         {
-                
+            if (Type==TetrominoType.Squarie)
+            {
+                return;
+            }
+
+            int newWidth = Height;
+            int newHeight = Width;
+
+            byte[,] newData = new byte[newWidth, newHeight];
+
+            for (int x = 0; x < newWidth; x++)
+            {
+                for (int y = 0; y < newHeight; y++)
+                {
+                    newData[x, y] = data[Width - 1 - y, x];
+                }
+            }
+
+            Width = newWidth;
+            Height = newHeight ;
+            data = newData;
+
+            UpdateBlocks();
         }
     }
 }

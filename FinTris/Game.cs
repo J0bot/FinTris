@@ -46,6 +46,7 @@ namespace FinTris
             random = new Random();
 
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
 
             _gameTimer = new Timer(MS);
             _gameTimer.Elapsed += timerHandler;
@@ -66,6 +67,13 @@ namespace FinTris
             }                        
 
         }
+
+        public void Rotate()
+        {
+            _tetromino.Rotate();
+            UpdateBoard();
+        }
+
         public void MoveLeft()
         {
             Vector2 nextPos = _tetromino.Position + Vector2.Left;
@@ -138,7 +146,8 @@ namespace FinTris
                 _tetromino.State = TetrominoState.Stopped;
                 //On va spawn une nouvelle pièce random
 
-                        _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+                _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+                //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
 
                 for (int a = 0; a < board.GetLength(0); a++)
                 {
