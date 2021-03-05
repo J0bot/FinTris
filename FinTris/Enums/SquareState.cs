@@ -3,7 +3,7 @@
     public enum SquareState
     {
         Empty,
-        MovingBlock,
-        SolidBlock
+        SolidBlock,
+        MovingBlock
     }
 }

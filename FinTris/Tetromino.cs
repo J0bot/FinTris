@@ -74,13 +74,24 @@ namespace FinTris
         //    1,2
         //};
 
+        public int Width { get;private set; }
+        public int Height { get;private set; }
         public RotationState Rotation { get; private set; }
         public TetrominoType Type { get; private set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        private byte[,] Blocks { get; set; }
+
+        public Vector2 Position { get; set; }
+        private byte[,] data { get; set; }
         public TetrominoState State { get; set; }
         public ConsoleColor TetrominoColor { get; set; }
+
+        private List<Vector2> _blocks;
+
+        public List<Vector2> Blocks
+        {
+            get { return _blocks; }
+            set { _blocks = value; }
+        }
+
 
 
 
@@ -94,13 +105,19 @@ namespace FinTris
         {
             Random random = new Random();
             Type = type;
-            X = x;
-            Y = y;
-            Blocks = tetrominoShapes[type];
+            Position = new Vector2(x, y);
+            data = tetrominoShapes[type];
+
+            Width = data.GetLength(0);
+            Height = data.GetLength(1);
+
+            _blocks = new List<Vector2>();
 
             Rotation = (RotationState)random.Next(4); //On balance notre rotation aléatoirement
 
             TetrominoColor = (ConsoleColor)random.Next(9,15);
+
+            UpdateBlocks();
         }
 
         /// <summary>
@@ -123,7 +140,22 @@ namespace FinTris
             intType = (intType + 1) % max;
             Type = (TetrominoType)intType;
             Rotation = (RotationState)((((int)Rotation) + 1) % 4);
-            Blocks = tetrominoShapes[(TetrominoType)(intType)];
+            data = tetrominoShapes[(TetrominoType)(intType)];
+        }
+
+        private void UpdateBlocks()
+        {
+            _blocks.Clear();
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    if (data[x,y] == 1)
+                    {
+                        _blocks.Add(new Vector2(x, y));
+                    }
+                }
+            }
         }
     }
 }
