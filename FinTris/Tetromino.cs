@@ -51,10 +51,10 @@ namespace FinTris
             },
 
             //Pyramid
-            { TetrominoType.Pyramid, new byte[,]
+            { TetrominoType.Pyramid, new byte[2, 3]
                 {
-                    {0 ,1 ,0},
                     {1, 1, 1},
+                    {0 ,1 ,0},
                 }
             },
 
@@ -74,8 +74,8 @@ namespace FinTris
         //    1,2
         //};
 
-        public int Width { get;private set; }
-        public int Height { get;private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public RotationState Rotation { get; private set; }
         public TetrominoType Type { get; private set; }
 
@@ -120,28 +120,6 @@ namespace FinTris
             UpdateBlocks();
         }
 
-        /// <summary>
-        /// Fonction qui permet de faire tourner le tetrominos
-        /// </summary>
-        public void Rotate()
-        {
-            int max = 1;
-            int intType = (int)Type;
-
-            if (intType > 0)
-            {
-                max = 2;
-            }
-            else if (intType > 6)
-            {
-                max = 4;
-            }
-            
-            intType = (intType + 1) % max;
-            Type = (TetrominoType)intType;
-            Rotation = (RotationState)((((int)Rotation) + 1) % 4);
-            data = tetrominoShapes[(TetrominoType)(intType)];
-        }
 
         private void UpdateBlocks()
         {
@@ -150,12 +128,67 @@ namespace FinTris
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    if (data[x,y] == 1)
+                    if (data[x, y] == 1)
                     {
                         _blocks.Add(new Vector2(x, y));
                     }
                 }
             }
+        }
+
+        #region CrapWay for rotation
+        /// <summary>
+        /// Fonction qui permet de faire tourner le tetrominos
+        /// </summary>
+        //public void Rotate()
+        //{
+        //    int max = 1;
+        //    int intType = (int)Type;
+
+        //    if (intType > 0)
+        //    {
+        //        max = 2;
+        //    }
+        //    else if (intType > 6)
+        //    {
+        //        max = 4;
+        //    }
+
+        //    intType = (intType + 1) % max;
+        //    Type = (TetrominoType)intType;
+        //    Rotation = (RotationState)((((int)Rotation) + 1) % 4);
+        //    data = tetrominoShapes[(TetrominoType)(intType)];
+        //}
+        #endregion
+
+
+        
+        
+        public void Rotate()
+        {
+            if (Type==TetrominoType.Squarie)
+            {
+                return;
+            }
+
+            int newWidth = Height;
+            int newHeight = Width;
+
+            byte[,] newData = new byte[newWidth, newHeight];
+
+            for (int x = 0; x < newWidth; x++)
+            {
+                for (int y = 0; y < newHeight; y++)
+                {
+                    newData[x, y] = data[Width - 1 - y, x];
+                }
+            }
+
+            Width = newWidth;
+            Height = newHeight ;
+            data = newData;
+
+            UpdateBlocks();
         }
     }
 }
