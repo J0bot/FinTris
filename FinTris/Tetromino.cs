@@ -78,9 +78,10 @@ namespace FinTris
         public TetrominoType Type { get; private set; }
         public int X { get; set; }
         public int Y { get; set; }
-        public byte[,] Blocks { get; private set; }
+        private byte[,] Blocks { get; set; }
         public TetrominoState State { get; set; }
         public ConsoleColor TetrominoColor { get; set; }
+
 
 
         /// <summary>
