@@ -7,14 +7,6 @@ namespace FinTris
 {
     public class Game
     {
-        private static readonly Matrix2[] RotationMatricies = new Matrix2[]
-        {
-            new Matrix2(1, 0, 0, -1), // 0
-            new Matrix2(0, -1, 1, 0), // 90
-            new Matrix2(-1, 0, 0, 1), // 180
-            new Matrix2(0, 1, -1, 0) // 270
-        };
-
         public const int MS = 500;
 
         private Tetromino _tetromino;
@@ -65,17 +57,6 @@ namespace FinTris
             board = new SquareState[_cols, _rows];
         }
 
-        internal void MoveDown()
-        {
-            if (_tetromino.Y + _tetromino.Blocks.GetLength(1) < _rows)
-            {
-                GameTimer.Stop();
-                _tetromino.Y++;
-                UpdateBoard();
-                GameTimer.Start();
-            }
-            
-        }
 
         public void MoveRight()
         {
