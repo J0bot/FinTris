@@ -52,7 +52,6 @@
     <Compile Include="UI\MenuEntry.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameRenderer.cs" />
-    <Compile Include="Matrix2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\TetrimnoType.cs" />
