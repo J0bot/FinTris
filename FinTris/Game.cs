@@ -201,9 +201,6 @@ namespace FinTris
             BoardChanged.Invoke(this, board);
         }
 
-        public void Rotate()
-        {
-        }
 
         private void NextTetromino()
         {

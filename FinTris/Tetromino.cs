@@ -120,28 +120,6 @@ namespace FinTris
             UpdateBlocks();
         }
 
-        /// <summary>
-        /// Fonction qui permet de faire tourner le tetrominos
-        /// </summary>
-        public void Rotate()
-        {
-            int max = 1;
-            int intType = (int)Type;
-
-            if (intType > 0)
-            {
-                max = 2;
-            }
-            else if (intType > 6)
-            {
-                max = 4;
-            }
-            
-            intType = (intType + 1) % max;
-            Type = (TetrominoType)intType;
-            Rotation = (RotationState)((((int)Rotation) + 1) % 4);
-            data = tetrominoShapes[(TetrominoType)(intType)];
-        }
 
         private void UpdateBlocks()
         {
@@ -156,6 +134,39 @@ namespace FinTris
                     }
                 }
             }
+        }
+
+        #region CrapWay for rotation
+        /// <summary>
+        /// Fonction qui permet de faire tourner le tetrominos
+        /// </summary>
+        //public void Rotate()
+        //{
+        //    int max = 1;
+        //    int intType = (int)Type;
+
+        //    if (intType > 0)
+        //    {
+        //        max = 2;
+        //    }
+        //    else if (intType > 6)
+        //    {
+        //        max = 4;
+        //    }
+
+        //    intType = (intType + 1) % max;
+        //    Type = (TetrominoType)intType;
+        //    Rotation = (RotationState)((((int)Rotation) + 1) % 4);
+        //    data = tetrominoShapes[(TetrominoType)(intType)];
+        //}
+        #endregion
+
+
+        
+        
+        public void Rotate()
+        {
+                
         }
     }
 }
