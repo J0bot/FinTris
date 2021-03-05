@@ -60,6 +60,7 @@ namespace FinTris
         public void Refresh(SquareState[,] board)
         {
 
+
             #region tests
             //int startX = 0;
             //int startY = 0;
@@ -92,12 +93,15 @@ namespace FinTris
             lock (this)
             {
                 Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
+
                 for (int j = 0; j < _game.Rows; j++)
                 {
                     for (int i = 0; i < _game.Cols; i++)
                     {
+
                         Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
                         Console.Write(board[i,j] ==0 ? "  " : "██");
+
                     }
                 }
                 Console.ResetColor();

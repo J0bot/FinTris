@@ -113,7 +113,7 @@ namespace FinTris
 
             _blocks = new List<Vector2>();
 
-            Rotation = (RotationState)random.Next(4); //On balance notre rotation aléatoirement
+            Rotation = (RotationState)random.Next(4); // On balance notre rotation aléatoirement
 
             TetrominoColor = (ConsoleColor)random.Next(9,15);
 
@@ -138,7 +138,7 @@ namespace FinTris
 
         #region CrapWay for rotation
         /// <summary>
-        /// Fonction qui permet de faire tourner le tetrominos
+        /// Fonction qui permet de faire tourner le tetromino
         /// </summary>
         //public void Rotate()
         //{
@@ -166,6 +166,7 @@ namespace FinTris
         
         public void Rotate()
         {
+
             if (Type==TetrominoType.Squarie)
             {
                 return;
@@ -189,6 +190,7 @@ namespace FinTris
             data = newData;
 
             UpdateBlocks();
+
         }
     }
 }
