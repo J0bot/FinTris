@@ -3,8 +3,10 @@ using System;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe qui s'occupe d'afficher le jeu
+    /// </summary>
     public class GameRenderer
-
     {        
         private readonly Game _game;
         private const int SHIFT_X = 30;

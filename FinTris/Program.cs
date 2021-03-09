@@ -9,6 +9,9 @@ using Figgle;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe Main
+    /// </summary>
     class Program
     {
         static Game _game;
