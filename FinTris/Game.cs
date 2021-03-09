@@ -47,7 +47,7 @@ namespace FinTris
             //On va spawn une pièce random
             random = new Random();
 
-            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            _tetromino = new Tetromino((TetrominoShape)random.Next(7), 3, 0);
             //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
 
             _gameTimer = new Timer(MS);
@@ -256,7 +256,7 @@ namespace FinTris
             
             //On va spawn une nouvelle pièce random
 
-            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            _tetromino = new Tetromino((TetrominoShape)random.Next(7), 3, 0);
             //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
 
             for (int a = 0; a < _board.GetLength(0); a++)
