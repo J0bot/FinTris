@@ -3,9 +3,8 @@
 ///Date     	: 09.03.2021
 ///Description  : Fintris
 
-using System;
-using System.Timers;
 using Figgle;
+using System;
 
 namespace FinTris
 {
@@ -14,18 +13,26 @@ namespace FinTris
     /// </summary>
     class Program
     {
-        static Game _game;
-        static GameRenderer _gameRenderer;
+        /// <summary>
+        /// Attribut Game de la classe Program
+        /// </summary>
+        private static Game _game;
 
+        /// <summary>
+        /// Attribut GameRenderer de la classe Program
+        /// </summary>
+        private static GameRenderer _gameRenderer;
 
+        /// <summary>
+        /// Fonction principale qui lance tout et qui gère le menu
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
 
             #region Max Way Menu
             Console.Title = "FinTris";
-
-
 
             //Menu
             Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
@@ -44,7 +51,7 @@ namespace FinTris
 
                 if (choice == play)
                 {
-                    Play();
+                    Play();                    
                 }
 
             } while (choice != quit);
@@ -56,6 +63,9 @@ namespace FinTris
             
         }
 
+        /// <summary>
+        /// Méthode play permet de lancer tous les éléments du jeu
+        /// </summary>
         public static void Play()
         {
             Console.Clear();

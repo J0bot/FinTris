@@ -1,7 +1,8 @@
-﻿//Auteur : Maxence
-//Date   : 05.02.2021
-//Lieu   : ETML
-//Descr. : Spicy invader2
+﻿///ETML
+///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+///Date     	: 09.03.2021
+///Description  : Fintris
+
 using System;
 using System.Collections.Generic;
 
@@ -12,12 +13,20 @@ namespace FinTris
     /// </summary>
     class Menu
     {
-        //Titre du menu
+        /// <summary>
+        /// titre du menu en string.
+        /// </summary>
         private string title;
 
-        //Entrées du menu
+        /// <summary>
+        /// Liste de toutes les entrées du menu
+        /// </summary>
         private List<MenuEntry> entries = new List<MenuEntry>();
 
+        /// <summary>
+        /// Constructeur renseigné de la classe Menu
+        /// </summary>
+        /// <param name="title">nom du titre du menu en string</param>
         public Menu(string title)
         {
             this.title = title;
@@ -26,7 +35,7 @@ namespace FinTris
         /// <summary>
         /// Ajouter une entrée dans le menu
         /// </summary>
-        /// <param name="menuEntry"></param>
+        /// <param name="menuEntry">paramètre d'entrée du menu en MenuEntry</param>
         public void Add(MenuEntry menuEntry)
         {
             //Force la sélection de la première option
@@ -40,7 +49,7 @@ namespace FinTris
         /// <summary>
         /// Afficher le menu et retourner l'option sélectionnée
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Retourne l'option que l'on a choisit</returns>
         public MenuEntry ShowMenu()
         {
             Console.Clear();
