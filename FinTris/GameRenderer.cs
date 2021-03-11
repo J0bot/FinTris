@@ -3,8 +3,10 @@ using System;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe qui s'occupe d'afficher le jeu
+    /// </summary>
     public class GameRenderer
-
     {        
         private readonly Game _game;
         private const int SHIFT_X = 30;
@@ -52,15 +54,12 @@ namespace FinTris
 
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
-
             Refresh(board);
 
         }
 
         public void Refresh(SquareState[,] board)
         {
-
-
             #region tests
             //int startX = 0;
             //int startY = 0;
@@ -92,15 +91,23 @@ namespace FinTris
             #endregion
             lock (this)
             {
-                Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
 
-                for (int j = 0; j < _game.Rows; j++)
+                for (int y = 0; y < _game.Rows; y++)
                 {
-                    for (int i = 0; i < _game.Cols; i++)
+                    for (int x = 0; x < _game.Cols; x++)
                     {
+                        #region ora Ahmad wey
+                        //SquareState color = ((SquareState)((byte)board[x, y] & 0b11111100));
 
-                        Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
-                        Console.Write(board[i,j] ==0 ? "  " : "██");
+                        //int diff = (int)color - 4;
+                        //diff += 12;
+                        //if (color == SquareState.SolidRed)
+                        //{
+                        //    Console.ForegroundColor = (ConsoleColor)diff;
+                        //}$
+                        #endregion
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.Write(board[x, y] == SquareState.Empty ? "  " : "██");
 
                     }
                 }

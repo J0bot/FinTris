@@ -1,9 +1,17 @@
-﻿using System;
+﻿///ETML
+///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+///Date     	: 09.03.2021
+///Description  : Fintris
+
+using System;
 using System.Timers;
 using Figgle;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe Main
+    /// </summary>
     class Program
     {
         static Game _game;
@@ -81,6 +89,10 @@ namespace FinTris
                 else if(input == ConsoleKey.DownArrow)
                 {
                     _game.MoveDown();
+                }
+                else if (input == ConsoleKey.Enter)
+                {
+                    _game.DropDown();
                 }
 
             } while (input != ConsoleKey.Escape);
