@@ -1,15 +1,23 @@
-﻿//Auteur : Maxence
-//Date   : 04.02.2020 
-//Lieu   : ETML
-//Descr. : Spicy invader2
+﻿///ETML
+///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+///Date     	: 09.03.2021
+///Description  : Fintris
+
 using System;
 
 namespace FinTris
 {
     public class MenuEntry
     {
-        static int instanceCounter = 0;
-        static int longestText = 0;
+        /// <summary>
+        /// Compteur d'instance
+        /// </summary>
+        private static int instanceCounter = 0;
+
+        /// <summary>
+        /// valeur du texte le plus long
+        /// </summary>
+        private static int longestText = 0;
 
         //Couleurs par défaut
         ConsoleColor selectedBGColor = ConsoleColor.DarkRed;
@@ -17,10 +25,45 @@ namespace FinTris
         ConsoleColor unselectedBGColor = ConsoleColor.Black;
         ConsoleColor unselectedFGColor = ConsoleColor.Gray;
 
-        private int id; //identifiant unique
-        private string text;
+        /// <summary>
+        /// identifiant unique
+        /// </summary>
+        private int _id;
 
-        private bool isSelected = false; //Option déselectionnée par défaut
+        /// <summary>
+        /// Texte du menu
+        /// </summary>
+        private string _text;
+
+        /// <summary>
+        /// bool pour savoir si un élément est séléctionné
+        /// </summary>
+        private bool _isSelected = false; //Option déselectionnée par défaut
+
+        /// <summary>
+        /// Retourne le texte de l'entrée
+        /// </summary>
+        public string Text
+        {
+            get { return _text; }
+        }
+
+        /// <summary>
+        /// Retourne l'id de l'entrée
+        /// </summary>
+        public int Id
+        {
+            get { return _id; } 
+        }
+
+        /// <summary>
+        /// Retourne si l'entrée est sélectionnée ou pas
+        /// </summary>
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { _isSelected = value; }
+        }
 
         /// <summary>
         /// Constructeur avec identifiant automatique
@@ -28,8 +71,8 @@ namespace FinTris
         /// <param name="text"></param>
         public MenuEntry(string text)
         {
-            this.id = instanceCounter++;
-            this.text = text;
+            this._id = instanceCounter++;
+            this._text = text;
 
             //Stocke la plus longue option en terme de caractères
             if (text.Length > longestText)
@@ -39,19 +82,16 @@ namespace FinTris
 
         }
 
-        //Retourne le texte
-        public string Text { get => text; }
-        //Retourne l'id
-        public int Id { get => id; }
-        public bool IsSelected { get => isSelected; set => isSelected = value; }
-
+        /// <summary>
+        /// Affichage de l'entrée actuelle
+        /// </summary>
         public void WriteOption()
         {
             //backup state
             ConsoleColor previousBG = Console.BackgroundColor;
             ConsoleColor previousFG = Console.ForegroundColor;
 
-            if (isSelected)
+            if (_isSelected)
             {
                 Console.BackgroundColor = selectedBGColor;
                 Console.ForegroundColor = selectedFGColor;
@@ -70,10 +110,13 @@ namespace FinTris
             Console.ForegroundColor = previousFG;
         }
 
-        //Renvoie le numéro et le texte de l'entrée
+        /// <summary>
+        /// Renvoie le numéro et le texte de l'entrée
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return text;
+            return _text;
         }
     }
 }

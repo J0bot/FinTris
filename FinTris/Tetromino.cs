@@ -120,6 +120,11 @@ namespace FinTris
         private List<Vector2> _blocks;
 
         /// <summary>
+        /// Variable random qui permet de générer des nombres random
+        /// </summary>
+        private Random _random;
+
+        /// <summary>
         /// Position du tetromino.
         /// </summary>
         public Vector2 Position
@@ -164,9 +169,9 @@ namespace FinTris
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
         /// <param name="tetrominoColor">Couleur du Tetromino</param>
-        public Tetromino(TetrominoShape type, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
+        public Tetromino(TetrominoShape type = TetrominoShape.Lawlet, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
         {
-            Random random = new Random();
+            _random = new Random();
             _shape = type;
             _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
@@ -177,7 +182,7 @@ namespace FinTris
             _blocks = new List<Vector2>();
 
             
-            TetrominoColor = (ConsoleColor)random.Next(9, 15);
+            TetrominoColor = (ConsoleColor)_random.Next(9, 15);
 
             UpdateBlocks();
         }
