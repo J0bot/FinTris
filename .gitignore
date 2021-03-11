@@ -15,7 +15,9 @@
 
 # Mono auto generated files
 mono_crash.*
-
+*.tex
+*.sty
+*.bat
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -47,6 +49,8 @@ Generated\ Files/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+*.png
+*.js
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
@@ -112,6 +116,8 @@ ipch/
 *.vsp
 *.vspx
 *.sap
+*.css
+*.html
 
 # Visual Studio Trace Files
 *.e2e
