@@ -1,6 +1,11 @@
 ﻿namespace FinTris
 {
-    public enum TetrominoShape
+
+    /// <summary>
+    /// Enum de toutes les formes qu'un Tetromino pourrait avoir
+    /// </summary>
+    public enum TetrominoType
+
     {
         Squarie,
 
