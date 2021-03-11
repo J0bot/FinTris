@@ -33,7 +33,7 @@ namespace FinTris
                 }
             },
 
-
+            
             { TetrominoShape.ISnake, new byte[,]
                 {
                     {0 ,1},

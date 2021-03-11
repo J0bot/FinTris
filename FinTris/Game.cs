@@ -1,3 +1,8 @@
+///ETML
+///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+///Date     	: 09.03.2021
+///Description  : Fintris
+
 using System;
 using System.Collections.Generic;
 using System.Timers;
@@ -257,7 +262,7 @@ namespace FinTris
         private void NewTetromino()
         {
             _tetromino.State = TetrominoState.Stopped;
-            
+
             //On va spawn une nouvelle pièce random
 
             _tetromino = new Tetromino((TetrominoShape)random.Next(7), 3, 0);
@@ -272,30 +277,7 @@ namespace FinTris
                         _board[a, j] = SquareState.SolidBlock;
                     }
                 }
-
-        private void CheckForFullRows()
-        {
-            for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
-            {
-                bool isfull = true;
-                for (byte x = 0; x < _cols; x++)
-                {
-                    if (!board[x, y].Equals(SquareState.SolidBlock))
-                    {
-                        isfull = false;
-                    }
-                }
-                if (isfull)
-                {
-                    Debug.WriteLine("The row {0} is full.", y);
-                }
-                else
-                {
-                    Debug.WriteLine("The row {0} is NOT full.", y);
-                }
-
             }
         }
-
     }
 }
