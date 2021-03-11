@@ -125,6 +125,22 @@ namespace FinTris
         private Random _random;
 
         /// <summary>
+        /// Largeur du Tetromino
+        /// </summary>
+        public int Width
+        {
+            get { return _width; }
+        }
+
+        /// <summary>
+        /// Hauteur du Tetromino
+        /// </summary>
+        public int Height
+        {
+            get { return _height; }
+        }
+
+        /// <summary>
         /// Position du tetromino.
         /// </summary>
         public Vector2 Position

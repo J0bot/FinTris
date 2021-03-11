@@ -223,7 +223,7 @@ namespace FinTris
             }
             else
             {
-
+                CheckForFullRows();
                 NewTetromino();  
             }
 
@@ -332,6 +332,48 @@ namespace FinTris
         private void NextTetromino()
         {
 
+        }
+
+        /// <summary>
+        /// Fonction qui va check si une ligne est pleine ou pas
+        /// </summary>
+        private void CheckForFullRows()
+        {
+            for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
+            {
+                bool isfull = true;
+                for (byte x = 0; x < _cols; x++)
+                {
+                    if (_board[x, y] == SquareState.Empty)
+                    {
+                        isfull = false;
+                    }
+                }
+                if (isfull)
+                {
+                    DeleteRow(y);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cette fonction va delete la ligne spécifiée
+        /// </summary>
+        /// <param name="fullY">Ligne à supprimer</param>
+        private void DeleteRow(int fullY)
+        {
+            for (int x = 0; x < _cols; x++)
+            {
+                _board[x, fullY] = SquareState.Empty;
+            }
+
+            for (int x = 0; x < _cols; x++)
+            {
+                for (int y = fullY; y > 0; y--)
+                {
+                    _board[x, y] = _board[x, y - 1];
+                }
+            }
         }
 
     }
