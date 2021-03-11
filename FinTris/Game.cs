@@ -307,11 +307,11 @@ namespace FinTris
         private void NewTetromino()
         {
             _tetromino.State = TetrominoState.Stopped;
-
+            CheckForFullRows();
             //On va spawn une nouvelle pièce random
 
-            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-            //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
+            //_tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            _tetromino = new Tetromino(TetrominoType.Malong, 3, 0);
 
             for (int a = 0; a < _board.GetLength(0); a++)
             {
@@ -323,6 +323,7 @@ namespace FinTris
                     }
                 }
             }
+            
 
         }
 
