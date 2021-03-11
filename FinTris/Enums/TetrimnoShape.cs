@@ -6,7 +6,7 @@
 namespace FinTris
 {
     /// <summary>
-    /// Enum de toutes les formes qu'un Tetromino pourrait avoir
+    /// Enum de toutes les formes qu'un Tetromino pourrait avoir.
     /// </summary>
     public enum TetrominoShape
     {

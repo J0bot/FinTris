@@ -54,7 +54,7 @@
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Enums\TetrimnoType.cs" />
+    <Compile Include="Enums\TetrimnoShape.cs" />
     <Compile Include="Tetromino.cs" />
     <Compile Include="Enums\SquareState.cs" />
     <Compile Include="Enums\TetrominoState.cs" />

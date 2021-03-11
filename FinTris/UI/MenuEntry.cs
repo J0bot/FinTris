@@ -12,28 +12,28 @@ namespace FinTris
         /// <summary>
         /// Compteur d'instance
         /// </summary>
-        private static int instanceCounter = 0;
+        private static int _instanceCounter = 0;
 
         /// <summary>
         /// valeur du texte le plus long
         /// </summary>
-        private static int longestText = 0;
+        private static int _longestText = 0;
 
         //Couleurs par défaut
-        ConsoleColor selectedBGColor = ConsoleColor.DarkRed;
-        ConsoleColor selectedFGColor = ConsoleColor.White;
-        ConsoleColor unselectedBGColor = ConsoleColor.Black;
-        ConsoleColor unselectedFGColor = ConsoleColor.Gray;
+        private const ConsoleColor selectedBGColor = ConsoleColor.DarkRed;
+        private const ConsoleColor selectedFGColor = ConsoleColor.White;
+        private const ConsoleColor unselectedBGColor = ConsoleColor.Black;
+        private const ConsoleColor unselectedFGColor = ConsoleColor.Gray;
 
         /// <summary>
         /// identifiant unique
         /// </summary>
-        private int _id;
+        private readonly int _id;
 
         /// <summary>
         /// Texte du menu
         /// </summary>
-        private string _text;
+        private readonly string _text;
 
         /// <summary>
         /// bool pour savoir si un élément est séléctionné
@@ -71,13 +71,13 @@ namespace FinTris
         /// <param name="text"></param>
         public MenuEntry(string text)
         {
-            this._id = instanceCounter++;
+            this._id = _instanceCounter++;
             this._text = text;
 
             //Stocke la plus longue option en terme de caractères
-            if (text.Length > longestText)
+            if (text.Length > _longestText)
             {
-                longestText = text.Length;
+                _longestText = text.Length;
             }
 
         }
