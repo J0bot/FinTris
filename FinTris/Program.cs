@@ -3,6 +3,9 @@
 ///Date     	: 09.03.2021
 ///Description  : Fintris
 
+
+using System;
+using System.Timers;
 using Figgle;
 using System;
 

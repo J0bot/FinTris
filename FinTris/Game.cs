@@ -100,6 +100,8 @@ namespace FinTris
 
             _tetromino = new Tetromino((TetrominoShape)random.Next(7), 3, 0);
 
+            //_tetromino = new Tetromino(TetrominoType.Pyramid, 3, 0);
+
             _gameTimer = new Timer(MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = rows;

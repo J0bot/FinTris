@@ -1,4 +1,4 @@
-﻿
+
 ///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
 ///Date     	: 09.03.2021
 ///Description  : Fintris
@@ -33,7 +33,8 @@ namespace FinTris
                 }
             },
 
-            
+
+
             { TetrominoShape.ISnake, new byte[,]
                 {
                     {0 ,1},
@@ -169,9 +170,10 @@ namespace FinTris
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
         /// <param name="tetrominoColor">Couleur du Tetromino</param>
-        public Tetromino(TetrominoShape type = TetrominoShape.Lawlet, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
+
+        public Tetromino(TetrominoShape type, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
         {
-            _random = new Random();
+            Random random = new Random();
             _shape = type;
             _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
@@ -182,7 +184,8 @@ namespace FinTris
             _blocks = new List<Vector2>();
 
             
-            TetrominoColor = (ConsoleColor)_random.Next(9, 15);
+
+            TetrominoColor = (ConsoleColor)random.Next(9, 15);
 
             UpdateBlocks();
         }
