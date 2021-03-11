@@ -239,5 +239,11 @@ namespace FinTris
             UpdateBlocks();
 
         }
+
+
+        public int Height
+        {
+            get { return _height; }
+        }
     }
 }

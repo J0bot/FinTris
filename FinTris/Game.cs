@@ -4,6 +4,7 @@
 ///Description  : Fintris
 
 using System;
+using System.Diagnostics;
 using System.Timers;
 
 namespace FinTris
@@ -222,7 +223,7 @@ namespace FinTris
             }
             else
             {
-
+                CheckForFullRows();
                 NewTetromino();  
             }
 
@@ -331,6 +332,47 @@ namespace FinTris
         private void NextTetromino()
         {
 
+        }
+
+
+        private void CheckForFullRows()
+        {
+            Debug.WriteLine("hello");
+            Debug.WriteLine(_tetromino.Height);
+            for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
+            {
+                bool isfull = true;
+                for (byte x = 0; x < _cols; x++)
+                {
+                    if (_board[x, y] == SquareState.Empty)
+                    {
+                        isfull = false;
+                    }
+                }
+                if (isfull)
+                {
+                    Debug.WriteLine("that's full.");
+                    DeleteRow(y);
+                }
+            }
+        }
+
+
+        private void DeleteRow(int fullY)
+        { 
+        Debug.WriteLine("in DeleteRow");
+            for (int x = 0; x < _cols; x++)
+            {
+                _board[x, fullY] = SquareState.Empty;
+            }
+
+            for (int x = 0; x < _cols; x++)
+            {
+                for (int y = fullY; y > 0; y--)
+                {
+                    _board[x, y] = _board[x, y - 1];
+                }
+            }
         }
 
     }
