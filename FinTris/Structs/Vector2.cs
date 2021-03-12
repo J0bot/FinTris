@@ -6,7 +6,7 @@
 namespace FinTris
 {
     /// <summary>
-    /// Classe qui réprésente des coordonées x et y
+    /// Struct qui réprésente des coordonées x et y
     /// </summary>
     public struct Vector2
     {

@@ -27,6 +27,9 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
+        /// <summary>
+        /// Attribut Random pour effectuer des fonctions Random
+        /// </summary>
         private static Random _random;
 
         /// <summary>
@@ -125,8 +128,10 @@ namespace FinTris
             Console.ResetColor();
         }
 
-
-        public void DrawScore()
+        /// <summary>
+        /// Fonction qui s'occupe de dessiner le score
+        /// </summary>
+        private void DrawScore()
         {
             //Affichage du score
             Console.SetCursorPosition(60, 15);
