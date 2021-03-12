@@ -1,38 +1,110 @@
-﻿using System;
-using System.Timers;
+﻿///ETML
+///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+///Date     	: 09.03.2021
+///Description  : Fintris
+
 using Figgle;
+using System;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe Main
+    /// </summary>
     class Program
     {
-        static Game _game;
-        static GameRenderer _gameRenderer;
+        /// <summary>
+        /// Attribut Game de la classe Program
+        /// </summary>
+        private static Game _game;
 
-        //Menu
-        static Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+        /// <summary>
+        /// Attribut GameRenderer de la classe Program
+        /// </summary>
+        private static GameRenderer _gameRenderer;
 
+        
 
+        /// <summary>
+        /// Fonction principale qui lance tout et qui gère le menu
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
 
-            #region Max Way Menu
             Console.Title = "FinTris";
 
+            MainMenu();
 
+
+        }
+
+        /// <summary>
+        /// Méthode play permet de lancer tous les éléments du jeu
+        /// </summary>
+        public static void Play()
+        {
+            Console.Clear();
+
+            _game = new Game();
+            _gameRenderer = new GameRenderer(_game);
+
+            _game.Start();
+
+            ConsoleKey input;
+
+            do
+            {
+                input = Console.ReadKey(true).Key;
+                if (input == ConsoleKey.RightArrow)
+                {
+                    _game.MoveRight();
+                }
+                else if (input == ConsoleKey.LeftArrow)
+                {
+                    _game.MoveLeft();
+                }
+                else if (input == ConsoleKey.DownArrow)
+                {
+                    _game.MoveDown();
+                }
+                else if (input == ConsoleKey.Spacebar)
+                {
+                    _game.Rotate();
+                }
+                else if(input == ConsoleKey.DownArrow)
+                {
+                    _game.MoveDown();
+                }
+                else if (input == ConsoleKey.Enter)
+                {
+                    _game.DropDown();
+                }
+                else if (input == ConsoleKey.Escape)
+                {
+                    _game.GameTimer.Stop();
+                    MainMenu();
+                }
+
+            } while (input != ConsoleKey.Escape);
+        }
+
+        private static void MainMenu()
+        {
+            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry quit = new MenuEntry("Quit");
 
-            menu.Add(play);
-            menu.Add(quit);
+            _menu.Add(play);
+            _menu.Add(quit);
 
             MenuEntry choice = null;
 
             do
             {
-                choice = menu.ShowMenu();
+                choice = _menu.ShowMenu();
 
                 if (choice == play)
                 {
@@ -45,141 +117,7 @@ namespace FinTris
 
             } while (choice != quit);
 
-            
-
-            #endregion
-
-            
+            Environment.Exit(0);
         }
-
-        public static void Play()
-        {
-            Console.Clear();
-
-            _game = new Game();
-            _gameRenderer = new GameRenderer(_game);
-
-            _game.Start();
-
-            ConsoleKey input;
-            do
-            {
-                input = Console.ReadKey(true).Key;
-                if (input == ConsoleKey.RightArrow)
-                {
-                    _game.MoveRight();
-
-                }
-                else if (input == ConsoleKey.LeftArrow)
-                {
-                    _game.MoveLeft();
-                }
-                else if (input == ConsoleKey.Spacebar)
-                {
-                    _game.Rotate();
-
-                }
-                else if(input == ConsoleKey.DownArrow)
-                {
-                    _game.MoveDown();
-                }
-                else if (input == ConsoleKey.Escape)
-                {
-                    _game.GameTimer.Stop();
-
-                    Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
-                    
-                    MenuEntry play = new MenuEntry("Play");
-                    MenuEntry quit = new MenuEntry("Quit");
-
-                    menu.Add(play);
-                    menu.Add(quit);
-                    MenuEntry choice = null;
-
-                    do
-                    {
-                        choice = menu.ShowMenu();
-
-                        if (choice == play)
-                        {
-                            Play();
-                        }
-                        else
-                        {
-                            Environment.Exit(0);
-                        }
-
-                    } while (choice != quit);
-
-                    Environment.Exit(0);
-                    Play();
-                }
-
-            } while (input != ConsoleKey.Escape);
-        }
-
-        
-
-        #region tests
-        //private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        //{
-        //    Console.Clear();
-        //    y++;
-
-        //    //int startX;
-        //    //int startY;
-
-        //    //int endX;
-        //    //int endY;
-
-        //    //switch (tet.Rotation)
-        //    //{
-        //    //    default:
-        //    //    case RotationState.Rotation0:
-        //    //        startX = 0;
-        //    //        startY = 0;
-        //    //        endX = 4;
-        //    //        endY = 4;
-        //    //        break;
-        //    //    case RotationState.Rotation1:
-        //    //        startX = 4;
-        //    //        startY = 0;
-        //    //        endX = 0;
-        //    //        endY = 4;
-        //    //        break;
-        //    //    case RotationState.Rotation2:
-        //    //        startX = 0;
-        //    //        startY = 4;
-        //    //        endX = 4;
-        //    //        endY = 0;
-        //    //        break;
-        //    //    case RotationState.Rotation3:
-        //    //        startX = 4;
-        //    //        startY = 4;
-        //    //        endX = 0;
-        //    //        endY = 0;
-        //    //        break;
-        //    //}
-
-
-        //    //int stepX = tet.Rotation == Rotat ionState.Rotation1 ? -1 : 1;
-        //    //int stepY= tet.Rotation == RotationState.Rotation2 ? -1 : 1;
-
-        //    //int maxX = 0;
-        //    ////int maxY = 0;
-
-        //    //for (int j = 0; j < tet.Blocks.GetLength(1); j++)
-        //    //{
-        //    //    for (int i = 0; i < tet.Blocks.GetLength(0); i++)
-        //    //    {
-        //    //        Console.SetCursorPosition(tet.X + i * 2, tet.Y + j);
-        //    //        Console.Write(tet.Blocks[i, j] == 1 ? "██" : "  ");
-        //    //    }
-
-        //    //}
-        //    //tet.Y++;
-        //}
-
-        #endregion
     }
 }

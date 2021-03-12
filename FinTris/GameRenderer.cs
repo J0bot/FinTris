@@ -1,112 +1,87 @@
-﻿using System.Timers;
+﻿///ETML
+///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+///Date     	: 09.03.2021
+///Description  : Fintris
+
 using System;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe qui s'occupe d'afficher le jeu
+    /// </summary>
     public class GameRenderer
-
     {        
+        /// <summary>
+        /// Attribut _game pour récuperer les infos de game
+        /// </summary>
         private readonly Game _game;
+
+        /// <summary>
+        /// position de l'affichage du plateau en x
+        /// </summary>
         private const int SHIFT_X = 30;
+
+        /// <summary>
+        /// position de l'affichage du plateau en y
+        /// </summary>
         private const int SHIFT_Y = 2;
 
+        private static Random _random;
+
+        /// <summary>
+        /// Constructor renseigné de la classe GameRenderer
+        /// </summary>
+        /// <param name="game">paramètre game pour récup les infos de game</param>
         public GameRenderer(Game game)
         {
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
 
-            DrawScore();
+            _random = new Random();
+
             BorderStyle();
         }
 
-        #region Ahmad way
-        private void DrawBorders()
-        {
-            // On ajoute des colonnes/lignes parce qu'on ne veut pas les dimensions exactes du plateau sinon
-            // le plateau va ecraser les bordures.
-
-            int width = (_game.Cols + 1) * 2;
-            int height = _game.Rows + 2;
-
-            Console.ForegroundColor = ConsoleColor.Blue;
-
-            for (int y = 0; y < height; y++)
-            {
-                if (y > 0 && y < height - 1)
-                {
-                    Console.SetCursorPosition(SHIFT_X, SHIFT_Y + y);
-                    Console.Write("██");
-                    Console.SetCursorPosition(SHIFT_X + width - 1, SHIFT_Y + y);
-                    Console.Write("██");
-                }
-                else
-                {
-                    Console.SetCursorPosition(SHIFT_X, SHIFT_Y + y);
-                    Console.Write((y == 0 ? "╔" : "╚") + new string('═', width - 2) + (y == 0 ? "╗" : "╝"));
-                }
-            }
-            Console.ResetColor();
-        }
-        #endregion
-
-        private void _game_PositionChanged(object sender, SquareState[,] board)
+        /// <summary>
+        /// Fonction qui s'active quand il y a eu un changememt dans la classe Game, elle va lancer la fonction Refresh()
+        /// </summary>
+        /// <param name="sender">c'est les données reçues</param>
+        /// <param name="board">c'est le tableau contenant les informations du jeu</param>
+        private void _game_PositionChanged(object sender, Case[,] board)
         {
             Refresh(board);
-            
         }
 
-        public void Refresh(SquareState[,] board)
+        /// <summary>
+        /// La fonction Refresh va s'occuper d'afficher les données du tableau de SquareState envoyé par la classe Game.
+        /// 
+        /// Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement
+        /// </summary>
+        /// <param name="board">paramètre du tableau de SquarState</param>
+        private void Refresh(Case[,] board)
         {
-
-            #region tests
-            //int startX = 0;
-            //int startY = 0;
-
-            //int endX = 0;
-            //int endY = 0;
-
-            //switch (rot)
-            //{
-            //    case RotationState.Rotation0:
-            //        startX = 0;
-            //        startY = 0;
-            //        break;
-            //    case RotationState.Rotation1:
-            //        startX = 3;
-            //        startY = 0;
-            //        break;
-            //    case RotationState.Rotation2:
-            //        startX = 0;
-            //        startY = 3;
-            //        break;
-            //    case RotationState.Rotation3:
-            //        startX = 3;
-            //        startY = 3;
-            //        break;
-            //    default:
-            //        break;
-            //}
-            #endregion
             lock (this)
             {
-                Console.ForegroundColor = _game.CurrentTetromino.TetrominoColor;
-                for (int j = 0; j < _game.Rows; j++)
+                for (int y = 0; y < _game.Rows; y++)
                 {
-                    for (int i = 0; i < _game.Cols; i++)
+                    for (int x = 0; x < _game.Cols; x++)
                     {
-                        Console.SetCursorPosition(i * 2 +SHIFT_X +2, j + SHIFT_Y+1);
-                        Console.Write(board[i,j] ==0 ? "  " : "██");
+
+                        Console.ForegroundColor = board[x, y].Color;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
                     }
                 }
                 Console.ResetColor();
                 DrawScore();
             }
-            
-
         }
 
-        //C'est la fonction qui permet de créer le tour du jeu
+        /// <summary>
+        /// C'est la fonction qui permet de créer la bordure du jeu
+        /// </summary>
         private void BorderStyle()
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -121,11 +96,16 @@ namespace FinTris
             Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
             Console.Write(new string('█', 26));
              
-            Console.ResetColor();
-
-            
+            Console.ResetColor();   
         }
 
+        /// <summary>
+        /// Fonction qui va s'occuper de render le prochain Tetromino
+        /// </summary>
+        private void NextTetrominoRender()
+        {
+
+        }
 
         public void DrawScore()
         {
@@ -137,5 +117,6 @@ namespace FinTris
             Console.SetCursorPosition(60, 18);
             Console.WriteLine($"Niveau : {_game.Level}");
         }
+
     }
 }
