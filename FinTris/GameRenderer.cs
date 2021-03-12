@@ -75,6 +75,7 @@ namespace FinTris
                     }
                 }
                 Console.ResetColor();
+                DrawScore();
             }
         }
 
@@ -104,6 +105,17 @@ namespace FinTris
         private void NextTetrominoRender()
         {
 
+        }
+
+        public void DrawScore()
+        {
+            //Affichage du score
+            Console.SetCursorPosition(60, 15);
+            Console.WriteLine($"Score : {_game.Score} pts");
+
+            //Affichage du niveau
+            Console.SetCursorPosition(60, 18);
+            Console.WriteLine($"Niveau : {_game.Level}");
         }
 
     }
