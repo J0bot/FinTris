@@ -442,7 +442,7 @@ namespace FinTris
         /// Fonction qui gère le score et //Changement de la vitesse des pièces qui tombent suivant le niveau
         /// </summary>
         /// <param name="nbrKill">nombre de lignes déruites</param>
-        public void ScoreManager(int nbrKill = 0)
+        private void ScoreManager(int nbrKill = 0)
         {
 
             //Calcul des points :

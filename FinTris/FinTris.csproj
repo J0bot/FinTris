@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Case.cs" />
+    <Compile Include="Structs\Case.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuEntry.cs" />
     <Compile Include="Game.cs" />
@@ -59,7 +59,7 @@
     <Compile Include="Tetromino.cs" />
     <Compile Include="Enums\SquareState.cs" />
     <Compile Include="Enums\TetrominoState.cs" />
-    <Compile Include="Vector2.cs" />
+    <Compile Include="Structs\Vector2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
