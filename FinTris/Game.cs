@@ -214,7 +214,6 @@ namespace FinTris
         /// <param name="e"></param>
         private void timerHandler(object sender, ElapsedEventArgs e)
         {
-
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
 
             if (!CollideAt(nextPos))
@@ -385,7 +384,14 @@ namespace FinTris
         /// </summary>
         private void CheckForDeath()
         {
+            //On va check s'il spawn dans un bloc
+            for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
+            {
+                for (byte x = 0; x < _cols; x++)
+                {
 
+                }
+            }
         }
 
     }
