@@ -27,6 +27,8 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
+        private static Random _random;
+
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer
         /// </summary>
@@ -37,6 +39,8 @@ namespace FinTris
 
             _game.BoardChanged += _game_PositionChanged;
 
+            _random = new Random();
+
             BorderStyle();
         }
 
@@ -45,7 +49,7 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">c'est les données reçues</param>
         /// <param name="board">c'est le tableau contenant les informations du jeu</param>
-        private void _game_PositionChanged(object sender, SquareState[,] board)
+        private void _game_PositionChanged(object sender, Case[,] board)
         {
             Refresh(board);
         }
@@ -56,7 +60,7 @@ namespace FinTris
         /// Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement
         /// </summary>
         /// <param name="board">paramètre du tableau de SquarState</param>
-        private void Refresh(SquareState[,] board)
+        private void Refresh(Case[,] board)
         {
             lock (this)
             {
@@ -64,11 +68,14 @@ namespace FinTris
                 {
                     for (int x = 0; x < _game.Cols; x++)
                     {
+                        Console.ForegroundColor = board[x, y].Color;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                        Console.Write(board[x, y] == SquareState.Empty ? "  " : "██");
+                        Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
                     }
                 }
                 Console.ResetColor();
+                DrawScore();
+                NextTetrominoRender();
             }
         }
 
@@ -88,8 +95,66 @@ namespace FinTris
             }
             Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
             Console.Write(new string('█', 26));
-             
-            Console.ResetColor();   
+            
+            Console.ResetColor();
+
+            //Bordure du prochain Tetromino
+            Console.SetCursorPosition(58, 2);
+            Console.Write("NEXT TETROMINO");
+
+            byte min = 4;
+            byte max = 10;
+            byte decal = 59;
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int l = min; l < max; l++)
+            {
+                if (l == min || l == max - 1)
+                {
+                    Console.SetCursorPosition(decal, l);
+                    Console.Write(new string('█', 12));
+                }
+                else
+                {
+                    Console.SetCursorPosition(decal, l);
+                    Console.Write("██        ██");
+                }
+
+            }
+
+            Console.ResetColor();
+        }
+
+
+        public void DrawScore()
+        {
+            //Affichage du score
+            Console.SetCursorPosition(60, 15);
+            Console.WriteLine($"Score : {_game.Score} pts");
+
+            //Affichage du niveau
+            Console.SetCursorPosition(60, 18);
+            Console.WriteLine($"Niveau : {_game.Level}");
+        }
+
+        /// <summary>
+        /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs
+        /// </summary>
+        public void DeathAnim()
+        {
+            lock(this)
+            {
+                for (int y = _game.Rows-1; y >=0 ; y--)
+                {
+                    for (int x = _game.Cols-1; x >= 0; x--)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.Write("██");
+                    }
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
         }
 
         /// <summary>
@@ -97,8 +162,12 @@ namespace FinTris
         /// </summary>
         private void NextTetrominoRender()
         {
+            if (_game.CurrentTetromino.Shape == TetrominoType.Lawlet)
+            {
+
+            }
+            
 
         }
-
     }
 }

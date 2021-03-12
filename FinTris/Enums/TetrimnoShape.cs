@@ -8,7 +8,7 @@ namespace FinTris
     /// <summary>
     /// Enum de toutes les formes qu'un Tetromino pourrait avoir.
     /// </summary>
-    public enum TetrominoShape
+    public enum TetrominoType
     {
         /// <summary>
         /// Le Tetromino Squarie (0) a la forme d'un carré :

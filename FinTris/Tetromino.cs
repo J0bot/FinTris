@@ -16,16 +16,16 @@ namespace FinTris
         /// <summary>
         /// Dictionnaire qui contient les données des blocs de chaque forme de Tetromino.
         /// </summary>
-        private readonly static Dictionary<TetrominoShape, byte[,]> _tetrominoShapes = new Dictionary<TetrominoShape, byte[,]>
+        private readonly static Dictionary<TetrominoType, byte[,]> _tetrominoShapes = new Dictionary<TetrominoType, byte[,]>
         {
-            { TetrominoShape.Squarie, new byte[,]
+            { TetrominoType.Squarie, new byte[,]
                 {
                     {1, 1},
                     {1, 1},
                 }
             },
             //Snake
-            { TetrominoShape.Snake, new byte[,]
+            { TetrominoType.Snake, new byte[,]
                 {
                     {1 ,0},
                     {1, 1},
@@ -34,7 +34,7 @@ namespace FinTris
             },
 
             
-            { TetrominoShape.ISnake, new byte[,]
+            { TetrominoType.ISnake, new byte[,]
                 {
                     {0 ,1},
                     {1, 1},
@@ -43,7 +43,7 @@ namespace FinTris
             },
 
             //Lawlet
-            { TetrominoShape.Lawlet, new byte[,]
+            { TetrominoType.Lawlet, new byte[,]
                 {
                     {1 ,0},
                     {1, 0},
@@ -52,7 +52,7 @@ namespace FinTris
             },
 
 
-            { TetrominoShape.ILawlet, new byte[,]
+            { TetrominoType.ILawlet, new byte[,]
                 {
                     {0 ,1},
                     {0, 1},
@@ -61,7 +61,7 @@ namespace FinTris
             },
 
             //Pyramid
-            { TetrominoShape.Pyramid, new byte[2, 3]
+            { TetrominoType.Pyramid, new byte[2, 3]
                 {
                     {1, 1, 1},
                     {0 ,1 ,0},
@@ -69,7 +69,7 @@ namespace FinTris
             },
 
             //Malong
-            { TetrominoShape.Malong, new byte[,]
+            { TetrominoType.Malong, new byte[,]
                 {
                     {1},
                     {1},
@@ -92,7 +92,7 @@ namespace FinTris
         /// <summary>
         /// Forme du Tetromino
         /// </summary>
-        private TetrominoShape _shape;
+        private TetrominoType _shape;
 
         /// <summary>
         /// Position du Tetromino dans deux dimensions
@@ -125,6 +125,22 @@ namespace FinTris
         private Random _random;
 
         /// <summary>
+        /// Largeur du Tetromino
+        /// </summary>
+        public int Width
+        {
+            get { return _width; }
+        }
+
+        /// <summary>
+        /// Hauteur du Tetromino
+        /// </summary>
+        public int Height
+        {
+            get { return _height; }
+        }
+
+        /// <summary>
         /// Position du tetromino.
         /// </summary>
         public Vector2 Position
@@ -140,6 +156,14 @@ namespace FinTris
         {
             get { return _state; }
             set { _state = value; }
+        }
+
+        /// <summary>
+        /// Type de forme du Tetromino
+        /// </summary>
+        public TetrominoType Shape
+        {
+            get { return _shape; }
         }
 
         /// <summary>
@@ -161,7 +185,6 @@ namespace FinTris
         }
 
 
-
         /// <summary>
         /// Permet de créer une nouvelle instance de Tetromino.
         /// </summary>
@@ -169,7 +192,7 @@ namespace FinTris
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
         /// <param name="tetrominoColor">Couleur du Tetromino</param>
-        public Tetromino(TetrominoShape type = TetrominoShape.Lawlet, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
+        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
         {
             _random = new Random();
             _shape = type;
@@ -181,8 +204,8 @@ namespace FinTris
 
             _blocks = new List<Vector2>();
 
-            
-            TetrominoColor = (ConsoleColor)_random.Next(9, 15);
+
+            _tetrominoColor = tetrominoColor;
 
             UpdateBlocks();
         }
@@ -211,7 +234,7 @@ namespace FinTris
         public void Rotate()
         {
 
-            if (_shape == TetrominoShape.Squarie)
+            if (_shape == TetrominoType.Squarie)
             {
                 return;
             }
