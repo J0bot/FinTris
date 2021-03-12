@@ -5,13 +5,31 @@ namespace FinTris
 {
     public class Game
     {
-        public const int MS = 500;
-
+        private int _MS =500;
         private Tetromino _tetromino;
         private Timer _gameTimer;
         private int _rows;
         private int _cols;
         private Random random;
+        private int _score;
+        private int _level;
+
+        public int Level 
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+        public int MS
+        {
+            get { return _MS; }
+        }
+
+        public int Score
+        {
+            get { return _score; }
+            set { _score = value; }
+        }
+
 
         private SquareState[,] board;
 
@@ -46,10 +64,12 @@ namespace FinTris
 
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
 
-            _gameTimer = new Timer(MS);
+            _gameTimer = new Timer(_MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = 22;
             _cols = 11;
+
+            _level = 1;
 
             board = new SquareState[_cols, _rows];
         }
@@ -78,9 +98,15 @@ namespace FinTris
             {
                 _gameTimer.Stop();
                 _tetromino.Y++;
+
+                //Si on accèlère la chute on gagne plus de point
+                _score += 10; //Si on presse 1 seconde on a 10 points en plus
+
+
                 UpdateBoard();
                 _gameTimer.Start();
             }
+            
         }
 
         public void Start()
@@ -148,6 +174,10 @@ namespace FinTris
                 }
             }
 
+            //On change le score
+
+            ScoreManager();
+
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
             BoardChanged.Invoke(this, board);
         }
@@ -157,6 +187,43 @@ namespace FinTris
         }
 
 
+        /// <summary>
+        /// Fonction qui gère le score et //Changement de la vitesse des pièces qui tombent suivant le niveau
+        /// </summary>
+        /// <param name="nbrKill">nombre de lignes déruites</param>
+        public void ScoreManager(int nbrKill=0)
+        {
 
+            //Calcul des points :
+            //Une ligne complète = 40pts
+            //Deux = 100 pts
+            //Trois = 300pts
+            //Quatre = 1200pts
+            if (nbrKill == 1)
+            {
+                _score += 40;
+            }
+            else if (nbrKill == 2)
+            {
+                _score += 100;
+            }
+
+            else if (nbrKill == 3)
+            {
+                _score += 300;
+            }
+
+            else if (nbrKill == 4)
+            {
+                _score += 1200;
+            }
+
+             
+            // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
+            _level = (_score / 1000) + 1;
+
+            _gameTimer.Interval = _MS / (_level * 0.5);
+
+        }
     }
 }

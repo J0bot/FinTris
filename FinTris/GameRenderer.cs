@@ -16,7 +16,7 @@ namespace FinTris
 
             _game.BoardChanged += _game_PositionChanged;
 
-
+            DrawScore();
             BorderStyle();
         }
 
@@ -53,7 +53,7 @@ namespace FinTris
         private void _game_PositionChanged(object sender, SquareState[,] board)
         {
             Refresh(board);
-
+            
         }
 
         public void Refresh(SquareState[,] board)
@@ -100,8 +100,10 @@ namespace FinTris
                     }
                 }
                 Console.ResetColor();
+                DrawScore();
             }
             
+
         }
 
         //C'est la fonction qui permet de créer le tour du jeu
@@ -119,7 +121,21 @@ namespace FinTris
             Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
             Console.Write(new string('█', 26));
              
-            Console.ResetColor();   
+            Console.ResetColor();
+
+            
+        }
+
+
+        public void DrawScore()
+        {
+            //Affichage du score
+            Console.SetCursorPosition(60, 15);
+            Console.WriteLine($"Score : {_game.Score} pts");
+
+            //Affichage du niveau
+            Console.SetCursorPosition(60, 18);
+            Console.WriteLine($"Niveau : {_game.Level}");
         }
     }
 }

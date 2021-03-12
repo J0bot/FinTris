@@ -9,6 +9,9 @@ namespace FinTris
         static Game _game;
         static GameRenderer _gameRenderer;
 
+        //Menu
+        static Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+
 
         static void Main(string[] args)
         {
@@ -18,9 +21,6 @@ namespace FinTris
             Console.Title = "FinTris";
 
 
-
-            //Menu
-            Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry quit = new MenuEntry("Quit");
@@ -38,10 +38,14 @@ namespace FinTris
                 {
                     Play();
                 }
+                else
+                {
+                    Environment.Exit(0);
+                }
 
             } while (choice != quit);
 
-            Environment.Exit(0);
+            
 
             #endregion
 
@@ -79,9 +83,42 @@ namespace FinTris
                 {
                     _game.MoveDown();
                 }
+                else if (input == ConsoleKey.Escape)
+                {
+                    _game.GameTimer.Stop();
+
+                    Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+                    
+                    MenuEntry play = new MenuEntry("Play");
+                    MenuEntry quit = new MenuEntry("Quit");
+
+                    menu.Add(play);
+                    menu.Add(quit);
+                    MenuEntry choice = null;
+
+                    do
+                    {
+                        choice = menu.ShowMenu();
+
+                        if (choice == play)
+                        {
+                            Play();
+                        }
+                        else
+                        {
+                            Environment.Exit(0);
+                        }
+
+                    } while (choice != quit);
+
+                    Environment.Exit(0);
+                    Play();
+                }
 
             } while (input != ConsoleKey.Escape);
         }
+
+        
 
         #region tests
         //private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
