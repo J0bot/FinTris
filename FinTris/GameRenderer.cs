@@ -27,6 +27,8 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
+        private static Random _random;
+
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer
         /// </summary>
@@ -37,6 +39,8 @@ namespace FinTris
 
             _game.BoardChanged += _game_PositionChanged;
 
+            _random = new Random();
+
             BorderStyle();
         }
 
@@ -45,7 +49,7 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">c'est les données reçues</param>
         /// <param name="board">c'est le tableau contenant les informations du jeu</param>
-        private void _game_PositionChanged(object sender, SquareState[,] board)
+        private void _game_PositionChanged(object sender, Case[,] board)
         {
             Refresh(board);
         }
@@ -56,7 +60,7 @@ namespace FinTris
         /// Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement
         /// </summary>
         /// <param name="board">paramètre du tableau de SquarState</param>
-        private void Refresh(SquareState[,] board)
+        private void Refresh(Case[,] board)
         {
             lock (this)
             {
@@ -64,8 +68,10 @@ namespace FinTris
                 {
                     for (int x = 0; x < _game.Cols; x++)
                     {
+
+                        Console.ForegroundColor = board[x, y].Color;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                        Console.Write(board[x, y] == SquareState.Empty ? "  " : "██");
+                        Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
                     }
                 }
                 Console.ResetColor();

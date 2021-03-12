@@ -196,8 +196,8 @@ namespace FinTris
 
             _blocks = new List<Vector2>();
 
-            
-            TetrominoColor = (ConsoleColor)_random.Next(9, 15);
+
+            _tetrominoColor = tetrominoColor;
 
             UpdateBlocks();
         }

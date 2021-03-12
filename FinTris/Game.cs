@@ -46,12 +46,12 @@ namespace FinTris
         /// <summary>
         /// C'est le tableau qui contient les états de tous les blocs du jeu
         /// </summary>
-        private readonly SquareState[,] _board;
+        private readonly Case[,] _board;
 
         /// <summary>
         /// C'est un événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu
         /// </summary>
-        public event EventHandler<SquareState[,]> BoardChanged;
+        public event EventHandler<Case[,]> BoardChanged;
 
         /// <summary>
         /// Propriété qui retourne la quantité de colones dans notre plateau de jeu.
@@ -100,7 +100,7 @@ namespace FinTris
         {
             //On va spawn une pièce random
             random = new Random();
-
+            
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
 
             _gameTimer = new Timer(MS);
@@ -108,9 +108,16 @@ namespace FinTris
             _rows = rows;
             _cols = cols;
 
-            _board = new SquareState[cols, rows];
-        }
+            _board = new Case[cols, rows];
 
+            for (int i = 0; i < _board.GetLength(0); i++)
+            {
+                for (int j = 0; j < _board.GetLength(1); j++)
+                {
+                    _board[i, j] = new Case();
+                }
+            }
+        }
         
 
         /// <summary>
@@ -243,9 +250,9 @@ namespace FinTris
             {
                 for (int j = 0; j < _board.GetLength(1); j++)
                 {
-                    if (_board[i, j] != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste
+                    if (_board[i, j].State != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste
                     {
-                        _board[i, j] = SquareState.Empty;
+                        _board[i, j].State = SquareState.Empty;
                     }
                 }
             }
@@ -254,15 +261,15 @@ namespace FinTris
 
             foreach (Vector2 block in _tetromino.Blocks)
             {
-                Vector2 pos = block + _tetromino.Position;
-                _board[pos.x, pos.y] = SquareState.MovingBlock;
+                Vector2 pos = block + _tetromino.Position; 
+                _board[pos.x, pos.y].State = SquareState.MovingBlock;
+                _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
             }
 
 
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
             BoardChanged.Invoke(this, _board);
         }
-
 
 
         /// <summary>
@@ -274,7 +281,7 @@ namespace FinTris
             {
                 // Conversion des coordonées de blocs à des coordonées relatives au plateau
                 Vector2 pos = tetroPos + bloc;
-                if (!WithinRange(pos) || _board[pos.x,pos.y] == SquareState.SolidBlock)
+                if (!WithinRange(pos) || _board[pos.x,pos.y].State == SquareState.SolidBlock)
                 {
                     return true;
                 }
@@ -308,22 +315,20 @@ namespace FinTris
             //On va spawn une nouvelle pièce random
 
             //_tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-            _tetromino = new Tetromino(TetrominoType.Malong, 3, 0);
+            _tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
             for (int a = 0; a < _board.GetLength(0); a++)
             {
                 for (int j = 0; j < _board.GetLength(1); j++)
                 {
-                    if (_board[a, j] == SquareState.MovingBlock)
+                    if (_board[a, j].State == SquareState.MovingBlock)
                     {
-                        _board[a, j] = SquareState.SolidBlock;
+                        _board[a, j].State = SquareState.SolidBlock;
                     }
                 }
             }
-            
 
         }
-
         
 
         /// <summary>
@@ -336,7 +341,7 @@ namespace FinTris
                 bool isfull = true;
                 for (byte x = 0; x < _cols; x++)
                 {
-                    if (_board[x, y] == SquareState.Empty)
+                    if (_board[x, y].State == SquareState.Empty)
                     {
                         isfull = false;
                     }
@@ -358,7 +363,7 @@ namespace FinTris
         {
             for (int x = 0; x < _cols; x++)
             {
-                _board[x, fullY] = SquareState.Empty;
+                _board[x, fullY].State = SquareState.Empty;
             }
 
             for (int x = 0; x < _cols; x++)
