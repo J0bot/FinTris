@@ -204,8 +204,34 @@ namespace FinTris
 
             _blocks = new List<Vector2>();
 
+            switch (type)
+            {
+                case TetrominoType.Squarie:
+                    _tetrominoColor = ConsoleColor.Yellow;
+                    break;
+                case TetrominoType.Snake:
+                    _tetrominoColor = ConsoleColor.Green;
+                    break;
+                case TetrominoType.ISnake:
+                    _tetrominoColor = ConsoleColor.Red;
+                    break;
+                case TetrominoType.Malong:
+                    _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue
+                    break;
+                case TetrominoType.Lawlet:
+                    _tetrominoColor = ConsoleColor.DarkYellow; // We need orange
+                    break;
+                case TetrominoType.ILawlet:
+                    _tetrominoColor = ConsoleColor.Blue; //Blue
+                    break;
+                case TetrominoType.Pyramid:
+                    _tetrominoColor = ConsoleColor.Magenta;
+                    break;
+                default:
+                    _tetrominoColor = ConsoleColor.White;
+                    break;
+            }
 
-            _tetrominoColor = tetrominoColor;
 
             UpdateBlocks();
         }
