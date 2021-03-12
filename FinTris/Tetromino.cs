@@ -159,6 +159,14 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Type de forme du Tetromino
+        /// </summary>
+        public TetrominoType Shape
+        {
+            get { return _shape; }
+        }
+
+        /// <summary>
         /// Couleur du Tetromino.
         /// </summary>
         public ConsoleColor TetrominoColor

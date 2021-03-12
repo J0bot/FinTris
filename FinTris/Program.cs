@@ -86,6 +86,12 @@ namespace FinTris
                     _game.GameTimer.Stop();
                     MainMenu();
                 }
+                else if (input == ConsoleKey.R)
+                {
+                    _game.GameTimer.Stop();
+                    _gameRenderer.DeathAnim();
+                }
+
 
             } while (input != ConsoleKey.Escape);
         }

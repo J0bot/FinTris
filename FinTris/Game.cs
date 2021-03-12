@@ -398,6 +398,7 @@ namespace FinTris
             for (int x = 0; x < _cols; x++)
             {
                 _board[x, fullY].State = SquareState.Empty;
+                _board[x, fullY].Color = ConsoleColor.White;
             }
 
             for (int x = 0; x < _cols; x++)
@@ -408,7 +409,6 @@ namespace FinTris
                 }
             }
 
-            
         }
 
 
@@ -433,6 +433,8 @@ namespace FinTris
 
                 }
             }
+
+            //S'il y a deux 
         }
 
 
