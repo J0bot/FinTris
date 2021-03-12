@@ -223,8 +223,7 @@ namespace FinTris
             }
             else
             {
-                CheckForFullRows();
-                NewTetromino();  
+                NewTetromino(); 
             }
 
             UpdateBoard();
@@ -239,9 +238,8 @@ namespace FinTris
         /// Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
         /// </summary>
         private void UpdateBoard()
-        {         
-
-            // Reset du tableau
+        {
+            //Reset du tableau
             for (int i = 0; i < _board.GetLength(0); i++)
             {
                 for (int j = 0; j < _board.GetLength(1); j++)
@@ -327,13 +325,7 @@ namespace FinTris
 
         }
 
-        /// <summary>
-        /// Cette fonction permet d'instancier en avance un Tetromino pour pouvoir le prévisualiser
-        /// </summary>
-        private void NextTetromino()
-        {
-
-        }
+        
 
         /// <summary>
         /// Fonction qui va check si une ligne est pleine ou pas
@@ -353,6 +345,8 @@ namespace FinTris
                 if (isfull)
                 {
                     DeleteRow(y);
+                    //BoardChanged.Invoke(this, _board);
+                    //System.Threading.Thread.Sleep(1000);
                 }
             }
         }
@@ -375,6 +369,23 @@ namespace FinTris
                     _board[x, y] = _board[x, y - 1];
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Cette fonction permet d'instancier en avance un Tetromino pour pouvoir le prévisualiser
+        /// </summary>
+        private void NextTetromino()
+        {
+
+        }
+
+        /// <summary>
+        /// Cette fonction va vérifier si on a perdu ou pas
+        /// </summary>
+        private void CheckForDeath()
+        {
+
         }
 
     }

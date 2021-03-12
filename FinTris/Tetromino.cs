@@ -177,7 +177,6 @@ namespace FinTris
         }
 
 
-
         /// <summary>
         /// Permet de créer une nouvelle instance de Tetromino.
         /// </summary>
