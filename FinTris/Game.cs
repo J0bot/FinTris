@@ -203,7 +203,7 @@ namespace FinTris
                 _tetromino.Position -= Vector2.Down;
 
                 //Si on accèlère la chute on gagne plus de point
-                _score += 10; //Si on presse 1 seconde on a 10 points en plus
+                _score += 10; //Si on presse 1 seconde on a 10 points en plus   
 
                 UpdateBoard();
                 _gameTimer.Start();
