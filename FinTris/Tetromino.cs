@@ -192,7 +192,7 @@ namespace FinTris
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
         /// <param name="tetrominoColor">Couleur du Tetromino</param>
-        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
+        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0)
         {
             _random = new Random();
             _shape = type;
@@ -204,6 +204,7 @@ namespace FinTris
 
             _blocks = new List<Vector2>();
 
+            //Switch pour attribuer la couleur à chaque type de Tetromino
             switch (type)
             {
                 case TetrominoType.Squarie:
