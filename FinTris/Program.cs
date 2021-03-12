@@ -23,6 +23,8 @@ namespace FinTris
         /// </summary>
         private static GameRenderer _gameRenderer;
 
+        
+
         /// <summary>
         /// Fonction principale qui lance tout et qui gère le menu
         /// </summary>
@@ -31,36 +33,11 @@ namespace FinTris
         {
             Console.CursorVisible = false;
 
-            #region Max Way Menu
             Console.Title = "FinTris";
 
-            //Menu
-            Menu menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+            MainMenu();
 
-            MenuEntry play = new MenuEntry("Play");
-            MenuEntry quit = new MenuEntry("Quit");
 
-            menu.Add(play);
-            menu.Add(quit);
-
-            MenuEntry choice = null;
-
-            do
-            {
-                choice = menu.ShowMenu();
-
-                if (choice == play)
-                {
-                    Play();                    
-                }
-
-            } while (choice != quit);
-
-            Environment.Exit(0);
-
-            #endregion
-
-            
         }
 
         /// <summary>
@@ -104,8 +81,43 @@ namespace FinTris
                 {
                     _game.DropDown();
                 }
+                else if (input == ConsoleKey.Escape)
+                {
+                    _game.GameTimer.Stop();
+                    MainMenu();
+                }
 
             } while (input != ConsoleKey.Escape);
+        }
+
+        private static void MainMenu()
+        {
+            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+
+            MenuEntry play = new MenuEntry("Play");
+            MenuEntry quit = new MenuEntry("Quit");
+
+            _menu.Add(play);
+            _menu.Add(quit);
+
+            MenuEntry choice = null;
+
+            do
+            {
+                choice = _menu.ShowMenu();
+
+                if (choice == play)
+                {
+                    Play();
+                }
+                else
+                {
+                    Environment.Exit(0);
+                }
+
+            } while (choice != quit);
+
+            Environment.Exit(0);
         }
     }
 }
