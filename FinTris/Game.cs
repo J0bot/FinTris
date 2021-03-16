@@ -296,8 +296,6 @@ namespace FinTris
                 _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
             }
 
-            ScoreManager();
-
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
             BoardChanged.Invoke(this, _board);
         }
@@ -343,6 +341,7 @@ namespace FinTris
         {
             _tetromino.State = TetrominoState.Stopped;
             CheckForFullRows();
+            ScoreManager();
             //On va spawn une nouvelle pièce random
 
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, (ConsoleColor)random.Next(9, 15));
@@ -358,6 +357,7 @@ namespace FinTris
                     }
                 }
             }
+
 
         }
         
