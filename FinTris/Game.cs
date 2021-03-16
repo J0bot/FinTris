@@ -38,8 +38,14 @@ namespace FinTris
         /// </summary>
         private int _cols;
 
+        /// <summary>
+        /// Attribut de score
+        /// </summary>
         private int _score;
 
+        /// <summary>
+        /// Attribut de niveau
+        /// </summary>
         private int _level;
 
         /// <summary>
@@ -56,8 +62,6 @@ namespace FinTris
         /// C'est un événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu
         /// </summary>
         public event EventHandler<Case[,]> BoardChanged;
-
-
 
         /// <summary>
         /// Propriété qui retourne la quantité de colones dans notre plateau de jeu.
@@ -296,6 +300,7 @@ namespace FinTris
                 _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
             }
 
+
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
             BoardChanged.Invoke(this, _board);
         }
@@ -344,7 +349,7 @@ namespace FinTris
             ScoreManager();
             //On va spawn une nouvelle pièce random
 
-            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, (ConsoleColor)random.Next(9, 15));
+            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             //_tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
             for (int a = 0; a < _board.GetLength(0); a++)

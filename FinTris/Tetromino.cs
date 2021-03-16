@@ -192,7 +192,7 @@ namespace FinTris
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
         /// <param name="tetrominoColor">Couleur du Tetromino</param>
-        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, ConsoleColor tetrominoColor = ConsoleColor.Blue)
+        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0)
         {
             _random = new Random();
             _shape = type;
@@ -204,8 +204,35 @@ namespace FinTris
 
             _blocks = new List<Vector2>();
 
+            //Switch pour attribuer la couleur à chaque type de Tetromino
+            switch (type)
+            {
+                case TetrominoType.Squarie:
+                    _tetrominoColor = ConsoleColor.Yellow;
+                    break;
+                case TetrominoType.Snake:
+                    _tetrominoColor = ConsoleColor.Green;
+                    break;
+                case TetrominoType.ISnake:
+                    _tetrominoColor = ConsoleColor.Red;
+                    break;
+                case TetrominoType.Malong:
+                    _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue
+                    break;
+                case TetrominoType.Lawlet:
+                    _tetrominoColor = ConsoleColor.DarkYellow; // We need orange
+                    break;
+                case TetrominoType.ILawlet:
+                    _tetrominoColor = ConsoleColor.Blue; //Blue
+                    break;
+                case TetrominoType.Pyramid:
+                    _tetrominoColor = ConsoleColor.Magenta;
+                    break;
+                default:
+                    _tetrominoColor = ConsoleColor.White;
+                    break;
+            }
 
-            _tetrominoColor = tetrominoColor;
 
             UpdateBlocks();
         }
