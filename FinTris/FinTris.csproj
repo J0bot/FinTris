@@ -65,6 +65,7 @@
   <ItemGroup>
     <None Include="Config\App.config" />
     <None Include="Config\packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
