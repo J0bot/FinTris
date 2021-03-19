@@ -41,6 +41,7 @@ namespace FinTris
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
+            _game.IsDed += _game_IsDed;
 
             _random = new Random();
 
@@ -140,6 +141,20 @@ namespace FinTris
             //Affichage du niveau
             Console.SetCursorPosition(60, 18);
             Console.WriteLine($"Niveau : {_game.Level}");
+        }
+
+        /// <summary>
+        /// Games the is ded.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">If set to <c>true</c> e.</param>
+        private void _game_IsDed(object sender, bool e)
+        {
+            if (e == true)
+            {
+                DeathAnim();
+                GameManager.Play();
+            }
         }
 
         /// <summary>

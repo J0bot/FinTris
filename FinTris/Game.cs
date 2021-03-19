@@ -64,6 +64,11 @@ namespace FinTris
         public event EventHandler<Case[,]> BoardChanged;
 
         /// <summary>
+        /// Evenement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie
+        /// </summary>
+        public event EventHandler<bool> IsDed;
+
+        /// <summary>
         /// Propriété qui retourne la quantité de colones dans notre plateau de jeu.
         /// 
         /// Est uniquement définie dans le constructeur de la classe Game
@@ -361,7 +366,7 @@ namespace FinTris
                     }
                 }
             }
-
+            CheckForDeath();
 
         }
         
@@ -429,16 +434,11 @@ namespace FinTris
         /// </summary>
         private void CheckForDeath()
         {
-            //On va check s'il spawn dans un bloc
-            for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
+            if (CollideAt(_tetromino.Position) == true)
             {
-                for (byte x = 0; x < _cols; x++)
-                {
-
-                }
+                IsDed.Invoke(this, true);
+                UpdateBoard(); //je suis désolé Ahmad
             }
-
-            //S'il y a deux 
         }
 
 
