@@ -27,6 +27,9 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
+        /// <summary>
+        /// Attribut Random pour effectuer des fonctions Random
+        /// </summary>
         private static Random _random;
 
         /// <summary>
@@ -68,7 +71,6 @@ namespace FinTris
                 {
                     for (int x = 0; x < _game.Cols; x++)
                     {
-
                         Console.ForegroundColor = board[x, y].Color;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
                         Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
@@ -76,6 +78,7 @@ namespace FinTris
                 }
                 Console.ResetColor();
                 DrawScore();
+                NextTetrominoRender();
             }
         }
 
@@ -95,19 +98,40 @@ namespace FinTris
             }
             Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
             Console.Write(new string('█', 26));
-             
-            Console.ResetColor();   
+            
+            Console.ResetColor();
+
+            //Bordure du prochain Tetromino
+            Console.SetCursorPosition(58, 2);
+            Console.Write("NEXT TETROMINO");
+
+            byte min = 4;
+            byte max = 10;
+            byte decal = 59;
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int l = min; l < max; l++)
+            {
+                if (l == min || l == max - 1)
+                {
+                    Console.SetCursorPosition(decal, l);
+                    Console.Write(new string('█', 12));
+                }
+                else
+                {
+                    Console.SetCursorPosition(decal, l);
+                    Console.Write("██        ██");
+                }
+
+            }
+
+            Console.ResetColor();
         }
 
         /// <summary>
-        /// Fonction qui va s'occuper de render le prochain Tetromino
+        /// Fonction qui s'occupe de dessiner le score
         /// </summary>
-        private void NextTetrominoRender()
-        {
-
-        }
-
-        public void DrawScore()
+        private void DrawScore()
         {
             //Affichage du score
             Console.SetCursorPosition(60, 15);
@@ -118,5 +142,37 @@ namespace FinTris
             Console.WriteLine($"Niveau : {_game.Level}");
         }
 
+        /// <summary>
+        /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs
+        /// </summary>
+        public void DeathAnim()
+        {
+            lock(this)
+            {
+                for (int y = _game.Rows-1; y >=0 ; y--)
+                {
+                    for (int x = _game.Cols-1; x >= 0; x--)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.Write("██");
+                    }
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Fonction qui va s'occuper de render le prochain Tetromino
+        /// </summary>
+        private void NextTetrominoRender()
+        {
+            if (_game.CurrentTetromino.Shape == TetrominoType.Lawlet)
+            {
+
+            }
+            
+
+        }
     }
 }

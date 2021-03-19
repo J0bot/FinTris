@@ -23,7 +23,6 @@ namespace FinTris
         /// </summary>
         private static GameRenderer _gameRenderer;
 
-        
 
         /// <summary>
         /// Fonction principale qui lance tout et qui gère le menu
@@ -86,10 +85,19 @@ namespace FinTris
                     _game.GameTimer.Stop();
                     MainMenu();
                 }
+                else if (input == ConsoleKey.R)
+                {
+                    _game.GameTimer.Stop();
+                    _gameRenderer.DeathAnim();
+                }
+
 
             } while (input != ConsoleKey.Escape);
         }
 
+        /// <summary>
+        /// Fonction qui s'occupe du Menu
+        /// </summary>
         private static void MainMenu()
         {
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
