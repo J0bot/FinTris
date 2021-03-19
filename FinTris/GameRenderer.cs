@@ -175,6 +175,27 @@ namespace FinTris
                     }
                     System.Threading.Thread.Sleep(100);
                 }
+
+                System.Threading.Thread.Sleep(1200);
+
+                Console.ResetColor();
+
+                BorderStyle();
+
+                int cursorX = SHIFT_X + _game.Cols / 2;
+                int cursorY = SHIFT_Y + _game.Rows / 4;
+
+                WriteAt("╔═════════════╗", cursorX, ++cursorY);
+                WriteAt("║             ║", cursorX, ++cursorY);
+                WriteAt("║  Game Over  ║", cursorX, ++cursorY);
+                WriteAt("║             ║", cursorX, ++cursorY);
+                WriteAt("╚═════════════╝", cursorX, ++cursorY);
+                cursorY += 5;
+                WriteAt("Please", cursorX += 2, ++cursorY);
+                WriteAt("Try", cursorX += 2, ++cursorY);
+                WriteAt("Again❤", cursorX += 2, ++cursorY);
+
+                System.Threading.Thread.Sleep(1500);
             }
         }
 
@@ -189,6 +210,23 @@ namespace FinTris
             }
             
 
+        }
+
+
+        /// <summary>
+        /// Code repris de la doc Microsoft
+        /// Ecris le texte à la position x y donnée
+        /// </summary>
+        /// <param name="s">texte à afficher</param>
+        /// <param name="x">position X</param>
+        /// <param name="y">position Y</param>
+        public static void WriteAt(string s, int x, int y)
+        {
+            int origRow = 0;
+            int origCol = 0;
+
+            Console.SetCursorPosition(origCol + x, origRow + y);
+            Console.Write(s);
         }
     }
 }
