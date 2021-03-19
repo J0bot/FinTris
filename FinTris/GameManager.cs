@@ -21,6 +21,39 @@ namespace FinTris
         private static GameRenderer _gameRenderer;
 
         /// <summary>
+        /// Fonction qui s'occupe du Menu
+        /// </summary>
+        public static void MainMenu()
+        {
+            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+
+            MenuEntry play = new MenuEntry("Play");
+            MenuEntry quit = new MenuEntry("Quit");
+
+            _menu.Add(play);
+            _menu.Add(quit);
+
+            MenuEntry choice = null;
+
+            do
+            {
+                choice = _menu.ShowMenu();
+
+                if (choice == play)
+                {
+                    Play();
+                }
+                else
+                {
+                    Environment.Exit(0);
+                }
+
+            } while (choice != quit);
+
+            Environment.Exit(0);
+        }
+
+        /// <summary>
         /// Méthode play permet de lancer tous les éléments du jeu et de reset le jeu
         /// </summary>
         public static void Play()
@@ -74,40 +107,6 @@ namespace FinTris
 
 
             } while (input != ConsoleKey.Escape);
-        }
-
-
-        /// <summary>
-        /// Fonction qui s'occupe du Menu
-        /// </summary>
-        public static void MainMenu()
-        {
-            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
-
-            MenuEntry play = new MenuEntry("Play");
-            MenuEntry quit = new MenuEntry("Quit");
-
-            _menu.Add(play);
-            _menu.Add(quit);
-
-            MenuEntry choice = null;
-
-            do
-            {
-                choice = _menu.ShowMenu();
-
-                if (choice == play)
-                {
-                    Play();
-                }
-                else
-                {
-                    Environment.Exit(0);
-                }
-
-            } while (choice != quit);
-
-            Environment.Exit(0);
         }
     }
 }

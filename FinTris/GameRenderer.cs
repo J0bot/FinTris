@@ -164,6 +164,7 @@ namespace FinTris
         {
             lock(this)
             {
+                _game.GameTimer.Stop();
                 for (int y = _game.Rows-1; y >=0 ; y--)
                 {
                     for (int x = _game.Cols-1; x >= 0; x--)
