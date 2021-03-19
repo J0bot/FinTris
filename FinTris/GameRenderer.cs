@@ -41,6 +41,7 @@ namespace FinTris
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
+            _game.IsDed += _game_IsDed;
 
             _random = new Random();
 
@@ -143,12 +144,27 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Games the is ded.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">If set to <c>true</c> e.</param>
+        private void _game_IsDed(object sender, bool e)
+        {
+            if (e == true)
+            {
+                DeathAnim();
+                GameManager.Play();
+            }
+        }
+
+        /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs
         /// </summary>
         public void DeathAnim()
         {
             lock(this)
             {
+                _game.GameTimer.Stop();
                 for (int y = _game.Rows-1; y >=0 ; y--)
                 {
                     for (int x = _game.Cols-1; x >= 0; x--)
