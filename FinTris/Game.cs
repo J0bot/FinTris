@@ -305,7 +305,6 @@ namespace FinTris
             BoardChanged.Invoke(this, _board);
         }
 
-
         /// <summary>
         /// Fonction qui va detecter les collisions des tetrominos
         /// </summary>
