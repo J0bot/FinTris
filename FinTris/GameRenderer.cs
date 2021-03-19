@@ -162,12 +162,12 @@ namespace FinTris
         /// </summary>
         public void DeathAnim()
         {
-            lock(this)
+            lock (this)
             {
                 _game.GameTimer.Stop();
-                for (int y = _game.Rows-1; y >=0 ; y--)
+                for (int y = _game.Rows - 1; y >= 0; y--)
                 {
-                    for (int x = _game.Cols-1; x >= 0; x--)
+                    for (int x = _game.Cols - 1; x >= 0; x--)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
@@ -175,6 +175,39 @@ namespace FinTris
                     }
                     System.Threading.Thread.Sleep(100);
                 }
+
+                for (int y = _game.Rows; y > 0; y--)
+                {
+                    for (int x = 0; x < _game.Cols; x++)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
+                        Console.Write("██");
+                    }
+
+                    System.Threading.Thread.Sleep(8);
+                }
+
+                System.Threading.Thread.Sleep(1200);
+
+                Console.ResetColor();
+
+                BorderStyle();
+
+                int cursorX = SHIFT_X + _game.Cols / 2;
+                int cursorY = SHIFT_Y + _game.Rows / 4;
+
+                WriteAt("╔═════════════╗", cursorX, ++cursorY);
+                WriteAt("║             ║", cursorX, ++cursorY);
+                WriteAt("║  Game Over  ║", cursorX, ++cursorY);
+                WriteAt("║             ║", cursorX, ++cursorY);
+                WriteAt("╚═════════════╝", cursorX, ++cursorY);
+                cursorY += 5;
+                WriteAt("Please", cursorX += 2, ++cursorY);
+                WriteAt("Try", cursorX += 2, ++cursorY);
+                WriteAt("Again❤", cursorX += 2, ++cursorY);
+
+                System.Threading.Thread.Sleep(1500);
             }
         }
 
