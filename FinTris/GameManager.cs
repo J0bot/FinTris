@@ -10,7 +10,6 @@ namespace FinTris
 {
     public static class GameManager
     {
-
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
@@ -22,7 +21,7 @@ namespace FinTris
         private static GameRenderer _gameRenderer;
 
         /// <summary>
-        /// Méthode play permet de lancer tous les éléments du jeu
+        /// Méthode play permet de lancer tous les éléments du jeu et de reset le jeu
         /// </summary>
         public static void Play()
         {
@@ -76,6 +75,7 @@ namespace FinTris
 
             } while (input != ConsoleKey.Escape);
         }
+
 
         /// <summary>
         /// Fonction qui s'occupe du Menu
