@@ -223,5 +223,23 @@ namespace FinTris
             
 
         }
+
+
+
+        /// <summary>
+        /// Code repris de la doc Microsoft
+        /// Ecris le texte à la position x y donnée
+        /// </summary>
+        /// <param name="s">texte à afficher</param>
+        /// <param name="x">position X</param>
+        /// <param name="y">position Y</param>
+        public static void WriteAt(string s, int x, int y)
+        {
+            int origRow = 0;
+            int origCol = 0;
+
+            Console.SetCursorPosition(origCol + x, origRow + y);
+            Console.Write(s);
+        }
     }
 }
