@@ -9,8 +9,9 @@ namespace FinTris
     public static class Config
     {
         //is this valid in .NET framework 1.6?
-        static string _playerName;
-        static string _difficulty;
+        static private string _playerName;
+        static private string _difficulty;
+        static private int _gameScore;
 
         /// <summary>
         /// The config location.
@@ -47,6 +48,12 @@ namespace FinTris
                 _playerName = value;
                 UpdateConfig("PlayerName", _playerName, false);
             }
+        }
+
+        public static int GameScore
+        {
+            get { return _gameScore; }
+            set { _gameScore = value; }
         }
 
         /// <summary>
@@ -146,11 +153,11 @@ namespace FinTris
             Debug.WriteLine("SCORE: " + PlayerName + " " + ParseConfig(PlayerName + "_MaxScore"));
             if (ParseConfig(PlayerName + "_MaxScore") == _errorString)
             {
-                UpdateConfig(PlayerName + "_MaxScore", GameManager._game.Score.ToString(), true);
+                UpdateConfig(PlayerName + "_MaxScore", GameScore.ToString(), true);
             }
-            else if (Convert.ToInt32(ParseConfig(PlayerName + "_MaxScore")) < GameManager._game.Score)
+            else if (Convert.ToInt32(ParseConfig(PlayerName + "_MaxScore")) < GameScore)
             {
-                UpdateConfig(PlayerName + "_MaxScore", GameManager._game.Score.ToString(), false);
+                UpdateConfig(PlayerName + "_MaxScore", GameScore.ToString(), false);
             }
         }
 

@@ -14,7 +14,7 @@ namespace FinTris
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
-        public static Game _game; //######################PS: j'ai changé en public pour pouvoir avoir les scores, y'a t-il un meilleur moyen? maxime
+        private static Game _game; //######################PS: j'ai changé en public pour pouvoir avoir les scores, y'a t-il un meilleur moyen? maxime
 
         /// <summary>
         /// Attribut GameRenderer de la classe Program

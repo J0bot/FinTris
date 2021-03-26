@@ -491,6 +491,7 @@ namespace FinTris
 
             if (CollideAt(_tetromino.Position) == true)
             {
+                Config.GameScore = Score; //must be before the IsDed Event is called
                 IsDed.Invoke(this, true);
                 UpdateBoard(); //je suis désolé Ahmad
                 _state = GameState.Finished;
