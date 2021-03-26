@@ -117,6 +117,7 @@ namespace FinTris
                 if (l == min || l == max - 1)
                 {
                     Console.SetCursorPosition(decal, l);
+
                     Console.Write(new string('█', length));
                 }
                 else
@@ -178,6 +179,7 @@ namespace FinTris
                     System.Threading.Thread.Sleep(100);
                 }
 
+
                 for (int y = _game.Rows; y > 0; y--)
                 {
                     for (int x = 0; x < _game.Cols; x++)
@@ -219,6 +221,7 @@ namespace FinTris
         /// </summary>
         private void NextTetrominoRender()
         {
+
             int initPosX =62;
             int initPosY =5;
 
