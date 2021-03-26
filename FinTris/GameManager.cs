@@ -28,14 +28,18 @@ namespace FinTris
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
+            MenuEntry options = new MenuEntry("Options");
             MenuEntry quit = new MenuEntry("Quit");
+            MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
 
             _menu.Add(play);
+            _menu.Add(options);
             _menu.Add(quit);
+            _menu.Add(playerName);
 
-            MenuEntry choice = null;
+            MenuEntry choice = _menu.ShowMenu();
 
-            do
+            /*do
             {
                 choice = _menu.ShowMenu();
 
@@ -50,7 +54,49 @@ namespace FinTris
 
             } while (choice != quit);
 
-            Environment.Exit(0);
+            Environment.Exit(0);*/
+
+            if (choice == play)
+            {
+                Play();
+            }
+            else if (choice == options)
+            {
+                ShowOptions();
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
+        }
+
+
+        public static void ShowOptions()
+        {
+            Menu optionMenu = new Menu("Options");
+
+            MenuEntry saveScores = new MenuEntry("Save scores");
+            MenuEntry cancel = new MenuEntry("Return");
+            optionMenu.Add(saveScores);
+            optionMenu.Add(cancel);
+            MenuEntry choice;
+            do
+            {
+       
+                choice = optionMenu.ShowMenu();
+
+
+                if (choice == saveScores)
+                {
+
+                }
+                else if (choice == cancel)
+                {
+
+                }
+            } while (choice != cancel);
+
         }
 
         /// <summary>
