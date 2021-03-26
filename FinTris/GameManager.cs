@@ -28,14 +28,18 @@ namespace FinTris
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
+            MenuEntry options = new MenuEntry("Options");
             MenuEntry quit = new MenuEntry("Quit");
+            MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
 
             _menu.Add(play);
+            _menu.Add(options);
             _menu.Add(quit);
+            _menu.Add(playerName);
 
-            MenuEntry choice = null;
+            MenuEntry choice = _menu.ShowMenu();
 
-            do
+            /*do
             {
                 choice = _menu.ShowMenu();
 
@@ -50,7 +54,71 @@ namespace FinTris
 
             } while (choice != quit);
 
-            Environment.Exit(0);
+            Environment.Exit(0);*/
+
+            if (choice == play)
+            {
+                Play();
+            }
+            else if (choice == options)
+            {
+                ShowOptions();
+            }
+            if (choice == playerName)
+            {
+                Config.PlayerName = AskForInput();
+                //this is probably disgusting but I'll do it anyway
+                MainMenu();
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
+        }
+
+        /// <summary>
+        /// Méthode pour choisir un nouveau nom. Assez banal pour l'instant.
+        /// </summary>
+        /// <returns>Le nouveau nom du joueur</returns>
+        public static string AskForInput()
+        {
+            string askNewName = "Enter a new name: ";
+            Console.Clear();
+            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
+            Console.CursorTop = (Console.BufferHeight / 2);
+            Console.Write(askNewName);
+            string entry = Console.ReadLine();
+            
+            return entry;
+        }
+
+
+        public static void ShowOptions()
+        {
+            Menu optionMenu = new Menu("Options");
+
+            MenuEntry saveScores = new MenuEntry("Save scores");
+            MenuEntry cancel = new MenuEntry("Return");
+            optionMenu.Add(saveScores);
+            optionMenu.Add(cancel);
+            MenuEntry choice;
+            do
+            {
+       
+                choice = optionMenu.ShowMenu();
+
+
+                if (choice == saveScores)
+                {
+
+                }
+                else if (choice == cancel)
+                {
+
+                }
+            } while (choice != cancel);
+
         }
 
         /// <summary>
