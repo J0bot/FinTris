@@ -183,7 +183,6 @@ namespace FinTris
         
 
         /// <summary>
-
         /// Fonction qui permet de lancer la rotation du Tetromino actuel, puis de update le plateau de jeu
         /// </summary>
         public void Rotate()
@@ -540,6 +539,9 @@ namespace FinTris
 
         }
 
+        /// <summary>
+        /// Choses qui se passent si on utilise les codes de triche
+        /// </summary>
         public void CheatCode()
         {
             _gameTimer.Interval = _MS * 0.5;
@@ -564,6 +566,9 @@ namespace FinTris
             
         }
 
+        /// <summary>
+        /// Fonctio qui va servir à mettre pause au jeu.
+        /// </summary>
         public void Pause()
         {
             _gameTimer.Enabled = !_gameTimer.Enabled;
