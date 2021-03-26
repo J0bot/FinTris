@@ -82,7 +82,7 @@ namespace FinTris
                 {
                     //IT DOESN'T WORK!!!! WHAT GIVES YOU FUCKING PIECE OF SHIT
                     //it's supposed to replace the current line with the new parameter,
-                    //the write everything to the config file. But, it's not updating whyyyyyy
+                    //then write everything to the config file. But, it's not updating whyyyyyy
                     Debug.WriteLine("MATCH = " + result);
                     line = result + pattern + "=" + newValue;
                     Debug.WriteLine("NEW VALUE = " + pattern + "=" + newValue);
