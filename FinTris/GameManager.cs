@@ -28,29 +28,116 @@ namespace FinTris
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
+            MenuEntry options = new MenuEntry("Options");
+            MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
             MenuEntry quit = new MenuEntry("Quit");
 
+
             _menu.Add(play);
+            _menu.Add(options);
+            _menu.Add(playerName);
             _menu.Add(quit);
 
-            MenuEntry choice = null;
+            MenuEntry choice = _menu.ShowMenu();
 
+            if (choice == play)
+            {
+                Play();
+            }
+            else if (choice == options)
+            {
+                ShowOptions();
+            }
+            if (choice == playerName)
+            {
+                Config.PlayerName = AskForInput();
+                //this is probably disgusting but I'll do it anyway
+                MainMenu();
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
+        }
+
+        /// <summary>
+        /// Méthode pour choisir un nouveau nom. Assez banal pour l'instant.
+        /// </summary>
+        /// <returns>Le nouveau nom du joueur</returns>
+        public static string AskForInput()
+        {
+            string askNewName = "Enter a new name: ";
+            Console.Clear();
+            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
+            Console.CursorTop = (Console.BufferHeight / 2);
+            Console.Write(askNewName);
+            string entry = Console.ReadLine();
+            
+            return entry;
+        }
+
+        /// <summary>
+        /// Shows the options panel.
+        /// </summary>
+        public static void ShowOptions()
+        {
+            Menu optionMenu = new Menu("Options");
+
+            MenuEntry bestScores = new MenuEntry("Show best scores");
+            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry cancel = new MenuEntry("Return");
+            optionMenu.Add(bestScores);
+            optionMenu.Add(difficulty);
+            optionMenu.Add(cancel);
+            MenuEntry choice;
             do
             {
-                choice = _menu.ShowMenu();
+       
+                choice = optionMenu.ShowMenu();
 
-                if (choice == play)
+                if (choice == bestScores)
                 {
-                    Play();
+
                 }
-                else
+                if (choice == difficulty)
                 {
-                    Environment.Exit(0);
+                    SelectDifficulty();
                 }
+                else if (choice == cancel)
+                {
+                    MainMenu(); //huuuuh
+                }
+            } while (choice != cancel);
 
-            } while (choice != quit);
+        }
 
-            Environment.Exit(0);
+
+
+        public static void SelectDifficulty()
+        {
+            Menu optionMenu = new Menu("Difficulty levels");
+            MenuEntry diffEasy = new MenuEntry("Easy");
+            MenuEntry diffNormal = new MenuEntry("Normal");
+            MenuEntry diffHard = new MenuEntry("Hard");
+            optionMenu.Add(diffEasy);
+            optionMenu.Add(diffNormal);
+            optionMenu.Add(diffHard);
+            MenuEntry choice = optionMenu.ShowMenu();
+
+            if (choice == diffEasy)
+            {
+                Config.DifficultyLevel = "Easy";
+            }
+            else if (choice == diffNormal)
+            {
+                Config.DifficultyLevel = "Normal";
+            }
+            else if (choice == diffHard)
+            {
+                Config.DifficultyLevel = "Hard";
+            }
+            ShowOptions();
         }
 
         /// <summary>
