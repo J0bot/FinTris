@@ -50,7 +50,7 @@ namespace FinTris
         /// </summary>
         public string Text
         {
-            get { return _text; }
+            get { return _text + _suffix; }
         }
 
         /// <summary>
