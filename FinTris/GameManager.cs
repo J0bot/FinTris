@@ -39,23 +39,6 @@ namespace FinTris
 
             MenuEntry choice = _menu.ShowMenu();
 
-            /*do
-            {
-                choice = _menu.ShowMenu();
-
-                if (choice == play)
-                {
-                    Play();
-                }
-                else
-                {
-                    Environment.Exit(0);
-                }
-
-            } while (choice != quit);
-
-            Environment.Exit(0);*/
-
             if (choice == play)
             {
                 Play();
@@ -93,14 +76,18 @@ namespace FinTris
             return entry;
         }
 
-
+        /// <summary>
+        /// Shows the options panel.
+        /// </summary>
         public static void ShowOptions()
         {
             Menu optionMenu = new Menu("Options");
 
-            MenuEntry saveScores = new MenuEntry("Save scores");
+            MenuEntry bestScores = new MenuEntry("Show best scores");
+            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
             MenuEntry cancel = new MenuEntry("Return");
-            optionMenu.Add(saveScores);
+            optionMenu.Add(bestScores);
+            optionMenu.Add(difficulty);
             optionMenu.Add(cancel);
             MenuEntry choice;
             do
@@ -108,17 +95,48 @@ namespace FinTris
        
                 choice = optionMenu.ShowMenu();
 
-
-                if (choice == saveScores)
+                if (choice == bestScores)
                 {
 
+                }
+                if (choice == difficulty)
+                {
+                    SelectDifficulty();
                 }
                 else if (choice == cancel)
                 {
-
+                    MainMenu(); //huuuuh
                 }
             } while (choice != cancel);
 
+        }
+
+
+
+        public static void SelectDifficulty()
+        {
+            Menu optionMenu = new Menu("Difficulty levels");
+            MenuEntry diffEasy = new MenuEntry("Easy");
+            MenuEntry diffNormal = new MenuEntry("Normal");
+            MenuEntry diffHard = new MenuEntry("Hard");
+            optionMenu.Add(diffEasy);
+            optionMenu.Add(diffNormal);
+            optionMenu.Add(diffHard);
+            MenuEntry choice = optionMenu.ShowMenu();
+
+            if (choice == diffEasy)
+            {
+                Config.DifficultyLevel = "Easy";
+            }
+            else if (choice == diffNormal)
+            {
+                Config.DifficultyLevel = "Normal";
+            }
+            else if (choice == diffHard)
+            {
+                Config.DifficultyLevel = "Hard";
+            }
+            ShowOptions();
         }
 
         /// <summary>

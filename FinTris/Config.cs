@@ -6,7 +6,9 @@ namespace FinTris
 {
     public static class Config
     {
-        static string _playerName = "defaultPlayer";
+        //is this valid in .NET framework 6?
+        static string _playerName;
+        static string _difficulty;
 
         /// <summary>
         /// The config location.
@@ -32,6 +34,20 @@ namespace FinTris
             {
                 _playerName = value;
                 UpdateConfig("PlayerName", _playerName);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the difficulty level.
+        /// </summary>
+        /// <value>The difficulty level.</value>
+        public static string DifficultyLevel
+        {
+            get { return ParseConfig("Difficulty"); }
+            set
+            {
+                _difficulty = value;
+                UpdateConfig("Difficulty", _difficulty);
             }
         }
 
@@ -88,7 +104,7 @@ namespace FinTris
                     Debug.WriteLine("\n" + line);
                 }
             }
-            File.WriteAllText(_configLocation, String.Join("", _configFile));
+            File.WriteAllText(_configLocation, String.Join("\n", _configFile));
         }
 
         private static void CheckIfFileExists()
