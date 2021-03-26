@@ -1,4 +1,4 @@
-﻿///ETML
+///ETML
 ///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
 ///Date     	: 09.03.2021
 ///Description  : Fintris
@@ -41,6 +41,7 @@ namespace FinTris
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
+            _game.IsDed += _game_IsDed;
 
             _random = new Random();
 
@@ -106,21 +107,23 @@ namespace FinTris
             Console.Write("NEXT TETROMINO");
 
             byte min = 4;
-            byte max = 10;
-            byte decal = 59;
+            byte max = 9;
+            byte decal = 60;
+            byte length = 10;
 
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Gray;
             for (int l = min; l < max; l++)
             {
                 if (l == min || l == max - 1)
                 {
                     Console.SetCursorPosition(decal, l);
-                    Console.Write(new string('█', 12));
+
+                    Console.Write(new string('█', length));
                 }
                 else
                 {
                     Console.SetCursorPosition(decal, l);
-                    Console.Write("██        ██");
+                    Console.Write("██"+new string(' ', length-4)+"██");
                 }
 
             }
@@ -143,15 +146,31 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Games the is ded.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">If set to <c>true</c> e.</param>
+        private void _game_IsDed(object sender, bool e)
+        {
+            if (e == true)
+            {
+                DeathAnim();
+                GameManager.Play();
+            }
+        }
+
+        /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs
         /// </summary>
         public void DeathAnim()
         {
-            lock(this)
+            lock (this)
             {
-                for (int y = _game.Rows-1; y >=0 ; y--)
+
+                _game.Stop();
+                for (int y = _game.Rows - 1; y >= 0; y--)
                 {
-                    for (int x = _game.Cols-1; x >= 0; x--)
+                    for (int x = _game.Cols - 1; x >= 0; x--)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
@@ -159,6 +178,41 @@ namespace FinTris
                     }
                     System.Threading.Thread.Sleep(100);
                 }
+
+
+                for (int y = _game.Rows; y > 0; y--)
+                {
+                    for (int x = 0; x < _game.Cols; x++)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
+                        Console.Write("██");
+                    }
+
+                    System.Threading.Thread.Sleep(8);
+                }
+
+
+                System.Threading.Thread.Sleep(1200);
+
+                Console.ResetColor();
+
+                BorderStyle();
+
+                int cursorX = SHIFT_X + _game.Cols / 2;
+                int cursorY = SHIFT_Y + _game.Rows / 4;
+
+                WriteAt("╔═════════════╗", cursorX, ++cursorY);
+                WriteAt("║             ║", cursorX, ++cursorY);
+                WriteAt("║  Game Over  ║", cursorX, ++cursorY);
+                WriteAt("║             ║", cursorX, ++cursorY);
+                WriteAt("╚═════════════╝", cursorX, ++cursorY);
+                cursorY += 5;
+                WriteAt("Please", cursorX += 2, ++cursorY);
+                WriteAt("Try", cursorX += 2, ++cursorY);
+                WriteAt("Again❤", cursorX += 2, ++cursorY);
+
+                System.Threading.Thread.Sleep(1500);
             }
         }
 
@@ -167,12 +221,81 @@ namespace FinTris
         /// </summary>
         private void NextTetrominoRender()
         {
-            if (_game.CurrentTetromino.Shape == TetrominoType.Lawlet)
+
+            int initPosX =62;
+            int initPosY =5;
+
+            Console.SetCursorPosition(initPosX, initPosY);
+
+            Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
+
+            if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
             {
+                Console.Write(  "██    ");
+                WriteAt(        "██    ", initPosX, initPosY + 1);
+                WriteAt(        "████  ", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
+            {
+                Console.Write(  "    ██");
+                WriteAt(        "    ██", initPosX, initPosY + 1);
+                WriteAt(        "  ████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
+            {
+                Console.Write(  "      ");
+                WriteAt(        "  ██  ", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Snake)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "████  ", initPosX, initPosY + 1);
+                WriteAt(        "██    ", initPosX, initPosY + 2);
 
             }
-            
+            else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ████", initPosX, initPosY + 1);
+                WriteAt(        "    ██", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
+            {
+                Console.Write(  "██████");
+                WriteAt(        "██████", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Malong)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ██  ", initPosX, initPosY+1);
+                WriteAt(        "  ██  ", initPosX, initPosY+2);
+            }
 
+
+
+            Console.ResetColor();
         }
+
+
+        /// <summary>
+        /// Code repris de la doc Microsoft
+        /// Ecris le texte à la position x y donnée
+        /// </summary>
+        /// <param name="s">texte à afficher</param>
+        /// <param name="x">position X</param>
+        /// <param name="y">position Y</param>
+        public static void WriteAt(string s, int x, int y)
+        {
+            int origRow = 0;
+            int origCol = 0;
+
+            Console.SetCursorPosition(origCol + x, origRow + y);
+            Console.Write(s);
+        }
+
+
+        
     }
 }
