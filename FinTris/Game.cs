@@ -24,6 +24,11 @@ namespace FinTris
         private Tetromino _tetromino;
 
         /// <summary>
+        /// Attribut de next Tetromino
+        /// </summary>
+        private Tetromino _nextTetromino;
+
+        /// <summary>
         /// Attribut de timer pour gerer le temps
         /// </summary>
         private Timer _gameTimer;
@@ -48,6 +53,10 @@ namespace FinTris
         /// </summary>
         private int _level;
 
+        /// <summary>
+        /// Attribut de l'état du jeu
+        /// </summary>
+        private GameState _state;
         /// <summary>
         /// Variable random pour executer toutes les fonctions avec random
         /// </summary>
@@ -114,15 +123,25 @@ namespace FinTris
             get { return _tetromino; }
             set { _tetromino = value; }
         }
+        
+        /// <summary>
+        /// Propriété du prochain Tetromino
+        /// </summary>
+        public Tetromino NextTetromino
+        {
+            get { return _nextTetromino; }
+            set { _nextTetromino = value; }
+        }
 
         /// <summary>
-        /// Protriété du Timer du jeu
+        /// Etat du jeu en GameState
         /// </summary>
-        public Timer GameTimer
+        public GameState State
         {
-            get { return _gameTimer; }
-            set { _gameTimer = value; }
+            get { return _state; }
+            set { _state = value; }
         }
+
 
         /// <summary>
         /// Constructor renseigné de la classe Game
@@ -135,6 +154,7 @@ namespace FinTris
             random = new Random();
             
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
             _gameTimer = new Timer(_MS);
             _gameTimer.Elapsed += timerHandler;
@@ -158,6 +178,11 @@ namespace FinTris
         /// </summary>
         public void Rotate()
         {
+            if (_state != GameState.Playing)
+            {
+                return;
+            }
+
             _tetromino.Rotate();
             UpdateBoard();
         }
@@ -169,6 +194,11 @@ namespace FinTris
         /// </summary>
         public void MoveRight()
         {
+            if (_state != GameState.Playing)
+            {
+                return;
+            }
+
             Vector2 nextPos = _tetromino.Position + Vector2.Right;
 
             if (!CollideAt(nextPos))
@@ -186,6 +216,11 @@ namespace FinTris
         /// </summary>
         public void MoveLeft()
         {
+            if (_state != GameState.Playing)
+            {
+                return;
+            }
+
             Vector2 nextPos = _tetromino.Position + Vector2.Left;
 
             if (!CollideAt(nextPos))
@@ -204,6 +239,11 @@ namespace FinTris
         /// </summary>
         public void MoveDown()
         {
+            if (_state != GameState.Playing)
+            {
+                return;
+            }
+
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
 
             if (!CollideAt(nextPos))
@@ -228,6 +268,12 @@ namespace FinTris
         /// </summary>
         public void DropDown()
         {
+            if (_state != GameState.Playing)
+            {
+                return;
+            }
+
+
             _gameTimer.Stop();
 
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
@@ -245,13 +291,6 @@ namespace FinTris
 
         }
 
-        /// <summary>
-        /// Sert à start le timer
-        /// </summary>
-        public void Start()
-        {
-            _gameTimer.Start();
-        }
 
         /// <summary>
         /// Cette fonction se déclenche chaque 500MS et va check les collisions.
@@ -316,7 +355,7 @@ namespace FinTris
         private bool CollideAt(Vector2 tetroPos)
         {
             foreach (Vector2 bloc in _tetromino.Blocks)
-            {
+            {   
                 // Conversion des coordonées de blocs à des coordonées relatives au plateau
                 Vector2 pos = tetroPos + bloc;
                 if (!WithinRange(pos) || _board[pos.x,pos.y].State == SquareState.SolidBlock)
@@ -353,7 +392,8 @@ namespace FinTris
             ScoreManager();
             //On va spawn une nouvelle pièce random
 
-            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            _tetromino = _nextTetromino;
+            _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             //_tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
             for (int a = 0; a < _board.GetLength(0); a++)
@@ -419,15 +459,7 @@ namespace FinTris
             }
 
         }
-
-
-        /// <summary>
-        /// Cette fonction permet d'instancier en avance un Tetromino pour pouvoir le prévisualiser
-        /// </summary>
-        private void NextTetromino()
-        {
-
-        }
+        
 
         /// <summary>
         /// Cette fonction va vérifier si on a perdu ou pas
@@ -438,6 +470,7 @@ namespace FinTris
             {
                 IsDed.Invoke(this, true);
                 UpdateBoard(); //je suis désolé Ahmad
+                _state = GameState.Finished;
             }
         }
 
@@ -480,5 +513,31 @@ namespace FinTris
             _gameTimer.Interval = _MS / (_level * 0.5);
 
         }
+
+        /// <summary>
+        /// Sert à start le timer
+        /// </summary>
+        public void Start()
+        {
+            _state = GameState.Playing;
+            _gameTimer.Start();
+            
+        }
+
+        /// <summary>
+        /// Sert à Stop le timer
+        /// </summary>
+        public void Stop()
+        {
+            _gameTimer.Stop();
+            
+        }
+
+        public void Pause()
+        {
+            _gameTimer.Enabled = !_gameTimer.Enabled;
+            _state = _gameTimer.Enabled ? GameState.Playing : GameState.Paused;
+        }
+        
     }
 }
