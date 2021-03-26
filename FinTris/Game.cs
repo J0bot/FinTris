@@ -307,7 +307,7 @@ namespace FinTris
 
 
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
-            BoardChanged.Invoke(this, _board);
+            BoardChanged?.Invoke(this, _board);
         }
 
         /// <summary>
