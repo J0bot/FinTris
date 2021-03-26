@@ -1,4 +1,4 @@
-﻿///ETML
+///ETML
 ///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
 ///Date     	: 09.03.2021
 ///Description  : Fintris
@@ -165,17 +165,21 @@ namespace FinTris
         {
             lock (this)
             {
+
                 _game.Stop();
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
+
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
                         Console.Write("██");
                     }
-                    System.Threading.Thread.Sleep(100);
+
+                    System.Threading.Thread.Sleep(8);
                 }
+
 
                 for (int y = _game.Rows; y > 0; y--)
                 {
@@ -188,6 +192,7 @@ namespace FinTris
 
                     System.Threading.Thread.Sleep(8);
                 }
+
 
                 System.Threading.Thread.Sleep(1200);
 
@@ -304,5 +309,8 @@ namespace FinTris
             Console.SetCursorPosition(origCol + x, origRow + y);
             Console.Write(s);
         }
+
+
+        
     }
 }
