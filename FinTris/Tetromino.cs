@@ -191,13 +191,15 @@ namespace FinTris
         /// <param name="type">Type de notre tetromino (Square, L, Malong, etc...)</param>
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
-        /// <param name="tetrominoColor">Couleur du Tetromino</param>
-        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0)
+        /// <param name="tetrominoState">Etat du Tetromino</param>
+        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
         {
             _random = new Random();
             _shape = type;
             _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
+
+            _state = tetrominoState;
 
             _width = _data.GetLength(0);
             _height = _data.GetLength(1);

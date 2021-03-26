@@ -107,21 +107,22 @@ namespace FinTris
             Console.Write("NEXT TETROMINO");
 
             byte min = 4;
-            byte max = 10;
-            byte decal = 59;
+            byte max = 9;
+            byte decal = 60;
+            byte length = 10;
 
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Gray;
             for (int l = min; l < max; l++)
             {
                 if (l == min || l == max - 1)
                 {
                     Console.SetCursorPosition(decal, l);
-                    Console.Write(new string('█', 12));
+                    Console.Write(new string('█', length));
                 }
                 else
                 {
                     Console.SetCursorPosition(decal, l);
-                    Console.Write("██        ██");
+                    Console.Write("██"+new string(' ', length-4)+"██");
                 }
 
             }
@@ -164,7 +165,7 @@ namespace FinTris
         {
             lock (this)
             {
-                _game.GameTimer.Stop();
+                _game.Stop();
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
@@ -216,12 +217,74 @@ namespace FinTris
         /// </summary>
         private void NextTetrominoRender()
         {
-            if (_game.CurrentTetromino.Shape == TetrominoType.Lawlet)
+            int initPosX =62;
+            int initPosY =5;
+
+            Console.SetCursorPosition(initPosX, initPosY);
+
+            Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
+
+            if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
             {
-
+                Console.Write("██    ");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("██    ");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("████  ");
             }
-            
+            else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
+            {
+                Console.Write("    ██");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("    ██");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("  ████");
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
+            {
+                Console.Write("      ");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("  ██  ");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("██████");
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Snake)
+            {
+                Console.Write("    ██");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("  ████");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("  ██  ");
+                
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
+            {
+                Console.Write("  ██  ");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("  ████");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("    ██");
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
+            {
+                Console.Write("██████");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("██████");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("██████");
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Malong)
+            {
+                Console.Write("  ██  ");
+                Console.SetCursorPosition(initPosX, initPosY + 1);
+                Console.Write("  ██  ");
+                Console.SetCursorPosition(initPosX, initPosY + 2);
+                Console.Write("  ██  ");
+            }
 
+
+
+            Console.ResetColor();
         }
 
 
