@@ -4,8 +4,7 @@
 ///Description  : Fintris
 
 using System;
-using System.IO;
-using System.Media;
+
 
 using System.Timers;
 
@@ -71,8 +70,6 @@ namespace FinTris
         /// </summary>
         private readonly Case[,] _board;
 
-        private System.Timers.Timer _timer1 = new System.Timers.Timer();
-
         /// <summary>
         /// C'est un événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu
         /// </summary>
@@ -130,10 +127,6 @@ namespace FinTris
             set { _tetromino = value; }
         }
 
-        /// <summary>
-        /// Protriété du Timer du jeu
-        /// </summary>
-        public Timer GameTimer
           
         /// <summary>
         /// Propriété du prochain Tetromino
@@ -167,6 +160,7 @@ namespace FinTris
             
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
+
 
             _gameTimer = new Timer(_MS);
             _gameTimer.Elapsed += timerHandler;
@@ -356,12 +350,8 @@ namespace FinTris
                     }
                 }
             }
-
-
             
-            _timer1.Elapsed += new ElapsedEventHandler(_timer1_Elapsed);
-            //1 second
-            _timer1.Interval = 1000;
+            
 
            
 
@@ -487,7 +477,6 @@ namespace FinTris
                 {
                     _board[x, y] = _board[x, y - 1];
                 }
-                ScoreManager(killedRows);
             }
         }
 
@@ -551,105 +540,9 @@ namespace FinTris
 
         }
 
-        /// <summary>
-        /// Si le joueur appuie sur A, il entre dans une zone interdite
-        /// </summary>
         public void CheatCode()
         {
-            //Lancement de la première voix
-            SoundPlayer bowserSound2 = new System.Media.SoundPlayer("bowserSound2.wav");
-            bowserSound2.Play();
-
-            Console.SetCursorPosition(50,14);
-            Console.WriteLine("??? : Tricheur !");
-
-            Console.ReadLine();
-            Console.SetCursorPosition(35, 16);
-            Console.WriteLine("??? : Tu ne devais pas avoir accès à cette zone !");
-
-            Console.ReadLine();
-            Console.SetCursorPosition(39, 18);
-            Console.WriteLine("??? : Maintenant il va falloir payer !");
-            Console.ReadLine();
-            Console.Clear();
-
-            //Lancement de la deuxième voix
-            SoundPlayer bowserSound = new System.Media.SoundPlayer("bowserSound.wav");
-            bowserSound.Play();
-
-            //Affichage du monstre
-
-            for (int i = 0; i < 5; i++)
-            {
-             
-                string[] bowser = File.ReadAllLines("bowser.txt");
-                for (int w = 0; w < bowser.Length; w++)
-                {                  
-                    Console.WriteLine(bowser[w]);
-                    Console.SetCursorPosition(20, i++);
-                }
-
-                System.Threading.Thread.Sleep(200);
-                Console.Clear();
-                System.Threading.Thread.Sleep(200);
-
-                string[] bowser2 = File.ReadAllLines("bowser.txt");
-                for (int w = 0; w < bowser.Length; w++)
-                {
-                    Console.WriteLine(bowser[w]);
-                    Console.SetCursorPosition(20, i++);
-                }
-
-                System.Threading.Thread.Sleep(200);
-                Console.Clear();
-                System.Threading.Thread.Sleep(200);
-
-                string[] bowser3 = File.ReadAllLines("bowser.txt");
-                for (int w = 0; w < bowser.Length; w++)
-                {
-                    Console.WriteLine(bowser[w]);
-                    Console.SetCursorPosition(20, i++);
-                }
-
-                Console.ReadLine();
-                _gameTimer.Interval = _MS * 0.5;
-            }
-            
-
-
-        }
-
-
-            //Calcul des points :
-            //Une ligne complète = 40pts
-            //Deux = 100 pts
-            //Trois = 300pts
-            //Quatre = 1200pts
-            if (nbrKill == 1)
-            {
-                _score += 40;
-            }
-            else if (nbrKill == 2)
-            {
-                _score += 100;
-            }
-
-            else if (nbrKill == 3)
-            {
-                _score += 300;
-            }
-
-            else if (nbrKill == 4)
-            {
-                _score += 1200;
-            }
-
-
-            // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
-            _level = (_score / 1000) + 1;
-
-            _gameTimer.Interval = _MS / (_level * 0.5);
-
+            _gameTimer.Interval = _MS * 0.5;
         }
 
         /// <summary>

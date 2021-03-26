@@ -3,7 +3,10 @@
 ///Date     	: 09.03.2021
 ///Description  : Fintris
 
+using FinTris.Properties;
 using System;
+using System.IO;
+using System.Media;
 
 namespace FinTris
 {
@@ -276,6 +279,77 @@ namespace FinTris
 
 
             Console.ResetColor();
+        }
+
+
+        /// <summary>
+        /// Si le joueur appuie sur A, il entre dans une zone interdite
+        /// </summary>
+        public void CheatCode()
+        {
+            //Lancement de la première voix
+            SoundPlayer bowserSound2 = new System.Media.SoundPlayer(Resources.bowserSound2);
+            bowserSound2.Play();
+
+            
+
+            Console.SetCursorPosition(50, 14);
+            Console.WriteLine("??? : Tricheur !");
+
+            Console.ReadLine();
+            Console.SetCursorPosition(35, 16);
+            Console.WriteLine("??? : Tu ne devais pas avoir accès à cette zone !");
+
+            Console.ReadLine();
+            Console.SetCursorPosition(39, 18);
+            Console.WriteLine("??? : Maintenant il va falloir payer !");
+            Console.ReadLine();
+            Console.Clear();
+
+            //Lancement de la deuxième voix
+            SoundPlayer bowserSound = new System.Media.SoundPlayer(Resources.bowserSound);
+            bowserSound.Play();
+
+            //Affichage du monstre
+
+            for (int i = 0; i < 5; i++)
+            {
+
+                string[] bowser = File.ReadAllLines(Resources.Bowser);
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                System.Threading.Thread.Sleep(200);
+                Console.Clear();
+                System.Threading.Thread.Sleep(200);
+
+                string[] bowser2 = File.ReadAllLines(Resources.Bowser);
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                System.Threading.Thread.Sleep(200);
+                Console.Clear();
+                System.Threading.Thread.Sleep(200);
+
+                string[] bowser3 = File.ReadAllLines(Resources.Bowser);
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                Console.ReadLine();
+                _game.CheatCode();
+            }
+
+
+
         }
 
 

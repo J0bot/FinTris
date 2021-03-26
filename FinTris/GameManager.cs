@@ -108,6 +108,15 @@ namespace FinTris
                 {
                     _game.Pause();
                 }
+                else if (input == ConsoleKey.A)
+                {
+                    Console.Clear();
+                    _game.Stop();
+                    _game.State = GameState.Finished;
+                    _gameRenderer.CheatCode();
+                    _game.Start();
+                    
+                }
                 
 
 
