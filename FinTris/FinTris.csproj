@@ -66,6 +66,9 @@
   <ItemGroup>
     <None Include="Config\App.config" />
     <None Include="Config\packages.config" />
+    <None Include="config.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

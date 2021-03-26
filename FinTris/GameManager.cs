@@ -64,11 +64,33 @@ namespace FinTris
             {
                 ShowOptions();
             }
+            if (choice == playerName)
+            {
+                Config.PlayerName = AskForInput();
+                //this is probably disgusting but I'll do it anyway
+                MainMenu();
+            }
             else
             {
                 Environment.Exit(0);
             }
 
+        }
+
+        /// <summary>
+        /// Méthode pour choisir un nouveau nom. Assez banal pour l'instant.
+        /// </summary>
+        /// <returns>Le nouveau nom du joueur</returns>
+        public static string AskForInput()
+        {
+            string askNewName = "Enter a new name: ";
+            Console.Clear();
+            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
+            Console.CursorTop = (Console.BufferHeight / 2);
+            Console.Write(askNewName);
+            string entry = Console.ReadLine();
+            
+            return entry;
         }
 
 
