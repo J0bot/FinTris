@@ -67,7 +67,7 @@
     <None Include="Config\App.config" />
     <None Include="Config\packages.config" />
     <None Include="config.cfg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

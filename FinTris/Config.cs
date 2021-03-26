@@ -80,11 +80,10 @@ namespace FinTris
                 var result = patternFinder.Match(line);
                 if (result.Success)
                 {
-                    //IT DOESN'T WORK!!!! WHAT GIVES YOU FUCKING PIECE OF SHIT
-                    //it's supposed to replace the current line with the new parameter,
-                    //then write everything to the config file. But, it's not updating whyyyyyy
+                    //replace the current line with the new parameter,
+                    //then write everything to the config file.
                     Debug.WriteLine("MATCH = " + result);
-                    line = result + pattern + "=" + newValue;
+                    _configFile[i] = pattern + "=" + newValue;
                     Debug.WriteLine("NEW VALUE = " + pattern + "=" + newValue);
                     Debug.WriteLine("\n" + line);
                 }
