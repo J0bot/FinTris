@@ -170,16 +170,13 @@ namespace FinTris
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
-
                     {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
                         Console.Write("██");
                     }
-
-                    System.Threading.Thread.Sleep(8);
+                    System.Threading.Thread.Sleep(100);
                 }
-
 
                 for (int y = _game.Rows; y > 0; y--)
                 {
@@ -231,67 +228,52 @@ namespace FinTris
 
             if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
             {
-                Console.Write("██    ");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("██    ");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("████  ");
+                Console.Write(  "██    ");
+                WriteAt(        "██    ", initPosX, initPosY + 1);
+                WriteAt(        "████  ", initPosX, initPosY + 2);
             }
             else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
             {
-                Console.Write("    ██");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("    ██");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("  ████");
+                Console.Write(  "    ██");
+                WriteAt(        "    ██", initPosX, initPosY + 1);
+                WriteAt(        "  ████", initPosX, initPosY + 2);
             }
             else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
             {
-                Console.Write("      ");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("  ██  ");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("██████");
+                Console.Write(  "      ");
+                WriteAt(        "  ██  ", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
             }
             else if (_game.NextTetromino.Shape == TetrominoType.Snake)
             {
-                Console.Write("    ██");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("  ████");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("  ██  ");
-                
+                Console.Write(  "  ██  ");
+                WriteAt(        "████  ", initPosX, initPosY + 1);
+                WriteAt(        "██    ", initPosX, initPosY + 2);
+
             }
             else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
             {
-                Console.Write("  ██  ");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("  ████");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("    ██");
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ████", initPosX, initPosY + 1);
+                WriteAt(        "    ██", initPosX, initPosY + 2);
             }
             else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
             {
-                Console.Write("██████");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("██████");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("██████");
+                Console.Write(  "██████");
+                WriteAt(        "██████", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
             }
             else if (_game.NextTetromino.Shape == TetrominoType.Malong)
             {
-                Console.Write("  ██  ");
-                Console.SetCursorPosition(initPosX, initPosY + 1);
-                Console.Write("  ██  ");
-                Console.SetCursorPosition(initPosX, initPosY + 2);
-                Console.Write("  ██  ");
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ██  ", initPosX, initPosY+1);
+                WriteAt(        "  ██  ", initPosX, initPosY+2);
             }
 
 
 
             Console.ResetColor();
         }
-
 
 
         /// <summary>
