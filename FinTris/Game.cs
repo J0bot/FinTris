@@ -4,6 +4,8 @@
 ///Description  : Fintris
 
 using System;
+using System.IO;
+using System.Media;
 using System.Timers;
 
 namespace FinTris
@@ -57,6 +59,8 @@ namespace FinTris
         /// C'est le tableau qui contient les états de tous les blocs du jeu
         /// </summary>
         private readonly Case[,] _board;
+
+        private System.Timers.Timer _timer1 = new System.Timers.Timer();
 
         /// <summary>
         /// C'est un événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu
@@ -291,6 +295,12 @@ namespace FinTris
                 }
             }
 
+            
+            _timer1.Elapsed += new ElapsedEventHandler(_timer1_Elapsed);
+            //1 second
+            _timer1.Interval = 1000;
+
+           
             // On implémente notre tetromino dans notre board
 
             foreach (Vector2 block in _tetromino.Blocks)
@@ -298,13 +308,27 @@ namespace FinTris
                 Vector2 pos = block + _tetromino.Position; 
                 _board[pos.x, pos.y].State = SquareState.MovingBlock;
                 _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
-            }
-
+            }  
 
             // On informe le renderer qu'il y a eu un changement et on lui dit que faire une mise à jour
             BoardChanged.Invoke(this, _board);
+
+
         }
 
+        //this event will be fired each 1 second
+        private void _timer1_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            ConsoleKey input;
+            input = Console.ReadKey(true).Key;
+            
+            if (input == ConsoleKey.DownArrow)
+            {
+                _gameTimer.Start();
+                _score += 10;
+            }
+            
+        }
 
         /// <summary>
         /// Fonction qui va detecter les collisions des tetrominos
@@ -342,6 +366,7 @@ namespace FinTris
         /// On va commencer par stopper le Tetromino actuel, pui on va instancier le nouveau Tetromino
         /// Il va falloir ensuite transformer l'ancien Tetromino en bloc solide (SquareState.SolidBlock)
         /// </summary>
+  
         private void NewTetromino()
         {
             _tetromino.State = TetrominoState.Stopped;
@@ -403,7 +428,7 @@ namespace FinTris
             for (int x = 0; x < _cols; x++)
             {
                 _board[x, fullY].State = SquareState.Empty;
-                _board[x, fullY].Color = ConsoleColor.White;
+                _board[x, fullY].Color = ConsoleColor.Red;
             }
 
             for (int x = 0; x < _cols; x++)
@@ -413,7 +438,6 @@ namespace FinTris
                     _board[x, y] = _board[x, y - 1];
                 }
             }
-
         }
 
 
@@ -455,6 +479,7 @@ namespace FinTris
             //Deux = 100 pts
             //Trois = 300pts
             //Quatre = 1200pts
+
             if (nbrKill == 1)
             {
                 _score += 40;
@@ -479,6 +504,74 @@ namespace FinTris
             _level = (_score / 1000) + 1;
 
             _gameTimer.Interval = _MS / (_level * 0.5);
+
+        }
+
+        /// <summary>
+        /// Si le joueur appuie sur A, il entre dans une zone interdite
+        /// </summary>
+        public void CheatCode()
+        {
+            //Lancement de la première voix
+            SoundPlayer bowserSound2 = new System.Media.SoundPlayer("bowserSound2.wav");
+            bowserSound2.Play();
+
+            Console.SetCursorPosition(50,14);
+            Console.WriteLine("??? : Tricheur !");
+
+            Console.ReadLine();
+            Console.SetCursorPosition(35, 16);
+            Console.WriteLine("??? : Tu ne devais pas avoir accès à cette zone !");
+
+            Console.ReadLine();
+            Console.SetCursorPosition(39, 18);
+            Console.WriteLine("??? : Maintenant il va falloir payer !");
+            Console.ReadLine();
+            Console.Clear();
+
+            //Lancement de la deuxième voix
+            SoundPlayer bowserSound = new System.Media.SoundPlayer("bowserSound.wav");
+            bowserSound.Play();
+
+            //Affichage du monstre
+
+            for (int i = 0; i < 5; i++)
+            {
+             
+                string[] bowser = File.ReadAllLines("bowser.txt");
+                for (int w = 0; w < bowser.Length; w++)
+                {                  
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                System.Threading.Thread.Sleep(200);
+                Console.Clear();
+                System.Threading.Thread.Sleep(200);
+
+                string[] bowser2 = File.ReadAllLines("bowser.txt");
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                System.Threading.Thread.Sleep(200);
+                Console.Clear();
+                System.Threading.Thread.Sleep(200);
+
+                string[] bowser3 = File.ReadAllLines("bowser.txt");
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                Console.ReadLine();
+                _gameTimer.Interval = _MS * 0.5;
+            }
+            
+
 
         }
     }

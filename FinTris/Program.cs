@@ -75,6 +75,7 @@ namespace FinTris
                 else if(input == ConsoleKey.DownArrow)
                 {
                     _game.MoveDown();
+                    
                 }
                 else if (input == ConsoleKey.Enter)
                 {
@@ -89,6 +90,15 @@ namespace FinTris
                 {
                     _game.GameTimer.Stop();
                     _gameRenderer.DeathAnim();
+                }
+                else if (input == ConsoleKey.A)
+                {
+                    Console.Clear();
+                    _game.GameTimer.Stop();
+                    _game.CheatCode();
+
+                    _gameRenderer = new GameRenderer(_game);
+                    _game.Start();
                 }
 
 
