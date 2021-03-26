@@ -5,7 +5,7 @@
 
 using FinTris.Properties;
 using System;
-using System.IO;
+using System.Threading;
 using System.Media;
 
 namespace FinTris
@@ -291,20 +291,26 @@ namespace FinTris
             SoundPlayer bowserSound2 = new System.Media.SoundPlayer(Resources.bowserSound2);
             bowserSound2.Play();
 
-            
 
-            Console.SetCursorPosition(50, 14);
-            Console.WriteLine("??? : Tricheur !");
-
-            Console.ReadLine();
-            Console.SetCursorPosition(35, 16);
-            Console.WriteLine("??? : Tu ne devais pas avoir accès à cette zone !");
-
-            Console.ReadLine();
-            Console.SetCursorPosition(39, 18);
-            Console.WriteLine("??? : Maintenant il va falloir payer !");
-            Console.ReadLine();
             Console.Clear();
+            Console.SetCursorPosition(50, 14);
+            TypewriterEffect("??? : Tricheur !");
+            Thread.Sleep(200);
+
+            Console.SetCursorPosition(35, 16);
+            TypewriterEffect("??? : Tu ne devais pas avoir accès à cette zone !");
+
+            Thread.Sleep(200);
+
+
+            Console.SetCursorPosition(39, 18);
+            TypewriterEffect("??? : Maintenant il va falloir...");
+            Thread.Sleep(100);
+            TypewriterEffect(" payer !", 100);
+            Thread.Sleep(1000);
+            Console.Clear();
+
+
 
             //Lancement de la deuxième voix
             SoundPlayer bowserSound = new System.Media.SoundPlayer(Resources.bowserSound);
@@ -312,43 +318,19 @@ namespace FinTris
 
             //Affichage du monstre
 
+            
             for (int i = 0; i < 5; i++)
             {
+                Console.SetCursorPosition(20, 0);
+                Console.Write(Resources.Bowser);
 
-                string[] bowser = File.ReadAllLines(Resources.Bowser);
-                for (int w = 0; w < bowser.Length; w++)
-                {
-                    Console.WriteLine(bowser[w]);
-                    Console.SetCursorPosition(20, i++);
-                }
-
-                System.Threading.Thread.Sleep(200);
+                Thread.Sleep(100);
                 Console.Clear();
-                System.Threading.Thread.Sleep(200);
-
-                string[] bowser2 = File.ReadAllLines(Resources.Bowser);
-                for (int w = 0; w < bowser.Length; w++)
-                {
-                    Console.WriteLine(bowser[w]);
-                    Console.SetCursorPosition(20, i++);
-                }
-
-                System.Threading.Thread.Sleep(200);
-                Console.Clear();
-                System.Threading.Thread.Sleep(200);
-
-                string[] bowser3 = File.ReadAllLines(Resources.Bowser);
-                for (int w = 0; w < bowser.Length; w++)
-                {
-                    Console.WriteLine(bowser[w]);
-                    Console.SetCursorPosition(20, i++);
-                }
-
-                Console.ReadLine();
-                _game.CheatCode();
+                Thread.Sleep(100);
             }
+            BorderStyle();
 
-
+            _game.CheatCode();
 
         }
 
@@ -369,7 +351,19 @@ namespace FinTris
             Console.Write(s);
         }
 
+        /// <summary>
+        /// Effect de machine à ecrire
+        /// </summary>
+        /// <param name="text">input du text en string</param>
+        /// <param name="time">temps de l'affichage</param>
+        public void TypewriterEffect(string text, int time = 50) //cette méthode permet d'écrire avec un effet de machine à ecrire
+        {
+            for (int i = 0; i < text.Length; i++)               //on va parcourir le string et écrire lettre par lettre
+            {
+                Console.Write(text.Substring(i, 1));
+                Thread.Sleep(time);
+            }
+        }
 
-        
     }
 }
