@@ -41,11 +41,16 @@ namespace FinTris
         private bool _isSelected = false; //Option déselectionnée par défaut
 
         /// <summary>
+        /// The suffix appended to the entry
+        /// </summary>
+        private string _suffix = "";
+
+        /// <summary>
         /// Retourne le texte de l'entrée
         /// </summary>
         public string Text
         {
-            get { return _text; }
+            get { return _text + _suffix; }
         }
 
         /// <summary>
@@ -73,6 +78,21 @@ namespace FinTris
         {
             this._id = _instanceCounter++;
             this._text = text;
+
+            //Stocke la plus longue option en terme de caractères
+            if (text.Length > _longestText)
+            {
+                _longestText = text.Length;
+            }
+
+        }
+
+
+        public MenuEntry(string text, string suffix)
+        {
+            this._id = _instanceCounter++;
+            this._text = text;
+            this._suffix = suffix;
 
             //Stocke la plus longue option en terme de caractères
             if (text.Length > _longestText)
@@ -116,7 +136,7 @@ namespace FinTris
         /// <returns></returns>
         public override string ToString()
         {
-            return _text;
+            return _text + _suffix;
         }
     }
 }
