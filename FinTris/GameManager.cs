@@ -119,7 +119,7 @@ namespace FinTris
         public static void ShowBestScores()
         {
             Console.Clear();
-            List<string[]> scores = Config.GetScores();
+            List<string[]> scores = Config.GetBestScores();
             Console.CursorTop = (Console.BufferHeight / 2) - (scores.Count);
 
             foreach (string[] entry in scores)

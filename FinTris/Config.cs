@@ -181,7 +181,7 @@ namespace FinTris
         /// from the best to the lowest score.
         /// </summary>
         /// <returns>A list of string arrays.</returns>
-        public static List<string[]> GetScores()
+        public static List<string[]> GetBestScores()
         {
             List<string[]> maxScores = new List<string[]>();
             //regex to search every entry referencing a best score (example: Yannick_MaxScore=1432)
@@ -208,7 +208,10 @@ namespace FinTris
             maxScores = maxScores.OrderBy(arr => Convert.ToInt32(arr[1])).ToList();
             maxScores.Reverse();
             //only keep the 5 best players
-            maxScores.RemoveRange(5, maxScores.Count - 5);
+            if (maxScores.Count > 5)
+            {
+                maxScores.RemoveRange(5, maxScores.Count - 5);
+            }
 
             return maxScores;
         }
