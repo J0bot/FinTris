@@ -22,10 +22,10 @@ namespace FinTris
         /// <summary>
         /// string to temporarily store all the content of the configuration file.
         /// </summary>
-        static string _configStream = File.ReadAllText(_configLocation);
+        static string _configStream;
 
         /// <summary>
-        /// The list that will store the content of the configuration file.
+        /// The list that will store the content of the configuration file, line by line
         /// </summary>
         static List<string> _configFile = new List<string>();
 
@@ -34,10 +34,13 @@ namespace FinTris
         /// </summary>
         static Config()
         {
-            Debug.WriteLine("config loaded");
+            CheckIfFileExists();
             //add to the _configFile list the content of the configStream string,
             //splitted at every line ending.
+            _configStream = File.ReadAllText(_configLocation);
             _configFile.AddRange(_configStream.Split('\n'));
+
+            Debug.WriteLine("config loaded");
         }
 
         /// <summary>
@@ -148,13 +151,15 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Checks if the config file exists. TODO: add default parameters if the file needs to be created.
+        /// Checks if the config file exists.
         /// </summary>
         private static void CheckIfFileExists()
         {
             if (!File.Exists(_configLocation))
             {
-                File.Create(_configLocation);
+                File.WriteAllText(_configLocation,
+                    "PlayerName=Default\n" +
+                    "Difficulty=Normal\n");
             }
         }
 
