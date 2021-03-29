@@ -26,6 +26,7 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
+            
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
@@ -170,7 +171,6 @@ namespace FinTris
 
             _game = new Game();
             _gameRenderer = new GameRenderer(_game);
-
             _game.Start();
 
             ConsoleKey input;
@@ -223,10 +223,7 @@ namespace FinTris
                     _game.State = GameState.Finished;
                     _gameRenderer.CheatCode();
                     _game.Start();
-                    
                 }
-                
-
 
             } while (input != ConsoleKey.Escape);
         }
