@@ -169,7 +169,7 @@ namespace FinTris
         {
             lock (this)
             {
-
+                Config.SaveScore();
                 _game.Stop();
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {

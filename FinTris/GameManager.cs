@@ -5,6 +5,7 @@
 
 using System;
 using Figgle;
+using System.Collections.Generic;
 
 namespace FinTris
 {
@@ -13,7 +14,7 @@ namespace FinTris
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
-        private static Game _game;
+        private static Game _game; //######################PS: j'ai changé en public pour pouvoir avoir les scores, y'a t-il un meilleur moyen? maxime
 
         /// <summary>
         /// Attribut GameRenderer de la classe Program
@@ -98,7 +99,7 @@ namespace FinTris
 
                 if (choice == bestScores)
                 {
-
+                    ShowBestScores();
                 }
                 if (choice == difficulty)
                 {
@@ -112,6 +113,26 @@ namespace FinTris
 
         }
 
+        /// <summary>
+        /// Shows the best scores.
+        /// </summary>
+        public static void ShowBestScores()
+        {
+            Console.Clear();
+            List<string[]> scores = Config.GetBestScores();
+            Console.CursorTop = (Console.BufferHeight / 2) - (scores.Count);
+
+            foreach (string[] entry in scores)
+            {
+                //why is there a space between the scores???
+                Console.CursorTop += 1;
+                Console.CursorLeft = (Console.BufferWidth / 2) - entry[0].Length - 2;
+                Console.Write(entry[0]);
+                Console.CursorLeft = (Console.BufferWidth / 2) + 2;
+                Console.WriteLine(entry[1]);
+            }
+            Console.ReadLine();
+        }
 
 
         public static void SelectDifficulty()
