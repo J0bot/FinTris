@@ -70,8 +70,8 @@ namespace FinTris
         {
             string askNewName = "Enter a new name: ";
             Console.Clear();
-            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
-            Console.CursorTop = (Console.BufferHeight / 2);
+            Console.CursorLeft = (Console.WindowWidth / 2) - askNewName.Length / 2;
+            Console.CursorTop = (Console.WindowHeight / 2);
             Console.Write(askNewName);
             string entry = Console.ReadLine();
             
@@ -126,9 +126,9 @@ namespace FinTris
             {
                 //why is there a space between the scores???
                 Console.CursorTop += 1;
-                Console.CursorLeft = (Console.BufferWidth / 2) - entry[0].Length - 2;
+                Console.CursorLeft = (Console.WindowWidth / 2) - entry[0].Length - 2;
                 Console.Write(entry[0]);
-                Console.CursorLeft = (Console.BufferWidth / 2) + 2;
+                Console.CursorLeft = (Console.WindowWidth / 2) + 2;
                 Console.WriteLine(entry[1]);
             }
             Console.ReadLine();
