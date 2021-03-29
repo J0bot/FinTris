@@ -5,8 +5,8 @@
 
 using FinTris.Properties;
 using System;
-using System.Threading;
 using System.Media;
+using System.Threading;
 
 namespace FinTris
 {
