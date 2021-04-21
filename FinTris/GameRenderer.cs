@@ -44,7 +44,7 @@ namespace FinTris
             _game = game;
 
             _game.BoardChanged += _game_PositionChanged;
-            _game.IsDed += _game_IsDed;
+            _game.IsDead += _game_IsDed;
 
             _random = new Random();
 
