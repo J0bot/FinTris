@@ -1,7 +1,7 @@
-///ETML
-///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
-///Date     	: 09.03.2021
-///Description  : Fintris
+/// ETML
+/// Auteur   	 : José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+/// Date     	 : 09.03.2021
+/// Description  : Fintris
 
 using FinTris.Properties;
 using System;
@@ -11,34 +11,29 @@ using System.Threading;
 namespace FinTris
 {
     /// <summary>
-    /// Classe qui s'occupe d'afficher le jeu
+    /// Classe qui s'occupe d'afficher le jeu.
     /// </summary>
     public class GameRenderer
     {        
         /// <summary>
-        /// Attribut _game pour récuperer les infos de game
+        /// Attribut _game représentant la référance de l'instance de Game.
         /// </summary>
         private readonly Game _game;
 
         /// <summary>
-        /// position de l'affichage du plateau en x
+        /// Le déplacement horizontal du plateau.
         /// </summary>
         private const int SHIFT_X = 30;
 
         /// <summary>
-        /// position de l'affichage du plateau en y
+        /// Le déplacement vertical du plateau.
         /// </summary>
         private const int SHIFT_Y = 2;
 
         /// <summary>
-        /// Attribut Random pour effectuer des fonctions Random
+        /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
-        private static Random _random;
-
-        /// <summary>
-        /// Constructor renseigné de la classe GameRenderer
-        /// </summary>
-        /// <param name="game">paramètre game pour récup les infos de game</param>
+        /// <param name="game">La référence de l'instance de Game. Sert à récupérer certaines informations importantes par rapport à l'affichage.</param>
         public GameRenderer(Game game)
         {
             _game = game;
@@ -46,29 +41,27 @@ namespace FinTris
             _game.BoardChanged += _game_PositionChanged;
             _game.IsDead += _game_IsDed;
 
-            _random = new Random();
-
             BorderStyle();
         }
 
         /// <summary>
-        /// Fonction qui s'active quand il y a eu un changememt dans la classe Game, elle va lancer la fonction Refresh()
+        /// Fonction qui se déclenche quand il y a eu un changememt dans le plateau du jeu.
         /// </summary>
-        /// <param name="sender">c'est les données reçues</param>
-        /// <param name="board">c'est le tableau contenant les informations du jeu</param>
+        /// <param name="sender">Le déclencheur de l'événement.</param>
+        /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
         private void _game_PositionChanged(object sender, Case[,] board)
         {
+            // Mettre à jour l'affichage du plateau après les nouveaux changements.
             Refresh(board);
         }
 
         /// <summary>
-        /// La fonction Refresh va s'occuper d'afficher les données du tableau de SquareState envoyé par la classe Game.
-        /// 
-        /// Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement
+        /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
         /// </summary>
-        /// <param name="board">paramètre du tableau de SquarState</param>
+        /// <param name="board">Le tableau contenant les informations des cases.</param>
         private void Refresh(Case[,] board)
         {
+            // Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement.
             lock (this)
             {
                 for (int y = 0; y < _game.Rows; y++)
@@ -87,7 +80,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// C'est la fonction qui permet de créer la bordure du jeu
+        /// Permet de créer la bordure du jeu.
         /// </summary>
         private void BorderStyle()
         {
@@ -105,7 +98,7 @@ namespace FinTris
             
             Console.ResetColor();
 
-            //Bordure du prochain Tetromino
+            // Bordure du prochain Tetromino.
             Console.SetCursorPosition(58, 2);
             Console.Write("NEXT TETROMINO");
 
@@ -135,23 +128,23 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Fonction qui s'occupe de dessiner le score
+        /// Fonction qui s'occupe de dessiner le score.
         /// </summary>
         private void DrawScore()
         {
-            //Affichage du score
+            // Affichage du score.
             Console.SetCursorPosition(60, 15);
             Console.WriteLine($"Score : {_game.Score} pts");
 
-            //Affichage du niveau
+            // Affichage du niveau.
             Console.SetCursorPosition(60, 18);
             Console.WriteLine($"Niveau : {_game.Level}");
         }
 
         /// <summary>
-        /// Games the is ded.
+        /// La fonction callback de l'événement IsDead. Déclenché par la Game quand le jeu est terminé.
         /// </summary>
-        /// <param name="sender">Sender.</param>
+        /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="e">If set to <c>true</c> e.</param>
         private void _game_IsDed(object sender, bool e)
         {
@@ -163,7 +156,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs
+        /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.
         /// </summary>
         public void DeathAnim()
         {
@@ -220,7 +213,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Fonction qui va s'occuper de render le prochain Tetromino
+        /// Fonction qui va s'occuper de render le prochain Tetromino.
         /// </summary>
         private void NextTetrominoRender()
         {
@@ -281,16 +274,15 @@ namespace FinTris
             Console.ResetColor();
         }
 
-
+#if DEBUG
         /// <summary>
-        /// Si le joueur appuie sur A, il entre dans une zone interdite
+        /// Si le joueur appuie sur A, il entre dans une zone interdite.
         /// </summary>
         public void CheatCode()
         {
-            //Lancement de la première voix
-            SoundPlayer bowserSound2 = new System.Media.SoundPlayer(Resources.bowserSound2);
+            // Lancement de la première voix.
+            SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
             bowserSound2.Play();
-
 
             Console.Clear();
             Console.SetCursorPosition(50, 14);
@@ -310,15 +302,12 @@ namespace FinTris
             Thread.Sleep(1000);
             Console.Clear();
 
-
-
-            //Lancement de la deuxième voix
-            SoundPlayer bowserSound = new System.Media.SoundPlayer(Resources.bowserSound);
+            // Lancement de la deuxième voix.
+            SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
             bowserSound.Play();
 
-            //Affichage du monstre
-
-            
+            // Affichage du monstre.
+            // 
             for (int i = 0; i < 5; i++)
             {
                 Console.SetCursorPosition(20, 0);
@@ -333,15 +322,14 @@ namespace FinTris
             _game.CheatCode();
 
         }
-
+#endif
 
         /// <summary>
-        /// Code repris de la doc Microsoft
-        /// Ecris le texte à la position x y donnée
+        /// Ecris ue texte à une position donnée. (repris de la documentation de Microsoft)
         /// </summary>
-        /// <param name="s">texte à afficher</param>
-        /// <param name="x">position X</param>
-        /// <param name="y">position Y</param>
+        /// <param name="s">Le texte à afficher.</param>
+        /// <param name="x">La position X.</param>
+        /// <param name="y">La position Y.</param>
         public static void WriteAt(string s, int x, int y)
         {
             int origRow = 0;
@@ -352,13 +340,14 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Effect de machine à ecrire
+        /// Effect de machine à ecrire.
         /// </summary>
-        /// <param name="text">input du text en string</param>
-        /// <param name="time">temps de l'affichage</param>
-        public void TypewriterEffect(string text, int time = 50) //cette méthode permet d'écrire avec un effet de machine à ecrire
+        /// <param name="text">Le texte à afficher.</param>
+        /// <param name="time">Le temps de l'affichage.</param>
+        public void TypewriterEffect(string text, int time = 50)
         {
-            for (int i = 0; i < text.Length; i++)               //on va parcourir le string et écrire lettre par lettre
+            // On va parcourir le string et écrire lettre par lettre.
+            for (int i = 0; i < text.Length; i++) 
             {
                 Console.Write(text.Substring(i, 1));
                 Thread.Sleep(time);
