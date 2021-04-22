@@ -68,7 +68,7 @@
     <Compile Include="Enums\TetrominoState.cs" />
     <Compile Include="Structs\Vector2.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="GameState.cs" />
+    <Compile Include="Enums\GameState.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
   </ItemGroup>
   <ItemGroup>

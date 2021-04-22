@@ -34,7 +34,6 @@ namespace FinTris
             MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
             MenuEntry quit = new MenuEntry("Quit");
 
-
             _menu.Add(play);
             _menu.Add(options);
             _menu.Add(playerName);
