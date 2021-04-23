@@ -9,7 +9,10 @@ using System.Timers;
 namespace FinTris
 {
     /// <summary>
-    /// Classe Game qui est responsable de toute la logique du jeu.
+    /// Classe Game qui est  
+    /// 
+    /// 
+    /// e de toute la logique du jeu.
     /// </summary>
     public class Game
     {
