@@ -151,7 +151,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Checks if the config file exists.
+        /// Checks if the config file exists. If not, create it and dump the necessary content in it.
         /// </summary>
         private static void CheckIfFileExists()
         {
