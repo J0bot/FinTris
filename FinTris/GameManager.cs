@@ -14,7 +14,7 @@ namespace FinTris
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
-        private static Game _game; //######################PS: j'ai changé en public pour pouvoir avoir les scores, y'a t-il un meilleur moyen? maxime
+        private static Game _game;
 
         /// <summary>
         /// Attribut GameRenderer de la classe Program
@@ -31,7 +31,7 @@ namespace FinTris
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
-            MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
+            MenuEntry playerName = new MenuEntry($"Player name: {Config.PlayerName}");
             MenuEntry quit = new MenuEntry("Quit");
 
             _menu.Add(play);
@@ -86,7 +86,7 @@ namespace FinTris
             Menu optionMenu = new Menu("Options");
 
             MenuEntry bestScores = new MenuEntry("Show best scores");
-            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry difficulty = new MenuEntry($"Difficulty: {Config.DifficultyLevel}");
             MenuEntry cancel = new MenuEntry("Return");
             optionMenu.Add(bestScores);
             optionMenu.Add(difficulty);

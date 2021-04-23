@@ -1,7 +1,7 @@
-﻿///ETML
-///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
-///Date     	: 09.03.2021
-///Description  : Fintris
+﻿/// ETML
+/// Auteur   	 : José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+/// Date     	 : 23.04.2021
+/// Description  : Fintris
 
 using System;
 using System.Collections.Generic;
@@ -9,59 +9,70 @@ using System.Collections.Generic;
 namespace FinTris
 {
     /// <summary>
-    /// Un menu interactif
+    /// Un menu interactif.
     /// </summary>
-    class Menu
+    public class Menu
     {
         /// <summary>
         /// titre du menu en string.
         /// </summary>
         private string _title;
 
-        /// <summary>
-        /// Liste de toutes les entrées du menu
-        /// </summary>
-        private List<MenuEntry> _entries = new List<MenuEntry>();
+        private MenuEntry _selectedOption;
+
+        public MenuEntry SelectedOption
+        {
+            get { return _selectedOption; }
+            set { _selectedOption = value; }
+        }
+
 
         /// <summary>
-        /// Constructeur renseigné de la classe Menu
+        /// Liste de toutes les entrées du menu.
         /// </summary>
-        /// <param name="title">nom du titre du menu en string</param>
+        private readonly List<MenuEntry> _entries;
+
+        /// <summary>
+        /// Crée un menu qui contient des options.
+        /// </summary>
+        /// <param name="title">nom du titre du menu en string.</param>
         public Menu(string title)
         {
             this._title = title;
+            this._entries = new List<MenuEntry>();
         }
 
         /// <summary>
-        /// Ajouter une entrée dans le menu
+        /// Ajouter une entrée dans le menu.
         /// </summary>
-        /// <param name="menuEntry">paramètre d'entrée du menu en MenuEntry</param>
+        /// <param name="menuEntry">paramètre d'entrée du menu en MenuEntry.</param>
         public void Add(MenuEntry menuEntry)
         {
-            //Force la sélection de la première option
+            _entries.Add(menuEntry);
+
+            // Force la sélection de la première option.
             if (_entries.Count == 0)
             {
-                menuEntry.IsSelected = true;
+                Select(menuEntry);
             }
-            _entries.Add(menuEntry);
         }
 
         /// <summary>
-        /// Afficher le menu et retourner l'option sélectionnée
+        /// Afficher le menu et retourner l'option sélectionnée.
         /// </summary>
-        /// <returns>Retourne l'option que l'on a choisit</returns>
+        /// <returns>Retourne l'option que l'on a choisit.</returns>
         public MenuEntry ShowMenu()
         {
             Console.Clear();
-
             Console.WriteLine(_title);
             Console.WriteLine();
+
             int initialY = Console.CursorTop;
 
-            //Affichage des options de bases
+            // Affichage des options de bases.
             WriteOptions(initialY);
 
-            //TODO gérer les flèches pour sélectionner une entrée
+            // TODO : gérer les flèches pour sélectionner une entrée.
             MenuEntry selectedEntry = null;
             int currentlySelected = 0;
             while (selectedEntry == null)
@@ -71,8 +82,8 @@ namespace FinTris
                     case ConsoleKey.UpArrow:
                         if (currentlySelected > 0)
                         {
-                            _entries[currentlySelected].IsSelected = false;
-                            _entries[currentlySelected - 1].IsSelected = true;
+                            _entries[currentlySelected].Selected = false;
+                            _entries[currentlySelected - 1].Selected = true;
                             currentlySelected--;
                             Console.SetCursorPosition(0, initialY);
 
@@ -81,8 +92,8 @@ namespace FinTris
                     case ConsoleKey.DownArrow:
                         if (currentlySelected < _entries.Count - 1)
                         {
-                            _entries[currentlySelected].IsSelected = false;
-                            _entries[currentlySelected + 1].IsSelected = true;
+                            _entries[currentlySelected].Selected = false;
+                            _entries[currentlySelected + 1].Selected = true;
                             currentlySelected++;
                             Console.SetCursorPosition(0, initialY);
                         }
@@ -95,23 +106,38 @@ namespace FinTris
             }
 
             Console.ReadLine();
-            return null;//TODO retourner l'entrée sélectionnée
+            return null;// TODO : retourner l'entrée sélectionnée.
         }
 
         /// <summary>
-        /// Affiche toutes les options depuis la position courante du curseur
+        /// Affiche toutes les options depuis la position courante du curseur.
         /// </summary>
         private void WriteOptions(int y)
         {
             y = 10;
             for (int i = 0; i < _entries.Count; i++)
             {
-                int x = (Console.BufferWidth / 2) - (_entries[i].Text.Length / 2);
+                int x = (Console.WindowWidth / 2) - (_entries[i].Text.Length / 2);
 
-                Console.SetCursorPosition(x, y); //x was 35
+                Console.SetCursorPosition(x, y); // x was 35.
                 y += 3;
                 _entries[i].WriteOption();
             }
+        }
+
+        private void Select(MenuEntry newSelectedOption)
+        {
+            _selectedOption = newSelectedOption;
+
+            foreach (MenuEntry option in _entries)
+            {
+                if (option != newSelectedOption)
+                {
+                    option.Selected = false;
+                }
+            }
+
+            _selectedOption.Selected = true;
         }
     }
 }
