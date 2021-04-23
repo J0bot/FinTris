@@ -6,6 +6,7 @@
 using Figgle;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Media;
 
 namespace FinTris
@@ -109,6 +110,7 @@ namespace FinTris
                 }
                 else if (choice == cancel)
                 {
+                    SoundCancel();
                     MainMenu(); //huuuuh
                 }
             } while (choice != cancel);
@@ -169,7 +171,48 @@ namespace FinTris
         public static void Play()
         {
             SoundPlayer okSound = new SoundPlayer("tetrisSoundOK.wav");
+            Stopwatch stopWatch = new Stopwatch();
+
             okSound.Play();
+            stopWatch.Start();
+            do
+            {
+                Console.Clear();
+
+            } while (stopWatch.Elapsed.TotalSeconds < 1);
+
+            stopWatch.Stop();
+
+            Console.Clear();
+
+            SoundReady();
+
+            stopWatch.Restart();
+            do
+            {
+                do
+                {
+                    Console.SetCursorPosition(0, 5);
+                    Console.WriteLine(FiggleFonts.Starwars.Render("Ready"));
+
+                } while (stopWatch.Elapsed.TotalSeconds < 0.8);
+
+                Console.Clear();
+
+                SoundPlayer goSound = new SoundPlayer("tetrisSoundGo.wav");
+                goSound.Play();
+
+                do
+                {
+                    Console.SetCursorPosition(0, 5);
+                    Console.WriteLine(FiggleFonts.Starwars.Render("GO"));
+                    
+
+                } while (stopWatch.Elapsed.TotalSeconds < 2);
+
+
+            } while (stopWatch.Elapsed.TotalSeconds < 1.3);
+            stopWatch.Stop();
 
             Console.Clear();
 
@@ -209,6 +252,8 @@ namespace FinTris
                 else if (input == ConsoleKey.Escape)
                 {
                     _game.Stop();
+
+                    SoundCancel();
                     MainMenu();
                 }
                 else if (input == ConsoleKey.R)
@@ -230,6 +275,18 @@ namespace FinTris
                 }
 
             } while (input != ConsoleKey.Escape);
+        }
+
+        public static void SoundCancel()
+        {
+            SoundPlayer cancelSound = new SoundPlayer("tetrisSoundCancel.wav");
+            cancelSound.Play();
+        }          
+
+        public static void SoundReady()
+        {
+            SoundPlayer readySound = new SoundPlayer("tetrisSoundReady.wav");
+            readySound.Play();
         }
     }
 }

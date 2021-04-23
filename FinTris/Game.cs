@@ -4,6 +4,7 @@
 /// Description  : Fintris
 
 using System;
+using System.Media;
 using System.Timers;
 
 namespace FinTris
@@ -505,12 +506,13 @@ namespace FinTris
                 _score += 1200;
             }
 
-
             // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
             _gameTimer.Interval = _MS / (_level * 0.5);
 
+            SoundPlayer lvlUpSound = new SoundPlayer("tetrisSoundlvlUp.wav");
+            lvlUpSound.Play();       
         }
 
 #if DEBUG
