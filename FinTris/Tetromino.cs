@@ -193,7 +193,7 @@ namespace FinTris
         /// <param name="y">Position Y de notre tetromino</param>
 
         /// <param name="tetrominoState">Etat du Tetromino</param>
-        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
+        public Tetromino(TetrominoType type, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
         {
             _random = new Random();
             _shape = type;
