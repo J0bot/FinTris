@@ -506,7 +506,21 @@ namespace FinTris
             // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
-            _gameTimer.Interval = _MS / (_level * 0.5);
+            //mais ce truc est vérifié chaque fois que le score augmente non? Donc il ne s'active jamais en début de partie! à changer!-------------------TODO TODO TODO TODO
+            float dividingValue = 0.5f;
+            switch (Config.DifficultyLevel)
+            {
+                case "Easy":
+                    dividingValue = 0.5f;
+                    break;
+                case "Normal":
+                    dividingValue = 0.7f;
+                    break;
+                case "Hard":
+                    dividingValue = 2f;
+                    break;
+            }
+            _gameTimer.Interval = _MS / (_level * dividingValue);
 
         }
 
