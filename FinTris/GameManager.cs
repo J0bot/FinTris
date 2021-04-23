@@ -206,14 +206,15 @@ namespace FinTris
                     _game.Stop();
                     MainMenu();
                 }
+                else if (input == ConsoleKey.P)
+                {
+                    _game.Pause();
+                }
+#if DEBUG
                 else if (input == ConsoleKey.R)
                 {
                     _game.Stop();
                     _gameRenderer.DeathAnim();
-                }
-                else if (input == ConsoleKey.P)
-                {
-                    _game.Pause();
                 }
                 else if (input == ConsoleKey.A)
                 {
@@ -223,6 +224,7 @@ namespace FinTris
                     _gameRenderer.CheatCode();
                     _game.Start();
                 }
+#endif
 
             } while (input != ConsoleKey.Escape);
         }
