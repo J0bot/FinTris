@@ -39,10 +39,24 @@ namespace FinTris
         {
             _game = game;
 
-            _game.BoardChanged += _game_PositionChanged;
-            _game.IsDead += _game_IsDed;
+            _game.BoardChanged += game_PositionChanged;
+            _game.StateChanged += game_StateChanged;
 
             RenderBorder();
+        }
+
+        /// <summary>
+        /// La fonction callback de l'événement StateChanged. Déclenché par la Game quand le jeu est terminé.
+        /// </summary>
+        /// <param name="sender">Le déclencheur de l'événement.</param>
+        /// <param name="newState">Le nouveau état du jeu.</param>
+        private void game_StateChanged(object sender, GameState newState)
+        {
+            if (newState == GameState.Finished)
+            {
+                DeathAnim();
+                GameManager.Play();
+            }
         }
 
         /// <summary>
@@ -50,7 +64,7 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
-        private void _game_PositionChanged(object sender, Case[,] board)
+        private void game_PositionChanged(object sender, Case[,] board)
         {
             // Mettre à jour l'affichage du plateau après les nouveaux changements.
             Refresh(board);
@@ -124,19 +138,6 @@ namespace FinTris
             Console.WriteLine($"Niveau : {_game.Level}");
         }
 
-        /// <summary>
-        /// La fonction callback de l'événement IsDead. Déclenché par la Game quand le jeu est terminé.
-        /// </summary>
-        /// <param name="sender">Le déclencheur de l'événement.</param>
-        /// <param name="e">If set to <c>true</c> e.</param>
-        private void _game_IsDed(object sender, bool e)
-        {
-            if (e == true)
-            {
-                DeathAnim();
-                GameManager.Play();
-            }
-        }
 
         /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.

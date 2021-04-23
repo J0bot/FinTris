@@ -220,7 +220,6 @@ namespace FinTris
                 {
                     Console.Clear();
                     _game.Stop();
-                    _game.State = GameState.Finished;
                     _gameRenderer.CheatCode();
                     _game.Start();
                 }
