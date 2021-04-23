@@ -1,4 +1,4 @@
-﻿///ETML
+///ETML
 ///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
 ///Date     	: 09.03.2021
 ///Description  : Fintris
@@ -13,6 +13,7 @@ namespace FinTris
     class Program
     {
 
+
         /// <summary>
         /// Fonction principale qui lance tout et qui gère le menu
         /// </summary>
@@ -25,5 +26,6 @@ namespace FinTris
 
             GameManager.MainMenu();
         }
+
     }
 }

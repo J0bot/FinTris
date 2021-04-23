@@ -1,9 +1,12 @@
-﻿///ETML
+///ETML
 ///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
 ///Date     	: 09.03.2021
 ///Description  : Fintris
 
+using FinTris.Properties;
 using System;
+using System.IO;
+using System.Media;
 
 namespace FinTris
 {
@@ -107,21 +110,23 @@ namespace FinTris
             Console.Write("NEXT TETROMINO");
 
             byte min = 4;
-            byte max = 10;
-            byte decal = 59;
+            byte max = 9;
+            byte decal = 60;
+            byte length = 10;
 
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Gray;
             for (int l = min; l < max; l++)
             {
                 if (l == min || l == max - 1)
                 {
                     Console.SetCursorPosition(decal, l);
-                    Console.Write(new string('█', 12));
+
+                    Console.Write(new string('█', length));
                 }
                 else
                 {
                     Console.SetCursorPosition(decal, l);
-                    Console.Write("██        ██");
+                    Console.Write("██"+new string(' ', length-4)+"██");
                 }
 
             }
@@ -162,19 +167,21 @@ namespace FinTris
         /// </summary>
         public void DeathAnim()
         {
-            lock(this)
+            lock (this)
             {
-                _game.GameTimer.Stop();
-                //for (int y = _game.Rows-1; y >=0 ; y--)
-                //{
-                //    for (int x = _game.Cols-1; x >= 0; x--)
-                //    {
-                //        Console.ForegroundColor = ConsoleColor.Blue;
-                //        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                //        Console.Write("██");
-                //    }
-                //    System.Threading.Thread.Sleep(100);
-                //}
+
+                _game.Stop();
+                for (int y = _game.Rows - 1; y >= 0; y--)
+                {
+                    for (int x = _game.Cols - 1; x >= 0; x--)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.Write("██");
+                    }
+                    System.Threading.Thread.Sleep(100);
+                }
+
 
                 for (int y = _game.Rows; y > 0; y--)
                 {
@@ -187,6 +194,7 @@ namespace FinTris
 
                     System.Threading.Thread.Sleep(8);
                 }
+
 
                 System.Threading.Thread.Sleep(1200);
 
@@ -216,11 +224,131 @@ namespace FinTris
         /// </summary>
         private void NextTetrominoRender()
         {
-            if (_game.CurrentTetromino.Shape == TetrominoType.Lawlet)
+
+            int initPosX =62;
+            int initPosY =5;
+
+            Console.SetCursorPosition(initPosX, initPosY);
+
+            Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
+
+            if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
             {
+                Console.Write(  "██    ");
+                WriteAt(        "██    ", initPosX, initPosY + 1);
+                WriteAt(        "████  ", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
+            {
+                Console.Write(  "    ██");
+                WriteAt(        "    ██", initPosX, initPosY + 1);
+                WriteAt(        "  ████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
+            {
+                Console.Write(  "      ");
+                WriteAt(        "  ██  ", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Snake)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "████  ", initPosX, initPosY + 1);
+                WriteAt(        "██    ", initPosX, initPosY + 2);
 
             }
+            else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ████", initPosX, initPosY + 1);
+                WriteAt(        "    ██", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
+            {
+                Console.Write(  "██████");
+                WriteAt(        "██████", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Malong)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ██  ", initPosX, initPosY+1);
+                WriteAt(        "  ██  ", initPosX, initPosY+2);
+            }
+
+
+
+            Console.ResetColor();
+        }
+
+
+        /// <summary>
+        /// Si le joueur appuie sur A, il entre dans une zone interdite
+        /// </summary>
+        public void CheatCode()
+        {
+            //Lancement de la première voix
+            SoundPlayer bowserSound2 = new System.Media.SoundPlayer(Resources.bowserSound2);
+            bowserSound2.Play();
+
             
+
+            Console.SetCursorPosition(50, 14);
+            Console.WriteLine("??? : Tricheur !");
+
+            Console.ReadLine();
+            Console.SetCursorPosition(35, 16);
+            Console.WriteLine("??? : Tu ne devais pas avoir accès à cette zone !");
+
+            Console.ReadLine();
+            Console.SetCursorPosition(39, 18);
+            Console.WriteLine("??? : Maintenant il va falloir payer !");
+            Console.ReadLine();
+            Console.Clear();
+
+            //Lancement de la deuxième voix
+            SoundPlayer bowserSound = new System.Media.SoundPlayer(Resources.bowserSound);
+            bowserSound.Play();
+
+            //Affichage du monstre
+
+            for (int i = 0; i < 5; i++)
+            {
+
+                string[] bowser = File.ReadAllLines(Resources.Bowser);
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                System.Threading.Thread.Sleep(200);
+                Console.Clear();
+                System.Threading.Thread.Sleep(200);
+
+                string[] bowser2 = File.ReadAllLines(Resources.Bowser);
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                System.Threading.Thread.Sleep(200);
+                Console.Clear();
+                System.Threading.Thread.Sleep(200);
+
+                string[] bowser3 = File.ReadAllLines(Resources.Bowser);
+                for (int w = 0; w < bowser.Length; w++)
+                {
+                    Console.WriteLine(bowser[w]);
+                    Console.SetCursorPosition(20, i++);
+                }
+
+                Console.ReadLine();
+                _game.CheatCode();
+            }
+
+
 
         }
 
@@ -240,5 +368,8 @@ namespace FinTris
             Console.SetCursorPosition(origCol + x, origRow + y);
             Console.Write(s);
         }
+
+
+        
     }
 }
