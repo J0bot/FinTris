@@ -48,7 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleHelper.cs" />
     <Compile Include="GameManager.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Structs\Case.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuEntry.cs" />
@@ -62,7 +68,7 @@
     <Compile Include="Enums\TetrominoState.cs" />
     <Compile Include="Structs\Vector2.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="GameState.cs" />
+    <Compile Include="Enums\GameState.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,10 +77,20 @@
     <None Include="config.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
     <None Include="Resources\bowserSound.wav" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\bowserSound2.wav" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\Bowser.txt" />
-    <None Include="Properties\Resources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
