@@ -1,50 +1,50 @@
-///ETML
-///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
-///Date     	: 09.03.2021
-///Description  : Fintris
+/// ETML
+/// Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+/// Date     	: 09.03.2021
+/// Description  : Fintris
 
 namespace FinTris
 {
     /// <summary>
-    /// Struct qui réprésente des coordonées x et y
+    /// Représente un vecteur bidimensionnel avec des coordonnées X et Y.
     /// </summary>
     public struct Vector2
     {
         /// <summary>
-        /// Vector2 avec une direction vers de bas
+        /// Vecteur normalisé orienté vers le bas.
         /// </summary>
         public static Vector2 Down = new Vector2(0, -1);
 
         /// <summary>
-        /// Vector2 avec une direction vers la droite
+        /// Vecteur normalisé orienté vers la droite.
         /// </summary>
         public static Vector2 Right = new Vector2(1, 0);
 
         /// <summary>
-        /// Vector2 avec une direction vers la gauche
+        /// Vecteur normalisé orienté vers le bas.
         /// </summary>
         public static Vector2 Left = new Vector2(-1, 0);
 
         /// <summary>
-        /// Vector2 avec une direction vers le haut
+        /// Vecteur normalisé orienté vers le haut.
         /// </summary>
         public static Vector2 Up = new Vector2(0, 1);
 
         /// <summary>
-        /// Coordonée x du Vector2
+        /// La coordonnée X du vecteur.
         /// </summary>
         public readonly int x;
 
         /// <summary>
-        /// Coordonée x du Vector2
+        /// La coordonnée Y du vecteur.
         /// </summary>
         public readonly int y;
 
         /// <summary>
-        /// Constructor renseigné pour instancier un nouveau Vector2
+        /// Constructor renseigné pour instancier un nouveau vecteur.
         /// </summary>
-        /// <param name="x">Paramètre de coordonée x</param>
-        /// <param name="y">Paramètre de coordonée y</param>
+        /// <param name="x">Paramètre de coordonnée X.</param>
+        /// <param name="y">Paramètre de coordonnée Y.</param>
         public Vector2(int x, int y)
         {
             this.x = x;
@@ -52,25 +52,25 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Méthode de surcharge pour l'opérateur '+' entre deux Vector2
+        /// Permet d'additionner deux vecteurs.
         /// </summary>
-        /// <param name="v1">Premier Vector2</param>
-        /// <param name="v2">Deuxième Vector2</param>
-        /// <returns>Retourne l'addition des deux vecteurs</returns>
+        /// <param name="v1">Premier Vector2.</param>
+        /// <param name="v2">Deuxième Vector2.</param>
+        /// <returns>Retourne le résultat en Vector2 de l'addition des deux vecteurs.</returns>
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
-            return new Vector2(v1.x + v2.x, v1.y + v2.y); //Addition de deux Vector2
+            return new Vector2(v1.x + v2.x, v1.y + v2.y);
         }
 
         /// <summary>
-        /// Méthode de surcharge pour l'opérateur '-' entre deux Vector2
+        /// Permet de soustraire deux vecteurs.
         /// </summary>
-        /// <param name="v1">Premier Vector2</param>
-        /// <param name="v2">Deuxième Vector2</param>
-        /// <returns>Retourne la soustraction des deux vecteurs</returns>
+        /// <param name="v1">Premier Vector2.</param>
+        /// <param name="v2">Deuxième Vector2.</param>
+        /// <returns>Retourne le résultat en Vector2 de la soustraction des deux vecteurs.</returns>
         public static Vector2 operator -(Vector2 v1, Vector2 v2)
         {
-            return new Vector2(v1.x - v2.x, v1.y - v2.y); //Soustraction de deux Vector2
+            return new Vector2(v1.x - v2.x, v1.y - v2.y);
         }
     }
 }
