@@ -210,20 +210,6 @@ namespace FinTris
                 {
                     _game.Pause();
                 }
-#if DEBUG
-                else if (input == ConsoleKey.R)
-                {
-                    _game.Stop();
-                    _gameRenderer.DeathAnim();
-                }
-                else if (input == ConsoleKey.A)
-                {
-                    Console.Clear();
-                    _game.Stop();
-                    _gameRenderer.CheatCode();
-                    _game.Start();
-                }
-#endif
 
             } while (input != ConsoleKey.Escape);
         }
