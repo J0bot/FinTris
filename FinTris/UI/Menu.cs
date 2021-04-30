@@ -106,8 +106,10 @@ namespace FinTris
             y = 10;
             for (int i = 0; i < _entries.Count; i++)
             {
-                Console.SetCursorPosition(35, y);
-                y += 7;
+                int x = (Console.BufferWidth / 2) - (_entries[i].Text.Length / 2);
+
+                Console.SetCursorPosition(x, y); //x was 35
+                y += 3;
                 _entries[i].WriteOption();
             }
         }

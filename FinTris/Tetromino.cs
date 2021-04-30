@@ -1,7 +1,7 @@
-﻿
-///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
-///Date     	: 09.03.2021
-///Description  : Fintris
+﻿/// ETML
+/// Auteur   	 : José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+/// Date     	 : 09.03.2021
+/// Description  : Fintris
 
 using System;
 using System.Collections.Generic;
@@ -191,6 +191,7 @@ namespace FinTris
         /// <param name="type">Type de notre tetromino (Square, L, Malong, etc...)</param>
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
+
         /// <param name="tetrominoState">Etat du Tetromino</param>
         public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
         {
@@ -198,6 +199,7 @@ namespace FinTris
             _shape = type;
             _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
+
 
             _state = tetrominoState;
 
@@ -237,6 +239,7 @@ namespace FinTris
 
 
             UpdateBlocks();
+
         }
 
         /// <summary>
