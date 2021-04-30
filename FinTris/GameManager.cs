@@ -14,7 +14,7 @@ namespace FinTris
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
-        private static Game _game; //######################PS: j'ai changé en public pour pouvoir avoir les scores, y'a t-il un meilleur moyen? maxime
+        private static Game _game;
 
         /// <summary>
         /// Attribut GameRenderer de la classe Program
@@ -31,7 +31,7 @@ namespace FinTris
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
-            MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
+            MenuEntry playerName = new MenuEntry($"Player name: {Config.PlayerName}");
             MenuEntry quit = new MenuEntry("Quit");
 
             _menu.Add(play);
@@ -86,7 +86,7 @@ namespace FinTris
             Menu optionMenu = new Menu("Options");
 
             MenuEntry bestScores = new MenuEntry("Show best scores");
-            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry difficulty = new MenuEntry($"Difficulty: {Config.DifficultyLevel}");
             MenuEntry cancel = new MenuEntry("Return");
             optionMenu.Add(bestScores);
             optionMenu.Add(difficulty);
@@ -206,23 +206,24 @@ namespace FinTris
                     _game.Stop();
                     MainMenu();
                 }
+                else if (input == ConsoleKey.P)
+                {
+                    _game.Pause();
+                }
+#if DEBUG
                 else if (input == ConsoleKey.R)
                 {
                     _game.Stop();
                     _gameRenderer.DeathAnim();
                 }
-                else if (input == ConsoleKey.P)
-                {
-                    _game.Pause();
-                }
                 else if (input == ConsoleKey.A)
                 {
                     Console.Clear();
                     _game.Stop();
-                    _game.State = GameState.Finished;
                     _gameRenderer.CheatCode();
                     _game.Start();
                 }
+#endif
 
             } while (input != ConsoleKey.Escape);
         }
