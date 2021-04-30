@@ -99,11 +99,12 @@
     <Content Include="Resources\bowserSound.wav" />
     <Content Include="Resources\bowserSound2.wav" />
     <Content Include="Resources\tetrisSoundCancel.wav" />
-    <Content Include="Resources\TetrisSoundFall.wav" />
+    <Content Include="Resources\tetrisSoundFall.wav" />
     <Content Include="Resources\tetrisSoundGo.wav" />
     <Content Include="Resources\TetrisSoundKo.wav" />
     <Content Include="Resources\tetrisSoundLvlUp.wav" />
     <Content Include="Resources\tetrisSoundOK.wav" />
+    <Content Include="Resources\TetrisSoundPause.wav" />
     <Content Include="Resources\tetrisSoundReady.wav" />
     <Content Include="Resources\tetrisSoundTheme.wav" />
   </ItemGroup>

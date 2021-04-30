@@ -61,14 +61,13 @@ namespace FinTris {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à                                    @                                  
-        ///                                 @@@@@                                
-        ///                          *@@@&amp;@@@@@@@@##@@@@                         
-        ///                         @@@@@@@@@@@@@@@@@@@@@.                       
-        ///         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        
-        ///       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      
-        ///     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@     
-        ///     @@@@@@@@@@ [le reste de la chaîne a été tronqué]&quot;;.
+        ///   Recherche une chaîne localisée semblable à &quot;                                   @                                  &quot;,
+        ///&quot;                                 @@@@@                                &quot;,
+        ///&quot;                          *@@@&amp;@@@@@@@@##@@@@                         &quot;,
+        ///&quot;                         @@@@@@@@@@@@@@@@@@@@@.                       &quot;,
+        ///&quot;         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        &quot;,
+        ///&quot;       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      &quot;,
+        ///&quot;     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@   [le reste de la chaîne a été tronqué]&quot;;.
         /// </summary>
         public static string Bowser {
             get {
@@ -145,6 +144,15 @@ namespace FinTris {
         public static System.IO.UnmanagedMemoryStream tetrisSoundOK {
             get {
                 return ResourceManager.GetStream("tetrisSoundOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        public static System.IO.UnmanagedMemoryStream TetrisSoundPause {
+            get {
+                return ResourceManager.GetStream("TetrisSoundPause", resourceCulture);
             }
         }
         

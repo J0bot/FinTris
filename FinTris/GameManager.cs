@@ -69,6 +69,44 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Méthode qui affiche le menu lorsqu'on appuie sur esc
+        /// </summary>
+        public static void pauseMenu()
+        {
+            _game.Pause();
+
+            Menu pauseMenu = new Menu("Pause");
+            MenuEntry choice;
+
+            MenuEntry goBack = new MenuEntry("Resume");
+            MenuEntry option = new MenuEntry("Option");
+            MenuEntry menuBack = new MenuEntry("Return to the menu");
+
+            pauseMenu.Add(goBack);
+            pauseMenu.Add(option);
+            pauseMenu.Add(menuBack);
+
+            choice = pauseMenu.ShowMenu();
+
+            if (choice == goBack)
+            {
+                Console.Clear();
+                _gameRenderer = new GameRenderer(_game);
+                _game.Pause();
+            }
+
+            else if (choice == option)
+            {
+                ShowOptionsInGame();
+            }
+
+            else if (choice == menuBack)
+            {
+                MainMenu();
+            }      
+        }
+
+        /// <summary>
         /// Méthode pour choisir un nouveau nom. Assez banal pour l'instant.
         /// </summary>
         /// <returns>Le nouveau nom du joueur</returns>
@@ -94,13 +132,14 @@ namespace FinTris
             MenuEntry bestScores = new MenuEntry("Show best scores");
             MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
             MenuEntry cancel = new MenuEntry("Return");
+
             optionMenu.Add(bestScores);
             optionMenu.Add(difficulty);
             optionMenu.Add(cancel);
+
             MenuEntry choice;
             do
-            {
-       
+            {      
                 choice = optionMenu.ShowMenu();
 
                 if (choice == bestScores)
@@ -115,6 +154,43 @@ namespace FinTris
                 {
                     SoundCancel();
                     MainMenu(); //huuuuh
+                }
+            } while (choice != cancel);
+
+        }
+
+        /// <summary>
+        /// Affiche le menu option depuis le menu pause
+        /// </summary>
+        public static void ShowOptionsInGame()
+        {
+            Menu optionMenu = new Menu("Options");
+
+            MenuEntry bestScores = new MenuEntry("Show best scores");
+            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry cancel = new MenuEntry("Return");
+
+            optionMenu.Add(bestScores);
+            optionMenu.Add(difficulty);
+            optionMenu.Add(cancel);
+
+            MenuEntry choice;
+            do
+            {
+                choice = optionMenu.ShowMenu();
+
+                if (choice == bestScores)
+                {
+                    ShowBestScores();
+                }
+                if (choice == difficulty)
+                {
+                    SelectDifficultyInGame();
+                }
+                else if (choice == cancel)
+                {
+                    SoundCancel();
+                    pauseMenu();
                 }
             } while (choice != cancel);
 
@@ -141,7 +217,9 @@ namespace FinTris
             Console.ReadLine();
         }
 
-
+        /// <summary>
+        /// Méthode qui change la difficulté du jeu
+        /// </summary>
         public static void SelectDifficulty()
         {
             Menu optionMenu = new Menu("Difficulty levels");
@@ -166,6 +244,32 @@ namespace FinTris
                 Config.DifficultyLevel = "Hard";
             }
             ShowOptions();
+        }
+
+        public static void SelectDifficultyInGame()
+        {
+            Menu optionMenu = new Menu("Difficulty levels");
+            MenuEntry diffEasy = new MenuEntry("Easy");
+            MenuEntry diffNormal = new MenuEntry("Normal");
+            MenuEntry diffHard = new MenuEntry("Hard");
+            optionMenu.Add(diffEasy);
+            optionMenu.Add(diffNormal);
+            optionMenu.Add(diffHard);
+            MenuEntry choice = optionMenu.ShowMenu();
+
+            if (choice == diffEasy)
+            {
+                Config.DifficultyLevel = "Easy";
+            }
+            else if (choice == diffNormal)
+            {
+                Config.DifficultyLevel = "Normal";
+            }
+            else if (choice == diffHard)
+            {
+                Config.DifficultyLevel = "Hard";
+            }
+            ShowOptionsInGame();
         }
 
         /// <summary>
@@ -254,10 +358,15 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Escape)
                 {
+                    SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
+                    pauseMenu();
+
+                    /*
                     _game.Stop();
 
                     SoundCancel();
                     MainMenu();
+                    */
                 }
                 else if (input == ConsoleKey.R)
                 {
@@ -277,7 +386,7 @@ namespace FinTris
                     _game.Start();
                 }
 
-            } while (input != ConsoleKey.Escape);
+            } while (input != ConsoleKey.Q);
         }
 
         public static void SoundCancel()

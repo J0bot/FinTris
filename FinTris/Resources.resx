@@ -151,4 +151,7 @@
   <data name="Bowser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\bowser.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="TetrisSoundPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundpause.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
