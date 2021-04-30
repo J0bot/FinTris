@@ -28,7 +28,10 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
-            
+            SoundPlayer themeSound = new SoundPlayer("tetrisSoundTheme.wav");
+            themeSound.PlayLooping();
+           
+
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");

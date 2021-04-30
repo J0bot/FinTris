@@ -165,6 +165,10 @@ namespace FinTris
             {
                 Config.SaveScore();
                 _game.Stop();
+
+                SoundPlayer koSound = new SoundPlayer("TetrisSoundKo.wav");
+                koSound.Play();
+
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
