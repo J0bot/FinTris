@@ -31,6 +31,9 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
+        private Border _gameBorder;
+        private Border _nextTetroBorder;
+
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
@@ -42,7 +45,16 @@ namespace FinTris
             _game.BoardChanged += game_PositionChanged;
             _game.StateChanged += game_StateChanged;
 
-            RenderBorder();
+            int width = (_game.Cols + 2) * 2;
+
+            _gameBorder = new Border(SHIFT_X, SHIFT_Y, width, _game.Rows + 2);
+            _gameBorder.Color = ConsoleColor.DarkRed;
+            _gameBorder.Draw();
+
+            _nextTetroBorder = new Border(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
+            _nextTetroBorder.Color = ConsoleColor.White;
+            _nextTetroBorder.Draw();
+
         }
 
         /// <summary>
@@ -92,36 +104,6 @@ namespace FinTris
                 DrawScore();
                 NextTetrominoRender();
             }
-        }
-
-        private void DrawBorders(int posx, int posy, int width, int height, ConsoleColor borderColor)
-        {
-            Console.ForegroundColor = borderColor;
-
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
-                    {
-                        Console.SetCursorPosition((x * BORDER_THICKNESS) + posx, y + posy);
-                        Console.Write("██");
-                    }
-                }
-            }
-            Console.ResetColor();
-        }
-
-        /// <summary>
-        /// Permet de créer la bordure du jeu.
-        /// </summary>
-        private void RenderBorder()
-        {
-            // Dessiner la bordure du plateau du jeu.
-            DrawBorders(SHIFT_X, SHIFT_Y, _game.Cols + 2, _game.Rows + 2, ConsoleColor.Red);
-
-            // Dessiner la bordure de la zone qui contient le Next Tetromino.
-            DrawBorders(SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4, SHIFT_Y + 2, 5, 5, ConsoleColor.Gray);
         }
 
         /// <summary>
@@ -177,8 +159,6 @@ namespace FinTris
 
                 Console.ResetColor();
 
-                RenderBorder();
-
                 int cursorX = SHIFT_X + _game.Cols / 2;
                 int cursorY = SHIFT_Y + _game.Rows / 4;
 
@@ -192,7 +172,7 @@ namespace FinTris
                 WriteAt("Try", cursorX += 2, ++cursorY);
                 WriteAt("Again❤", cursorX += 2, ++cursorY);
 
-                System.Threading.Thread.Sleep(1500);
+                Thread.Sleep(1500);
             }
         }
 
@@ -209,104 +189,19 @@ namespace FinTris
 
             Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
 
-            if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
-            {
-                Console.Write(  "██    ");
-                WriteAt(        "██    ", initPosX, initPosY + 1);
-                WriteAt(        "████  ", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
-            {
-                Console.Write(  "    ██");
-                WriteAt(        "    ██", initPosX, initPosY + 1);
-                WriteAt(        "  ████", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
-            {
-                Console.Write(  "      ");
-                WriteAt(        "  ██  ", initPosX, initPosY + 1);
-                WriteAt(        "██████", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Snake)
-            {
-                Console.Write(  "  ██  ");
-                WriteAt(        "████  ", initPosX, initPosY + 1);
-                WriteAt(        "██    ", initPosX, initPosY + 2);
+            int posx = SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4;
+            int posy = SHIFT_Y + 2;
 
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
+            foreach (Vector2 blockDir in _game.NextTetromino.Blocks)
             {
-                Console.Write(  "  ██  ");
-                WriteAt(        "  ████", initPosX, initPosY + 1);
-                WriteAt(        "    ██", initPosX, initPosY + 2);
+                Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
+                Console.SetCursorPosition(blockPos.x, blockPos.y);
+                Console.Write("██");
             }
-            else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
-            {
-                Console.Write(  "██████");
-                WriteAt(        "██████", initPosX, initPosY + 1);
-                WriteAt(        "██████", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Malong)
-            {
-                Console.Write(  "  ██  ");
-                WriteAt(        "  ██  ", initPosX, initPosY+1);
-                WriteAt(        "  ██  ", initPosX, initPosY+2);
-            }
-
-
 
             Console.ResetColor();
         }
 
-#if DEBUG
-        /// <summary>
-        /// Si le joueur appuie sur A, il entre dans une zone interdite.
-        /// </summary>
-        public void CheatCode()
-        {
-            // Lancement de la première voix.
-            SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
-            bowserSound2.Play();
-
-            Console.Clear();
-            Console.SetCursorPosition(50, 14);
-            TypewriterEffect("??? : Tricheur !");
-            Thread.Sleep(200);
-
-            Console.SetCursorPosition(35, 16);
-            TypewriterEffect("??? : Tu ne devais pas avoir accès à cette zone !");
-
-            Thread.Sleep(200);
-
-
-            Console.SetCursorPosition(39, 18);
-            TypewriterEffect("??? : Maintenant il va falloir...");
-            Thread.Sleep(100);
-            TypewriterEffect(" payer !", 100);
-            Thread.Sleep(1000);
-            Console.Clear();
-
-            // Lancement de la deuxième voix.
-            SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
-            bowserSound.Play();
-
-            // Affichage du monstre.
-            // 
-            for (int i = 0; i < 5; i++)
-            {
-                Console.SetCursorPosition(20, 0);
-                Console.Write(Resources.Bowser);
-
-                Thread.Sleep(100);
-                Console.Clear();
-                Thread.Sleep(100);
-            }
-            RenderBorder();
-
-            _game.CheatCode();
-
-        }
-#endif
 
         /// <summary>
         /// Ecris ue texte à une position donnée. (repris de la documentation de Microsoft)
