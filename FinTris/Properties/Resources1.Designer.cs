@@ -59,39 +59,5 @@ namespace FinTris.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à                                    @                                  
-        ///                                 @@@@@                                
-        ///                          *@@@&amp;@@@@@@@@##@@@@                         
-        ///                         @@@@@@@@@@@@@@@@@@@@@.                       
-        ///         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        
-        ///       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      
-        ///     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@     
-        ///     @@@@@@@@@@ [le reste de la chaîne a été tronqué]&quot;;.
-        /// </summary>
-        public static string Bowser {
-            get {
-                return ResourceManager.GetString("Bowser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
-        /// </summary>
-        public static System.IO.UnmanagedMemoryStream bowserSound {
-            get {
-                return ResourceManager.GetStream("bowserSound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
-        /// </summary>
-        public static System.IO.UnmanagedMemoryStream bowserSound2 {
-            get {
-                return ResourceManager.GetStream("bowserSound2", resourceCulture);
-            }
-        }
     }
 }

@@ -166,7 +166,7 @@ namespace FinTris
                 Config.SaveScore();
                 _game.Stop();
 
-                SoundPlayer koSound = new SoundPlayer("TetrisSoundKo.wav");
+                SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
                 koSound.Play();
 
                 for (int y = _game.Rows - 1; y >= 0; y--)
@@ -286,7 +286,7 @@ namespace FinTris
         public void CheatCode()
         {
             // Lancement de la première voix.
-            SoundPlayer bowserSound2 = new SoundPlayer("bowserSound2.wav");
+            SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
             bowserSound2.Play();
 
             Console.Clear();
@@ -308,24 +308,71 @@ namespace FinTris
             Console.Clear();
 
             // Lancement de la deuxième voix.
-            SoundPlayer bowserSound = new SoundPlayer("bowserSound.wav");
+            SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
             bowserSound.Play();
+
+            string[] bowserString = new string[] {
+                "                                   @                                  ",
+                "                                 @@@@@                                ",
+                "                          *@@@&@@@@@@@@##@@@@                         ",
+                "                         @@@@@@@@@@@@@@@@@@@@@.                       ",
+                "         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        ",
+                "       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      ",
+                "     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@     ",
+                "     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
+                "     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
+                "      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
+                "        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ",
+                "          @@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@         ",
+                "          @@@@@@@@       &@@@@@@@@@@@@@@@@@@@@.      &@@@@@@@         ",
+                "       #@@@@@@@@@@,         @@@@@@@@@@@@@@@          @@@@@@@@@@,      ",
+                "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   ",
+                "  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ",
+                " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+                ".@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+                " @@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@",
+                " @@@@@@@@@@@@       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       ,@@@@@@@@@@@",
+                "  @@@@@@@@@@@*         @@@@@@,           ,@@@@@@          @@@@@@@@@@@ ",
+                "   @@@@@@@@@@@           @@                 @@.          @@@@@@@@@@@  ",
+                "     @@@@@@@@@@           @                 @           @@@@@@@@@@    ",
+                "        @@@@@@@@                                       @@@@@@@@       ",
+                "          @@@@@@@                                     @@@@@@@         ",
+                "            @@@@@@                                   @@@@@@           ",
+                "              @@@@@@     @@@              ,@@@      @@@@@.            ",
+                "               @@@@@@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@@@@@              ",
+                "                 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                ",
+                "                 (@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                ",
+                "                  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                 ",
+                "                   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                  ",
+                "                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   ",
+                "                      &@@@@@@@@        #@@@@@@@@                      "
+            };
 
             // Affichage du monstre.
             // 
             for (int i = 0; i < 5; i++)
             {
-                string[] bowser = File.ReadAllLines("Bowser.txt");
-                
-                for (int w = 0; w < bowser.Length; w++)
+
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                //string[] bowser = File.ReadAllLines(Resources.Bowser);
+
+                //for (int w = 0; w < bowser.Length; w++)
+                //{
+                //    Console.WriteLine(bowser[w]);
+                //}
+                for (int j = 0; j < bowserString.Length; j++)
                 {
-                    Console.WriteLine(bowser[w]);
+                    Console.WriteLine(bowserString[j]);
                 }
+
 
                 Thread.Sleep(100);
                 Console.Clear();
                 Thread.Sleep(100);
+
             }
+            Console.ResetColor();
             BorderStyle();
 
             _game.CheatCode();

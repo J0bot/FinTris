@@ -55,6 +55,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Structs\Case.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuEntry.cs" />
@@ -84,13 +89,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bowserSound.wav" />
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Bowser.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bowserSound2.wav" />
+    <Content Include="Resources\Bowser.txt" />
+    <Content Include="Resources\bowserSound.wav" />
+    <Content Include="Resources\bowserSound2.wav" />
+    <Content Include="Resources\tetrisSoundCancel.wav" />
+    <Content Include="Resources\TetrisSoundFall.wav" />
+    <Content Include="Resources\tetrisSoundGo.wav" />
+    <Content Include="Resources\TetrisSoundKo.wav" />
+    <Content Include="Resources\tetrisSoundLvlUp.wav" />
+    <Content Include="Resources\tetrisSoundOK.wav" />
+    <Content Include="Resources\tetrisSoundReady.wav" />
+    <Content Include="Resources\tetrisSoundTheme.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

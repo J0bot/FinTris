@@ -28,7 +28,7 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
-            SoundPlayer themeSound = new SoundPlayer("tetrisSoundTheme.wav");
+            SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
             themeSound.PlayLooping();
            
 
@@ -173,7 +173,7 @@ namespace FinTris
         /// </summary>
         public static void Play()
         {
-            SoundPlayer okSound = new SoundPlayer("tetrisSoundOK.wav");
+            SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
             Stopwatch stopWatch = new Stopwatch();
 
             okSound.Play();
@@ -202,7 +202,7 @@ namespace FinTris
 
                 Console.Clear();
 
-                SoundPlayer goSound = new SoundPlayer("tetrisSoundGo.wav");
+                SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
                 goSound.Play();
 
                 do
@@ -282,13 +282,13 @@ namespace FinTris
 
         public static void SoundCancel()
         {
-            SoundPlayer cancelSound = new SoundPlayer("tetrisSoundCancel.wav");
+            SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
             cancelSound.Play();
         }          
 
         public static void SoundReady()
         {
-            SoundPlayer readySound = new SoundPlayer("tetrisSoundReady.wav");
+            SoundPlayer readySound = new SoundPlayer(Resources.tetrisSoundReady);
             readySound.Play();
         }
     }
