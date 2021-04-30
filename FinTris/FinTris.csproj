@@ -83,15 +83,8 @@
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="Resources\bowserSound.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bowserSound2.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Bowser.txt" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
