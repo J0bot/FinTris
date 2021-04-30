@@ -154,10 +154,27 @@ namespace FinTris
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
+
+            if (Config.DifficultyLevel == "Normal")
+            {
+                //_gameTimer.Interval -= 100;
+                _MS -= 100;
+            }
+            else if (Config.DifficultyLevel == "Hard")
+            {
+                //_gameTimer.Interval -= 300;
+                _MS -= 300;
+            }
+
+
+
             _gameTimer = new Timer(_MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = rows;
             _cols = cols;
+
+
+
 
             _board = new Case[cols, rows];
 
@@ -168,6 +185,10 @@ namespace FinTris
                     _board[i, j] = new Case();
                 }
             }
+
+
+
+
         }
 
         /// <summary>
@@ -506,21 +527,8 @@ namespace FinTris
             // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
-            //mais ce truc est vérifié chaque fois que le score augmente non? Donc il ne s'active jamais en début de partie! à changer!-------------------TODO TODO TODO TODO
-            float dividingValue = 0.5f;
-            switch (Config.DifficultyLevel)
-            {
-                case "Easy":
-                    dividingValue = 0.5f;
-                    break;
-                case "Normal":
-                    dividingValue = 0.7f;
-                    break;
-                case "Hard":
-                    dividingValue = 2f;
-                    break;
-            }
-            _gameTimer.Interval = _MS / (_level * dividingValue);
+            //_gameTimer.Interval = _MS / (_level * 0.5f);
+            _gameTimer.Interval = _MS - (_level / 0.5);
 
         }
 
@@ -541,6 +549,14 @@ namespace FinTris
         {
             // Mettre à jour l'état du jeu.
             _state = GameState.Playing;
+
+
+
+
+
+
+
+
 
             // Commencer le timer.
             _gameTimer.Start();            
