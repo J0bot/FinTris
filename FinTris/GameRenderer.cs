@@ -164,7 +164,7 @@ namespace FinTris
             {
                 Config.SaveScore();
                 _game.Stop();
-                for (int y = _game.Rows - 1; y >= 0; y--)
+                /*for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
                     {
@@ -173,7 +173,7 @@ namespace FinTris
                         Console.Write("██");
                     }
                     System.Threading.Thread.Sleep(100);
-                }
+                }*/
 
 
                 for (int y = _game.Rows; y > 0; y--)
