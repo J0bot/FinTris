@@ -6,6 +6,7 @@
 using System;
 using Figgle;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FinTris
 {
@@ -106,7 +107,7 @@ namespace FinTris
             Console.CursorVisible = false;
 
             //Si le joueur a annulé le changement de nom, on renvoie juste l'ancien nom
-            if (input == 27)
+            if (input == 27 || newName.Length < 2) //pourquoi le nom comporte 1 caractère d'office?
             {
                 return Config.PlayerName;
             }
@@ -119,7 +120,20 @@ namespace FinTris
             Console.Clear();
             Console.CursorTop = Console.WindowHeight / 2;
             Console.CursorLeft = (Console.WindowWidth - askNewName.Length - newName.Length) / 2;
-            Console.Write(askNewName + newName);
+            //Console.Write(askNewName + newName);
+
+            Console.Write(askNewName);
+            if (newName == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write(Config.PlayerName);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.CursorLeft = Console.CursorLeft - Config.PlayerName.Length;
+            }
+            else
+            {
+                Console.Write(newName);
+            }
 
         }
 
