@@ -79,7 +79,7 @@ namespace FinTris
         /// <summary>
         /// Événement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie.
         /// </summary>
-        public event EventHandler<bool> IsDead;
+        public event EventHandler<GameState> StateChanged;
 
         /// <summary>
         /// Propriété read-only qui retourne le nombre de colones dans notre plateau de jeu.
@@ -140,7 +140,7 @@ namespace FinTris
         public GameState State
         {
             get { return _state; }
-            set { _state = value; }
+            private set { _state = value; }
         }
 
 
@@ -293,7 +293,7 @@ namespace FinTris
             }
 
             _gameTimer.Start();
-            NewTetromino();
+            SpawnNextTetromino();
 
         }
 
@@ -313,7 +313,7 @@ namespace FinTris
             }
             else
             {
-                NewTetromino(); 
+                SpawnNextTetromino(); 
             }
 
             UpdateBoard();
@@ -386,7 +386,7 @@ namespace FinTris
         /// On va commencer par stopper le Tetromino actuel, puis on va instancier le nouveau Tetromino
         /// Il va falloir ensuite transformer l'ancien Tetromino en bloc solide (SquareState.SolidBlock)
         /// </summary>
-        private void NewTetromino()
+        private void SpawnNextTetromino()
         {
             _tetromino.State = TetrominoState.Stopped;
             CheckForFullRows();
@@ -463,14 +463,20 @@ namespace FinTris
         /// </summary>
         private void CheckForDeath()
         {
-            if (CollideAt(_tetromino.Position) == true)
+            if (CollideAt(_tetromino.Position))
             {
                 Config.GameScore = Score; // Must be before the IsDed Event is called
-                IsDead.Invoke(this, true);
                 UpdateBoard();
-                _state = GameState.Finished;
+
+                ChangeState(GameState.Finished);
             }
 
+        }
+
+        private void ChangeState(GameState newState)
+        {
+            State = newState;
+            StateChanged?.Invoke(this, newState);
         }
 
 

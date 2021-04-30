@@ -14,7 +14,8 @@ namespace FinTris
     /// Classe qui s'occupe d'afficher le jeu.
     /// </summary>
     public class GameRenderer
-    {        
+    {
+        private const int BORDER_THICKNESS = 2;
         /// <summary>
         /// Attribut _game représentant la référance de l'instance de Game.
         /// </summary>
@@ -38,10 +39,24 @@ namespace FinTris
         {
             _game = game;
 
-            _game.BoardChanged += _game_PositionChanged;
-            _game.IsDead += _game_IsDed;
+            _game.BoardChanged += game_PositionChanged;
+            _game.StateChanged += game_StateChanged;
 
-            BorderStyle();
+            RenderBorder();
+        }
+
+        /// <summary>
+        /// La fonction callback de l'événement StateChanged. Déclenché par la Game quand le jeu est terminé.
+        /// </summary>
+        /// <param name="sender">Le déclencheur de l'événement.</param>
+        /// <param name="newState">Le nouveau état du jeu.</param>
+        private void game_StateChanged(object sender, GameState newState)
+        {
+            if (newState == GameState.Finished)
+            {
+                DeathAnim();
+                GameManager.Play();
+            }
         }
 
         /// <summary>
@@ -49,7 +64,7 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
-        private void _game_PositionChanged(object sender, Case[,] board)
+        private void game_PositionChanged(object sender, Case[,] board)
         {
             // Mettre à jour l'affichage du plateau après les nouveaux changements.
             Refresh(board);
@@ -79,52 +94,34 @@ namespace FinTris
             }
         }
 
+        private void DrawBorders(int posx, int posy, int width, int height, ConsoleColor borderColor)
+        {
+            Console.ForegroundColor = borderColor;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+                    {
+                        Console.SetCursorPosition((x * BORDER_THICKNESS) + posx, y + posy);
+                        Console.Write("██");
+                    }
+                }
+            }
+            Console.ResetColor();
+        }
+
         /// <summary>
         /// Permet de créer la bordure du jeu.
         /// </summary>
-        private void BorderStyle()
+        private void RenderBorder()
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.SetCursorPosition(SHIFT_X, SHIFT_Y);
-            Console.Write(new string('█', 26));
+            // Dessiner la bordure du plateau du jeu.
+            DrawBorders(SHIFT_X, SHIFT_Y, _game.Cols + 2, _game.Rows + 2, ConsoleColor.Red);
 
-            for (int i = 0; i < 22; i++)
-            {
-                Console.SetCursorPosition(SHIFT_X, i + SHIFT_Y+1);
-                Console.Write("██"+ new string(' ', 22) + "██");
-            }
-            Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
-            Console.Write(new string('█', 26));
-            
-            Console.ResetColor();
-
-            // Bordure du prochain Tetromino.
-            Console.SetCursorPosition(58, 2);
-            Console.Write("NEXT TETROMINO");
-
-            byte min = 4;
-            byte max = 9;
-            byte decal = 60;
-            byte length = 10;
-
-            Console.ForegroundColor = ConsoleColor.Gray;
-            for (int l = min; l < max; l++)
-            {
-                if (l == min || l == max - 1)
-                {
-                    Console.SetCursorPosition(decal, l);
-
-                    Console.Write(new string('█', length));
-                }
-                else
-                {
-                    Console.SetCursorPosition(decal, l);
-                    Console.Write("██"+new string(' ', length-4)+"██");
-                }
-
-            }
-
-            Console.ResetColor();
+            // Dessiner la bordure de la zone qui contient le Next Tetromino.
+            DrawBorders(SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4, SHIFT_Y + 2, 5, 5, ConsoleColor.Gray);
         }
 
         /// <summary>
@@ -141,19 +138,6 @@ namespace FinTris
             Console.WriteLine($"Niveau : {_game.Level}");
         }
 
-        /// <summary>
-        /// La fonction callback de l'événement IsDead. Déclenché par la Game quand le jeu est terminé.
-        /// </summary>
-        /// <param name="sender">Le déclencheur de l'événement.</param>
-        /// <param name="e">If set to <c>true</c> e.</param>
-        private void _game_IsDed(object sender, bool e)
-        {
-            if (e == true)
-            {
-                DeathAnim();
-                GameManager.Play();
-            }
-        }
 
         /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.
@@ -172,7 +156,7 @@ namespace FinTris
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
                         Console.Write("██");
                     }
-                    System.Threading.Thread.Sleep(100);
+                    Thread.Sleep(100);
                 }
 
 
@@ -185,15 +169,15 @@ namespace FinTris
                         Console.Write("██");
                     }
 
-                    System.Threading.Thread.Sleep(8);
+                    Thread.Sleep(8);
                 }
 
 
-                System.Threading.Thread.Sleep(1200);
+                Thread.Sleep(1200);
 
                 Console.ResetColor();
 
-                BorderStyle();
+                RenderBorder();
 
                 int cursorX = SHIFT_X + _game.Cols / 2;
                 int cursorY = SHIFT_Y + _game.Rows / 4;
@@ -317,7 +301,7 @@ namespace FinTris
                 Console.Clear();
                 Thread.Sleep(100);
             }
-            BorderStyle();
+            RenderBorder();
 
             _game.CheatCode();
 
