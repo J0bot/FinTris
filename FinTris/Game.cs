@@ -5,6 +5,8 @@
 
 using System;
 using System.Timers;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace FinTris
 {
@@ -183,8 +185,17 @@ namespace FinTris
                 return;
             }
 
-            _tetromino.Rotate();
-            UpdateBoard();
+
+
+            if (_tetromino.Position.x + _tetromino.Width < _cols && _tetromino.Position.y + _tetromino.Height < _rows)
+            {
+                _tetromino.Rotate();
+                UpdateBoard();
+
+            }
+
+
+
         }
 
         /// <summary>
@@ -336,13 +347,18 @@ namespace FinTris
                 }
             }
 
+
             // Par la suite on va implémenter le Tetromino dans le terrain.
+
 
             foreach (Vector2 block in _tetromino.Blocks)
             {
-                Vector2 pos = block + _tetromino.Position; 
+
+                Vector2 pos = block + _tetromino.Position;
+
                 _board[pos.x, pos.y].State = SquareState.MovingBlock;
                 _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
+
             }
 
 

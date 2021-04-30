@@ -267,7 +267,7 @@ namespace FinTris
         {
 
             if (_shape == TetrominoType.Squarie)
-            {
+             {
                 return;
             }
 

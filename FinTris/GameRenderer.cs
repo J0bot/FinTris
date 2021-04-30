@@ -202,7 +202,6 @@ namespace FinTris
             Console.ResetColor();
         }
 
-
         /// <summary>
         /// Ecris ue texte à une position donnée. (repris de la documentation de Microsoft)
         /// </summary>
