@@ -153,7 +153,7 @@ namespace FinTris
         {
             // On va spawn une pièce random.
             random = new Random();
-            
+
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
@@ -179,6 +179,14 @@ namespace FinTris
         public void Rotate()
         {
             if (_state != GameState.Playing)
+            {
+                return;
+            }
+
+            // Avant de faire pivoter le Tetromino, vérifier si la nouvelle forme
+            // ne dépasse pas les limites du jeu.
+            if (_tetromino.Position.x + _tetromino.WidthAfterRotation > _cols ||
+                _tetromino.Position.y + _tetromino.HeightAfterRotation > _rows)
             {
                 return;
             }
@@ -243,12 +251,10 @@ namespace FinTris
         /// </summary>
         public void MoveDown()
         {
-
             if (_state != GameState.Playing)
             {
                 return;
             }
-
 
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
 
@@ -299,7 +305,7 @@ namespace FinTris
 
 
         /// <summary>
-        /// La fonction callback du timer du jeu. Sert à faire descendre le Tetromino à chaque certain nombre de millisecondes.
+        /// La méthode callback du timer du jeu. Sert à faire descendre le Tetromino à chaque certain nombre de millisecondes.
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="e">Les paramètres de l'événement.</param>
@@ -325,13 +331,13 @@ namespace FinTris
         private void UpdateBoard()
         {
             // On va commencer par réinitialiser le tableau de base pour effacer les données obsolètes.
-            for (int i = 0; i < _board.GetLength(0); i++)
+            for (int y = 0; y < _rows; y++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int x = 0; x < _cols; x++)
                 {
-                    if (_board[i, j].State != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste.
+                    if (_board[x, y].State != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste.
                     {
-                        _board[i, j].State = SquareState.Empty;
+                        _board[x, y].State = SquareState.Empty;
                     }
                 }
             }
@@ -340,11 +346,10 @@ namespace FinTris
 
             foreach (Vector2 block in _tetromino.Blocks)
             {
-                Vector2 pos = block + _tetromino.Position; 
-                _board[pos.x, pos.y].State = SquareState.MovingBlock;
-                _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
+                Vector2 blockPos = _tetromino.Position + block; 
+                _board[blockPos.x, blockPos.y].State = SquareState.MovingBlock;
+                _board[blockPos.x, blockPos.y].Color = _tetromino.TetrominoColor;
             }
-
 
             // Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
             BoardChanged?.Invoke(this, _board);
