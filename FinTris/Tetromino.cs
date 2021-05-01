@@ -184,7 +184,6 @@ namespace FinTris
             set { _blocks = value; }
         }
 
-
         /// <summary>
         /// Permet de créer une nouvelle instance de Tetromino.
         /// </summary>

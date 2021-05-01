@@ -31,8 +31,8 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
-        private Border _gameBorder;
-        private Border _nextTetroBorder;
+        private Rect _gameBorder;
+        private Rect _nextTetroBorder;
 
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
@@ -47,12 +47,10 @@ namespace FinTris
 
             int width = (_game.Cols + 2) * 2;
 
-            _gameBorder = new Border(SHIFT_X, SHIFT_Y, width, _game.Rows + 2);
-            _gameBorder.Color = ConsoleColor.DarkRed;
+            _gameBorder = new Rect(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
             _gameBorder.Draw();
 
-            _nextTetroBorder = new Border(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
-            _nextTetroBorder.Color = ConsoleColor.White;
+            _nextTetroBorder = new Rect(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
             _nextTetroBorder.Draw();
 
         }
@@ -181,9 +179,10 @@ namespace FinTris
         /// </summary>
         private void NextTetrominoRender()
         {
+            int initPosX = 62;
+            int initPosY = 5;
 
-            int initPosX =62;
-            int initPosY =5;
+            _nextTetroBorder.Draw();
 
             Console.SetCursorPosition(initPosX, initPosY);
 
