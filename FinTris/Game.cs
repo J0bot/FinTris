@@ -82,6 +82,11 @@ namespace FinTris
         public event EventHandler<GameState> StateChanged;
 
         /// <summary>
+        /// Événement qui se déclenche quand le prochain Tetromino se met en place.
+        /// </summary>
+        public event EventHandler TetrominoChanged;
+
+        /// <summary>
         /// Propriété read-only qui retourne le nombre de colones dans notre plateau de jeu.
         /// </summary>
         public int Cols
@@ -413,6 +418,8 @@ namespace FinTris
             }
 
             CheckForDeath();
+
+            TetrominoChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

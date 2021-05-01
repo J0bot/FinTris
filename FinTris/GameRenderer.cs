@@ -3,9 +3,7 @@
 /// Date     	 : 09.03.2021
 /// Description  : Fintris
 
-using FinTris.Properties;
 using System;
-using System.Media;
 using System.Threading;
 
 namespace FinTris
@@ -31,8 +29,8 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
-        private Rect _gameBorder;
-        private Rect _nextTetroBorder;
+        private Rect _rectGame;
+        private Rect _rectNextTetro;
 
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
@@ -44,15 +42,22 @@ namespace FinTris
 
             _game.BoardChanged += game_PositionChanged;
             _game.StateChanged += game_StateChanged;
+            _game.TetrominoChanged += _game_TetrominoChanged;
 
             int width = (_game.Cols + 2) * 2;
 
-            _gameBorder = new Rect(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
-            _gameBorder.Draw();
+            _rectGame = new Rect(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
+            _rectGame.Draw();
 
-            _nextTetroBorder = new Rect(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
-            _nextTetroBorder.Draw();
+            _rectNextTetro = new Rect(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
+            _rectNextTetro.Draw();
 
+            RenderNextTetromino();
+        }
+
+        private void _game_TetrominoChanged(object sender, EventArgs e)
+        {
+            RenderNextTetromino();
         }
 
         /// <summary>
@@ -100,7 +105,6 @@ namespace FinTris
                 }
                 Console.ResetColor();
                 DrawScore();
-                NextTetrominoRender();
             }
         }
 
@@ -177,12 +181,12 @@ namespace FinTris
         /// <summary>
         /// Fonction qui va s'occuper de render le prochain Tetromino.
         /// </summary>
-        private void NextTetrominoRender()
+        private void RenderNextTetromino()
         {
             int initPosX = 62;
             int initPosY = 5;
 
-            _nextTetroBorder.Draw();
+            _rectNextTetro.Draw();
 
             Console.SetCursorPosition(initPosX, initPosY);
 
