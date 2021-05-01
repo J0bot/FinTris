@@ -303,7 +303,6 @@ namespace FinTris
 
         }
 
-
         /// <summary>
         /// La méthode callback du timer du jeu. Sert à faire descendre le Tetromino à chaque certain nombre de millisecondes.
         /// </summary>
@@ -400,18 +399,19 @@ namespace FinTris
             // On va spawn une nouvelle pièce random
             _tetromino = _nextTetromino;
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-            //_tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
-            for (int a = 0; a < _board.GetLength(0); a++)
+            // Solidifier l'ancien Tetromino.
+            for (int y = 0; y < _rows; y++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int x = 0; x < _cols; x++)
                 {
-                    if (_board[a, j].State == SquareState.MovingBlock)
+                    if (_board[x, y].State == SquareState.MovingBlock)
                     {
-                        _board[a, j].State = SquareState.SolidBlock;
+                        _board[x, y].State = SquareState.SolidBlock;
                     }
                 }
             }
+
             CheckForDeath();
         }
 
@@ -429,11 +429,12 @@ namespace FinTris
                     if (_board[x, y].State == SquareState.Empty)
                     {
                         isfull = false;
+                        break;
                     }
                 }
                 if (isfull)
                 {
-                    DeleteRow(y);
+                    ClearRow(y);
                     killedRows++;
                     //BoardChanged.Invoke(this, _board);
                     //System.Threading.Thread.Sleep(1000);
@@ -446,7 +447,7 @@ namespace FinTris
         /// Cette fonction va supprimer la ligne spécifiée.
         /// </summary>
         /// <param name="fullY">Les coordonnées Y de la ligne à supprimer.</param>
-        private void DeleteRow(int fullY)
+        private void ClearRow(int fullY)
         {
             for (int x = 0; x < _cols; x++)
             {
