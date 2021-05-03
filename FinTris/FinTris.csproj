@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Figgle, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Figgle.0.4.0\lib\net45\Figgle.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -55,7 +52,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Structs\Case.cs" />
+    <Compile Include="UI\Button.cs" />
+    <Compile Include="UI\TextBlock.cs" />
+    <Compile Include="UI\ButtonsContainer.cs" />
+    <Compile Include="UI\IDrawable.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuEntry.cs" />
     <Compile Include="Game.cs" />
@@ -71,6 +77,10 @@
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="UI\Rect.cs" />
+    <Compile Include="UI\Scene.cs" />
+    <Compile Include="UI\ScenesManager.cs" />
+    <Compile Include="UI\UIComponent.cs" />
+    <Compile Include="UI\UIContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\App.config" />
@@ -78,7 +88,6 @@
     <None Include="config.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
@@ -86,6 +95,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

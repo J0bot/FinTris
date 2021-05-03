@@ -64,7 +64,7 @@ namespace FinTris
         public MenuEntry ShowMenu()
         {
             Console.Clear();
-            Console.WriteLine(_title);
+            Console.Write(_title);
             Console.WriteLine();
 
             int initialY = Console.CursorTop;

@@ -4,7 +4,6 @@
 ///Description  : Fintris
 
 using System;
-using Figgle;
 using System.Collections.Generic;
 
 namespace FinTris
@@ -26,8 +25,7 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
-            
-            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+            Menu _menu = new Menu(Resources.fintris_title);
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");

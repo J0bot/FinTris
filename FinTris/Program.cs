@@ -18,17 +18,33 @@ namespace FinTris
         /// <param name="args">Les paramètres passés après l'exécution du programme/jeu.</param>
         static void Main(string[] args)
         {
-            // Cacher le curseur.
-            Console.CursorVisible = false;
+            Scene sceneMenu = new Scene("Menu");
+            ButtonsContainer btnContainer = new ButtonsContainer();
+            btnContainer.Position += Vector2.Right;
 
-            // Agrandir la font
-            ConsoleHelper.SetCurrentFont("Consolas", 20);
+            Button btnPlay = new Button("Play");
+            btnPlay.Width = 50;
+            btnPlay.IsSelected = true;
+            Button btnPlay2 = new Button("Play2");
+            btnContainer.Add(btnPlay);
+            btnContainer.Add(btnPlay2);
+            sceneMenu.Components.Add(btnContainer);
+            ScenesManager.Add(sceneMenu);
 
-            // Changer le titre de la fenêtre.
-            Console.Title = "FinTris";
+            ScenesManager.SetActiveScene("Menu");
 
-            // Commencer le jeu.
-            GameManager.MainMenu();
+            Console.Read();
+            //// Cacher le curseur.
+            //Console.CursorVisible = false;
+
+            //// Agrandir la font
+            //ConsoleHelper.SetCurrentFont("Consolas", 20);
+
+            //// Changer le titre de la fenêtre.
+            //Console.Title = "FinTris";
+
+            //// Commencer le jeu.
+            //GameManager.MainMenu();
         }
 
     }

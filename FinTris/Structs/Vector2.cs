@@ -72,5 +72,10 @@ namespace FinTris
         {
             return new Vector2(v1.x - v2.x, v1.y - v2.y);
         }
+
+        public static Vector2 operator *(Vector2 vec, int mul)
+        {
+            return new Vector2(vec.x * mul, vec.y * mul);
+        }
     }
 }
