@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace ConsoleEngine
 {
@@ -14,8 +13,6 @@ namespace ConsoleEngine
         private int _width;
         private int _height;
         private readonly List<UIComponent> _components;
-
-        public event EventHandler<ConsoleKey> KeyPressed;
 
         public string Name
         {
@@ -63,7 +60,10 @@ namespace ConsoleEngine
 
         public void HandleInput(ConsoleKey input)
         {
-            KeyPressed?.Invoke(this, input);
+            foreach (UIComponent child in _components)
+            {
+                child.OnKeyPressed(input);
+            }
         }
 
         public void Render()

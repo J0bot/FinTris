@@ -1,9 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleEngine
 {
     public class ButtonsContainer : UIContainer<Button>
     {
+        private int selectedIndex;
+
+
+        public ButtonsContainer()
+        {
+            selectedIndex = 0;
+            UpdateButtons();
+        }
+
+        public override void OnKeyPressed(ConsoleKey input)
+        {
+            base.OnKeyPressed(input);
+
+            if (input == ConsoleKey.DownArrow)
+            {
+                UpdateButtons();
+                selectedIndex = (selectedIndex + 1) % _children.Count;
+            }
+            else if (input == ConsoleKey.Enter)
+            {
+                _children[selectedIndex].OnClicked();
+            }
+        }
+
+        private void UpdateButtons()
+        {
+            foreach (Button child in _children)
+            {
+                child.IsSelected = child == _children[selectedIndex];
+                child.Render();
+            }
+        }
+
         public void Select(Button button)
         {
             foreach (Button btn in _children)
@@ -38,6 +72,7 @@ namespace ConsoleEngine
                     child.Width = _width;
                 }
             }
+            get => _width;
         }
 
         public override void Render()
@@ -47,5 +82,7 @@ namespace ConsoleEngine
                 component.Render();
             }
         }
+
+        
     }
 }

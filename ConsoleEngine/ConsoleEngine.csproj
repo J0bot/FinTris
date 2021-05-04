@@ -45,7 +45,6 @@
     <Compile Include="ButtonsContainer.cs" />
     <Compile Include="Enums\HorizontalAlignment.cs" />
     <Compile Include="Enums\VerticalAlignment.cs" />
-    <Compile Include="IClickable.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuEntry.cs" />

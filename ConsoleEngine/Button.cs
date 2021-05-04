@@ -2,7 +2,7 @@
 
 namespace ConsoleEngine
 {
-    public class Button : TextBlock, IClickable
+    public class Button : TextBlock
     {
         const ConsoleColor DEFAULT_SELECTED_FCOLOR = ConsoleColor.Black;
         const ConsoleColor DEFAULT_SELECTED_BCOLOR = ConsoleColor.White;
@@ -11,7 +11,7 @@ namespace ConsoleEngine
         private ConsoleColor _sForegroundColor;
         private ConsoleColor _sBackgroundColor;
 
-        public event EventHandler<ConsoleKey> Clicked;
+        public event EventHandler Clicked;
 
         public ConsoleColor ForegroundColorSelected
         {
@@ -53,6 +53,11 @@ namespace ConsoleEngine
             Console.SetCursorPosition(x, y);
             Console.Write(_text);
             Console.ResetColor();
+        }
+
+        public void OnClicked()
+        {
+            Clicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

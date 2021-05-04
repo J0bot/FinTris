@@ -13,6 +13,8 @@ namespace ConsoleEngine
         protected VerticalAlignment _vAlignment;
         protected Scene _scene;
 
+        public event EventHandler<ConsoleKey> KeyPressed;
+
         public string Id
         {
             get { return _id; }
@@ -66,9 +68,9 @@ namespace ConsoleEngine
             _id = Guid.NewGuid().ToString();
         }
 
-        protected virtual void OnKeyPressed(ConsoleKey input)
+        public virtual void OnKeyPressed(ConsoleKey input)
         {
-
+            KeyPressed?.Invoke(this, input);
         }
 
         public abstract void Render();
