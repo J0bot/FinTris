@@ -9,6 +9,8 @@ namespace FinTris
         protected int _height;
         protected Vector2 _position;
         protected UIComponent _parent;
+        protected HorizontalAlignment _hAlignment;
+        protected VerticalAlignment _vAlignment;
 
         public string Id
         {
@@ -32,6 +34,18 @@ namespace FinTris
         {
             get { return _position; }
             set { _position = value; }
+        }
+
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get { return _hAlignment; }
+            set { _hAlignment = value; }
+        }
+
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return _vAlignment; }
+            set { _vAlignment = value; }
         }
 
         public UIComponent Parent
