@@ -1,4 +1,4 @@
-﻿namespace FinTris
+﻿namespace ConsoleEngine
 {
     public enum HorizontalAlignment
     {

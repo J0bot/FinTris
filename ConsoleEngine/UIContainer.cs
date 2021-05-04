@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     public abstract class UIContainer<T> : UIComponent where T : UIComponent
     {
@@ -17,7 +17,7 @@ namespace FinTris
             _children = new List<T>();
         }
 
-        public void AddComponent(T child)
+        public virtual void AddComponent(T child)
         {
             _children.Add(child);
             child.Width = _width;

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     public class Scene : IDrawable
     {
@@ -12,6 +14,8 @@ namespace FinTris
         private int _width;
         private int _height;
         private readonly List<UIComponent> _components;
+
+        public event EventHandler<ConsoleKey> KeyPressed;
 
         public string Name
         {
@@ -49,6 +53,17 @@ namespace FinTris
             _width = width;
             _height = height;
             _components = new List<UIComponent>();
+        }
+
+        public void AddComponent(UIComponent component)
+        {
+            _components.Add(component);
+            component.Scene = this;
+        }
+
+        public void HandleInput(ConsoleKey input)
+        {
+            KeyPressed?.Invoke(this, input);
         }
 
         public void Render()

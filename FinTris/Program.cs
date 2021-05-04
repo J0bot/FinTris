@@ -4,6 +4,7 @@
 /// Description  : Fintris
 
 using System;
+using ConsoleEngine;
 
 namespace FinTris
 {
@@ -21,24 +22,22 @@ namespace FinTris
             Scene sceneMenu = new Scene("Menu");
             ButtonsContainer btnContainer = new ButtonsContainer();
 
-            Button btnPlay = new Button("Play");
-            Button btnPlay2 = new Button("Play2");
+            Button btnPlay = new Button("123456789");
+            Button btnPlay2 = new Button("123456789123456");
 
-            btnPlay.Width = 50;
+            btnContainer.AddComponent(btnPlay);
+            btnContainer.AddComponent(btnPlay2);
+            btnContainer.Width = 50;
+
             btnPlay.HorizontalAlignment = HorizontalAlignment.Center;
-            btnPlay.IsSelected = true;
+            btnPlay2.HorizontalAlignment = HorizontalAlignment.Center;
 
-
-            btnContainer.Position += Vector2.Right;
-            btnContainer.Add(btnPlay);
-            btnContainer.Add(btnPlay2);
-
-            sceneMenu.Components.Add(btnContainer);
+            sceneMenu.AddComponent(btnContainer);
 
             ScenesManager.Add(sceneMenu);
             ScenesManager.SetActiveScene("Menu");
 
-            Console.Read();
+            //Console.Read();
             //// Cacher le curseur.
             //Console.CursorVisible = false;
 

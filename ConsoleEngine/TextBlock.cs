@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     public class TextBlock : UIComponent
     {

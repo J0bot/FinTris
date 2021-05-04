@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace FinTris
+namespace ConsoleEngine
 {
-    public class Button : TextBlock
+    public class Button : TextBlock, IClickable
     {
         const ConsoleColor DEFAULT_SELECTED_FCOLOR = ConsoleColor.Black;
         const ConsoleColor DEFAULT_SELECTED_BCOLOR = ConsoleColor.White;
@@ -11,7 +11,7 @@ namespace FinTris
         private ConsoleColor _sForegroundColor;
         private ConsoleColor _sBackgroundColor;
 
-        public event EventHandler Clicked;
+        public event EventHandler<ConsoleKey> Clicked;
 
         public ConsoleColor ForegroundColorSelected
         {
@@ -39,8 +39,8 @@ namespace FinTris
 
         public override void Render()
         {
-            Console.ForegroundColor = _foregroundColor;
-            Console.BackgroundColor = _backgroundColor;
+            Console.ForegroundColor = _isSelected ? _sForegroundColor : _foregroundColor;
+            Console.BackgroundColor = _isSelected ? _sBackgroundColor : _backgroundColor;
 
             int x = (_parent != null ? _parent.Position.x : 0) + _position.x;
             int y = (_parent != null ? _parent.Position.y : 0) + _position.y;

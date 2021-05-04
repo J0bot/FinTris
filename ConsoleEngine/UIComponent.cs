@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     public abstract class UIComponent : IDrawable
     {
@@ -11,6 +11,7 @@ namespace FinTris
         protected UIComponent _parent;
         protected HorizontalAlignment _hAlignment;
         protected VerticalAlignment _vAlignment;
+        protected Scene _scene;
 
         public string Id
         {
@@ -48,6 +49,12 @@ namespace FinTris
             set { _vAlignment = value; }
         }
 
+        public Scene Scene
+        {
+            get { return _scene; }
+            set { _scene = value; }
+        }
+
         public UIComponent Parent
         {
             get { return _parent; }
@@ -57,6 +64,11 @@ namespace FinTris
         public UIComponent()
         {
             _id = Guid.NewGuid().ToString();
+        }
+
+        protected virtual void OnKeyPressed(ConsoleKey input)
+        {
+
         }
 
         public abstract void Render();

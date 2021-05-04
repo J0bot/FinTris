@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading;
+using ConsoleEngine;
 
 namespace FinTris
 {
