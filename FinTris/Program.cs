@@ -20,17 +20,22 @@ namespace FinTris
         {
             Scene sceneMenu = new Scene("Menu");
             ButtonsContainer btnContainer = new ButtonsContainer();
-            btnContainer.Position += Vector2.Right;
 
             Button btnPlay = new Button("Play");
-            btnPlay.Width = 50;
-            btnPlay.IsSelected = true;
             Button btnPlay2 = new Button("Play2");
+
+            btnPlay.Width = 50;
+            btnPlay.HorizontalAlignment = HorizontalAlignment.Center;
+            btnPlay.IsSelected = true;
+
+
+            btnContainer.Position += Vector2.Right;
             btnContainer.Add(btnPlay);
             btnContainer.Add(btnPlay2);
-            sceneMenu.Components.Add(btnContainer);
-            ScenesManager.Add(sceneMenu);
 
+            sceneMenu.Components.Add(btnContainer);
+
+            ScenesManager.Add(sceneMenu);
             ScenesManager.SetActiveScene("Menu");
 
             Console.Read();
