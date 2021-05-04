@@ -94,8 +94,8 @@ namespace FinTris
                     //retirer le dernier caractère du nom actuel
                     newName = newName.Remove(newName.Length - 1);
                 }
-                //sinon, si la taille du nom est inférieure au maximum...
-                else if (newName.Length < maxNameLength)
+                //sinon, si la taille du nom est inférieure au maximum et que la touche pressée n'est pas ESCAPE...
+                else if (newName.Length < maxNameLength && input != 0)
                 {
                     //ajouter le caractère qui vient d'être pressé au nom actuel
                     newName += Convert.ToChar(input);
