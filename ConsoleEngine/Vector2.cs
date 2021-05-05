@@ -3,7 +3,7 @@
 /// Date     	: 09.03.2021
 /// Description  : Fintris
 
-namespace FinTris
+namespace ConsoleEngine
 {
     /// <summary>
     /// Représente un vecteur bidimensionnel avec des coordonnées X et Y.

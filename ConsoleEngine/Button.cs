@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     public class Button : TextBlock
     {
@@ -41,11 +41,23 @@ namespace FinTris
         {
             Console.ForegroundColor = _isSelected ? _sForegroundColor : _foregroundColor;
             Console.BackgroundColor = _isSelected ? _sBackgroundColor : _backgroundColor;
-            Console.SetCursorPosition(
-                (_parent != null ? _parent.Position.x : 0) + _position.x,
-                (_parent != null ? _parent.Position.y : 0) + _position.y);
+
+            int x = (_parent != null ? _parent.Position.x : 0) + _position.x;
+            int y = (_parent != null ? _parent.Position.y : 0) + _position.y;
+
+            if (_hAlignment == HorizontalAlignment.Center)
+            {
+                x += (_width - _text.Length) / 2;
+            }
+
+            Console.SetCursorPosition(x, y);
             Console.Write(_text);
             Console.ResetColor();
+        }
+
+        public void OnClicked()
+        {
+            Clicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     public class Scene : IDrawable
     {
@@ -49,6 +50,20 @@ namespace FinTris
             _width = width;
             _height = height;
             _components = new List<UIComponent>();
+        }
+
+        public void AddComponent(UIComponent component)
+        {
+            _components.Add(component);
+            component.Scene = this;
+        }
+
+        public void HandleInput(ConsoleKey input)
+        {
+            foreach (UIComponent child in _components)
+            {
+                child.OnKeyPressed(input);
+            }
         }
 
         public void Render()

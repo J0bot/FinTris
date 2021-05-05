@@ -13,6 +13,21 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +47,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -58,12 +77,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Structs\Case.cs" />
-    <Compile Include="UI\Button.cs" />
-    <Compile Include="UI\TextBlock.cs" />
-    <Compile Include="UI\ButtonsContainer.cs" />
-    <Compile Include="UI\IDrawable.cs" />
-    <Compile Include="UI\Menu.cs" />
-    <Compile Include="UI\MenuEntry.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Program.cs" />
@@ -72,15 +85,9 @@
     <Compile Include="Tetromino.cs" />
     <Compile Include="Enums\SquareState.cs" />
     <Compile Include="Enums\TetrominoState.cs" />
-    <Compile Include="Structs\Vector2.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
-    <Compile Include="UI\Rect.cs" />
-    <Compile Include="UI\Scene.cs" />
-    <Compile Include="UI\ScenesManager.cs" />
-    <Compile Include="UI\UIComponent.cs" />
-    <Compile Include="UI\UIContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\App.config" />
@@ -101,6 +108,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 et x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleEngine\ConsoleEngine.csproj">
+      <Project>{95d36050-0783-4156-a0ae-d4cd259ab064}</Project>
+      <Name>ConsoleEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

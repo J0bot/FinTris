@@ -5,6 +5,7 @@
 
 using System;
 using System.Timers;
+using ConsoleEngine;
 
 namespace FinTris
 {

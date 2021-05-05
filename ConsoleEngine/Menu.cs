@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FinTris
+namespace ConsoleEngine
 {
     /// <summary>
     /// Un menu interactif.
