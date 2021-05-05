@@ -10,6 +10,8 @@ namespace FinTris
         protected Vector2 _position;
         protected UIComponent _parent;
 
+        //change 
+
         public string Id
         {
             get { return _id; }
