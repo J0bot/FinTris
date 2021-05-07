@@ -8,104 +8,108 @@ namespace FintrisTest
     public class GameTests
     {
 
-        //[TestMethod]
-        //public void RotateTest()
-        //{
-        //    Game game = new Game();
-        //    game.Start();
+        [TestMethod]
+        public void RotateTest()
+        {
+            Game game = new Game();
+            game.Start();
 
-        //    //Arrange
-        //    List<Vector2> initialAngle = game.CurrentTetromino.Blocks;
-        //    TetrominoType expected;
-        //    TetrominoType newAngle;
-            
-        //    //Configurations de Tetromino Possibles après rotation 
+            //Arrange
 
-        //    byte[,] squarieRotated = new byte[,]
-        //        {
-        //            {1, 1},
-        //            {1, 1},
-        //        };
+            List<Vector2> initialAngle = game.CurrentTetromino.Blocks;
+            TetrominoType currentTetromino = game.CurrentTetromino.Shape;
+            TetrominoType expected;
+            var newAngle;
 
-        //    List<Vector2> lstVectors = new List<Vector2>
-        //    {
-        //        new Vector2(0, 0),
-        //        new Vector2(0, 1),
-        //        new Vector2(1, 0),
-        //        new Vector2(1, 1),
-        //    };
-        //    byte[,] snakeRotated = new byte[,]
-        //    {
+            //Configurations de Tetromino Possibles après rotation 
 
-        //            {0 ,1 , 1},
-        //            {1 ,1 , 0},
+            byte[,] squarieRotated = new byte[,]
+                {
+                    {1, 1},
+                    {1, 1},
+                };
 
-        //    };
+            List<Vector2> lstVectors = new List<Vector2>
+            {
+                new Vector2(0, 0),
+                new Vector2(0, 1),
+                new Vector2(1, 0),
+                new Vector2(1, 1),
+            };
+            byte[,] snakeRotated = new byte[,]
+            {
 
-        //    byte[,] isnakeRotated = new byte[,]
-        //        {
-        //            {1, 1. 0},
-        //            {0, 1, 1},
-        //        };
+                    {0 ,1 , 1},
+                    {1 ,1 , 0},
 
-        //    byte[,] lawletRotated = new byte[,]
-        //        {
-        //            {1 ,0},
-        //            {1, 0},
-        //            {1, 1},
-        //        };
+            };
 
-        //    byte[,] ilawletRotated = new byte[,]
-        //        {
-        //            {0 ,1},
-        //            {0, 1},
-        //            {1, 1},
-        //        };
+            byte[,] isnakeRotated = new byte[,]
+                {
+                    {1, 1. 0},
+                    {0, 1, 1},
+                };
 
+            byte[,] lawletRotated = new byte[,]
+                {
+                    {1 ,0},
+                    {1, 0},
+                    {1, 1},
+                };
 
-        //    byte[,] pyramidRotated = new byte[,]
-        //         {
-        //            {1, 1, 1},
-        //            {0 ,1 ,0},
-        //         };
-
-        //    byte[,] malongRotated = new byte[,]
-        //         {
-        //            {1},
-        //            {1},
-        //            {1},
-        //            {1}
-        //         };
+            byte[,] ilawletRotated = new byte[,]
+                {
+                    {0 ,1},
+                    {0, 1},
+                    {1, 1},
+                };
 
 
+            byte[,] pyramidRotated = new byte[,]
+                 {
+                    {1, 1, 1},
+                    {0 ,1 ,0},
+                 };
 
-            ////Act
-            //game.Rotate();
-            //newAngle = game.CurrentTetromino.Shape;
-            //switch (initialAngle)
-            //{
-            //    case TetrominoType.Squarie:
-            //        expected = squarieRotated;
-            //        break;
-            //    case TetrominoType.Snake:
-            //        break;
-            //    case TetrominoType.ISnake:
-            //        break;
-            //    case TetrominoType.Malong:
-            //        break;
-            //    case TetrominoType.Lawlet:
-            //        break;
-            //    case TetrominoType.ILawlet:
-            //        break;
-            //    case TetrominoType.Pyramid:
-            //        break;
-            //    default:
-            //        break;
-            //}
+            byte[,] malongRotated = new byte[,]
+                 {
+                    {1},
+                    {1},
+                    {1},
+                    {1}
+                 };
 
-            ////Assert
-            //Assert.AreEqual(expected, newAngle);
-        //}
+
+
+            //Act
+            game.Rotate();
+            newAngle = game.CurrentTetromino.;
+
+
+            switch (currentTetromino)
+            {
+                case TetrominoType.Squarie:
+                    expected = squarieRotated;
+                    break;
+                case TetrominoType.Snake:
+                    break;
+                case TetrominoType.ISnake:
+                    break;
+                case TetrominoType.Malong:
+                    break;
+                case TetrominoType.Lawlet:
+                    break;
+                case TetrominoType.ILawlet:
+                    break;
+                case TetrominoType.Pyramid:
+                    break;
+                default:
+                    break;
+            }
+
+            //Assert
+            Assert.AreEqual(expected, newAngle);
+        }
 
         [TestMethod]
         public void MoveRightTest()
@@ -265,7 +269,7 @@ namespace FintrisTest
         //    Assert.IsTrue(res);
         //}
 
-
+        //TODO revoir le test, inutile
         [TestMethod]
         public void CheckForDeathTest()
         {
@@ -274,17 +278,62 @@ namespace FintrisTest
 
             //Arrange
             GameState actualState;
-            GameState expectedState = GameState.Finished;
+            GameState expectedState = GameState.Playing;
+            int expectedScore = 0;
+            int actualScore;
 
             //Act
             var privateTestMethod = new PrivateObject(game);
             privateTestMethod.Invoke("CheckForDeath");
             actualState = game.State;
+            actualScore = game.Score;
+           
+            //Assert
+            Assert.AreEqual(expectedState, actualState);
+            Assert.AreEqual(expectedScore, actualScore);
 
+        }
+
+        //TODO Test inutile?, revoir
+        [TestMethod]
+        public void ScoreManagerTest()
+        {
+            Game game = new Game();
+            game.Start();
+
+            //Arrange
+            
+
+            //Act
+            var privateTestMethod = new PrivateObject(game);
+            int args = 1;
+            privateTestMethod.Invoke("ScoreManager", args);
 
 
             //Assert
             Assert.AreEqual(expectedState, actualState);
+
+        }
+
+        [TestMethod]
+        public void PauseTest()
+        {
+            Game game = new Game();
+            game.Start();
+
+            //Arrange
+            GameState actualState;
+            GameState expectedState = GameState.Paused;
+
+            //Act
+            game.Pause()
+            actualState = game.State;
+
+
+            //Assert
+            Assert.AreEqual(expectedState, actualState);
+            Assert.AreEqual(expectedScore, actualScore);
+
         }
     }
 }
