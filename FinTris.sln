@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinTris", "FinTris\FinTris.csproj", "{A38AF29D-B26C-43A0-A319-E25B0B94615C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinTris", "FinTris\FinTris.csproj", "{A9850BC1-388E-45B6-A366-70BC1E470428}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FintrisTests", "FintrisTest\FintrisTests.csproj", "{49F2A7EF-3A47-4079-BD6E-635C6BD3D6A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A38AF29D-B26C-43A0-A319-E25B0B94615C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A38AF29D-B26C-43A0-A319-E25B0B94615C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A38AF29D-B26C-43A0-A319-E25B0B94615C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A38AF29D-B26C-43A0-A319-E25B0B94615C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9850BC1-388E-45B6-A366-70BC1E470428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9850BC1-388E-45B6-A366-70BC1E470428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9850BC1-388E-45B6-A366-70BC1E470428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9850BC1-388E-45B6-A366-70BC1E470428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F2A7EF-3A47-4079-BD6E-635C6BD3D6A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F2A7EF-3A47-4079-BD6E-635C6BD3D6A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F2A7EF-3A47-4079-BD6E-635C6BD3D6A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F2A7EF-3A47-4079-BD6E-635C6BD3D6A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
