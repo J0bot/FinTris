@@ -1,24 +1,24 @@
-﻿///ETML
-///Auteur   	: José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
-///Date     	: 12.03.2021
-///Description  : Fintris
+﻿/// ETML
+/// Auteur     	 : José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
+/// Date       	 : 12.03.2021
+/// Description  : Fintris
 
 using System;
 
 namespace FinTris
 {
     /// <summary>
-    /// Struct qui représente une case du terrain
+    /// Struct qui représente une case du terrain.
     /// </summary>
     public struct Case
     {
         /// <summary>
-        /// Couleur de la case
+        /// Couleur de la case.
         /// </summary>
         private ConsoleColor _consoleColor;
 
         /// <summary>
-        /// Etat de la case
+        /// Etat de la case.
         /// </summary>
         private SquareState _state;
 
