@@ -1,5 +1,6 @@
 ﻿using FinTris;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace FintrisTest
 {
@@ -7,86 +8,104 @@ namespace FintrisTest
     public class GameTests
     {
 
-        [TestMethod]
-        public void ScoreTest()
-        {
+        //[TestMethod]
+        //public void RotateTest()
+        //{
+        //    Game game = new Game();
+        //    game.Start();
 
-        }
+        //    //Arrange
+        //    List<Vector2> initialAngle = game.CurrentTetromino.Blocks;
+        //    TetrominoType expected;
+        //    TetrominoType newAngle;
+            
+        //    //Configurations de Tetromino Possibles après rotation 
 
-        [TestMethod]
-        public void RotateTest()
-        {
-            Game game = new Game();
-            Tetromino tetromino = new Tetromino();
-            game.Start();
+        //    byte[,] squarieRotated = new byte[,]
+        //        {
+        //            {1, 1},
+        //            {1, 1},
+        //        };
 
-            //Arrange
-            TetrominoType initialAngle = game.CurrentTetromino.Shape;
-            TetrominoType expected;
-            TetrominoType newAngle;
+        //    List<Vector2> lstVectors = new List<Vector2>
+        //    {
+        //        new Vector2(0, 0),
+        //        new Vector2(0, 1),
+        //        new Vector2(1, 0),
+        //        new Vector2(1, 1),
+        //    };
+        //    byte[,] snakeRotated = new byte[,]
+        //    {
 
-            //Configurations de Tetromino Possibles après rotation 
+        //            {0 ,1 , 1},
+        //            {1 ,1 , 0},
 
-            byte[,] squarieRotated = new byte[,]
-                {
-                    {1, 1},
-                    {1, 1},
-                };
+        //    };
 
-            byte[,] snake = new byte[,]
-            {
-                    {1 ,0},
-                    {1, 1},
-                    {0, 1},
-            };
+        //    byte[,] isnakeRotated = new byte[,]
+        //        {
+        //            {1, 1. 0},
+        //            {0, 1, 1},
+        //        };
 
-            byte[,] isnake = new byte[,]
-                {
-                    {0 ,1},
-                    {1, 1},
-                    {1, 0},
-                };
+        //    byte[,] lawletRotated = new byte[,]
+        //        {
+        //            {1 ,0},
+        //            {1, 0},
+        //            {1, 1},
+        //        };
 
-            byte[,] lawlet = new byte[,]
-                {
-                    {1 ,0},
-                    {1, 0},
-                    {1, 1},
-                };
-
-            byte[,] ilawlet = new byte[,]
-                {
-                    {0 ,1},
-                    {0, 1},
-                    {1, 1},
-                };
-
-
-            byte[,] pyramid = new byte[,]
-                 {
-                    {1, 1, 1},
-                    {0 ,1 ,0},
-                 };
-
-            byte[,] malong = new byte[,]
-                 {
-                    {1},
-                    {1},
-                    {1},
-                    {1}
-                 };
+        //    byte[,] ilawletRotated = new byte[,]
+        //        {
+        //            {0 ,1},
+        //            {0, 1},
+        //            {1, 1},
+        //        };
 
 
+        //    byte[,] pyramidRotated = new byte[,]
+        //         {
+        //            {1, 1, 1},
+        //            {0 ,1 ,0},
+        //         };
 
-            //Act
-            initialAngle = game.CurrentTetromino.Shape;
-            game.Rotate();
-            newAngle = game.CurrentTetromino.Shape;
-            expected = initialAngle;
+        //    byte[,] malongRotated = new byte[,]
+        //         {
+        //            {1},
+        //            {1},
+        //            {1},
+        //            {1}
+        //         };
 
-            //Assert
-            Assert.AreEqual(expected, newAngle);
-        }
+
+
+            ////Act
+            //game.Rotate();
+            //newAngle = game.CurrentTetromino.Shape;
+            //switch (initialAngle)
+            //{
+            //    case TetrominoType.Squarie:
+            //        expected = squarieRotated;
+            //        break;
+            //    case TetrominoType.Snake:
+            //        break;
+            //    case TetrominoType.ISnake:
+            //        break;
+            //    case TetrominoType.Malong:
+            //        break;
+            //    case TetrominoType.Lawlet:
+            //        break;
+            //    case TetrominoType.ILawlet:
+            //        break;
+            //    case TetrominoType.Pyramid:
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+            ////Assert
+            //Assert.AreEqual(expected, newAngle);
+        //}
 
         [TestMethod]
         public void MoveRightTest()
@@ -151,35 +170,121 @@ namespace FintrisTest
             Assert.AreEqual(expected, newPos);
         }
 
-        [TestMethod]
-        public void DropDownTest()   //TODO test est buggé, corriger le test, actual position du tetromino a un y de 0 ?
-        {
-            //Arrange
-            Game game = new Game();
-            GameRenderer gameRenderer = new GameRenderer(game); //TODO implémenter la variable d'épaisseur de la bordure lorsqu'elle sera mise à jour par Ahmad
+        //[TestMethod]
+        //public void DropDownTest()   //TODO test est buggé, corriger le test, actual position du tetromino a un y de 0 ?
+        //{
+        //    //Arrange
+        //    Game game = new Game();
+        //    GameRenderer gameRenderer = new GameRenderer(game); //TODO implémenter la variable d'épaisseur de la bordure lorsqu'elle sera mise à jour par Ahmad
 
+        //    game.Start();
+
+        //    Vector2 expectedPos;
+        //    int initScore = game.Score;
+        //    int expectedScore = initScore + 20;
+        //    int actualScore;
+
+        //    //Act 
+        //    game.DropDown();
+        //    //La position du Tetromino est comptée à partir de la position en haut à gauche de sa grille 
+        //    //2 = épaisseur bordure
+
+        //    expectedPos = new Vector2(game.CurrentTetromino.Position.x, game.Rows - game.CurrentTetromino.Height - 2 ); //bas du tableau 
+        //    Vector2 actualPos = game.CurrentTetromino.Position;
+        //    actualScore = game.Score;
+
+
+        //    //Assert
+        //    Assert.AreEqual(expectedPos, actualPos);
+        //    //Assert.AreEqual(expectedScore, actualScore);
+        //}
+
+        //TODO implémenter UpdateBoardTest
+        //[TestMethod]
+        //public void UpdateBoardTest()
+        //{
+         
+        //    Game game = new Game();
+        //    game.Start();
+
+        //    //Arrange
+
+
+        //    //Act
+        //    var updateBoardTest = new PrivateObject(game);
+        //    var res = updateBoardTest.Invoke("UpdateBoard");
+
+
+        //    //Assert
+        //    //Assert.AreEqual();
+        //}
+
+        //[TestMethod]
+        //public void CollideAtTest()
+        //{
+        //    Game game = new Game();
+        //    game.Start();
+
+        //    //Arrange
+        //    Vector2 tetroPos;
+
+        //    //Act
+        //    var CollideAtTest = new PrivateObject(game);
+        //    //var args = tetroPos;
+        //    //var res = privateTestMethod.Invoke("CollideAt", args); 
+
+
+        //    //Assert
+        //    //Assert.AreEqual(expected, newPos);
+        //}
+
+        //[TestMethod]
+        //public void WithinRangeTest()
+        //{
+        //    //Idée de test: faire tester toutes les conditions du bord du range et à l'intérieur et si un n'a pas le resultat escompté--> test fail, si il passe la boucle -->Test réussi
+
+
+        //    Game game = new Game();
+        //    game.Start();
+
+        //    //Arrange
+        //    Vector2 actualPos;
+        //    Vector2 expectedPos;
+        //    bool testIsRunning = true;
+
+        //    //Act
+        //    actualPos = game.CurrentTetromino.Position;
+        //    var privateTestMethod = new PrivateObject(game);
+        //    var args = actualPos;
+        //    var res = privateTestMethod.Invoke("WithinRange", args); //on appelle les méthodes via un string et pas par la méthode standard
+
+
+
+        //    //Assert
+        //    Assert.IsFalse(res);
+        //    Assert.IsTrue(res);
+        //}
+
+
+        [TestMethod]
+        public void CheckForDeathTest()
+        {
+            Game game = new Game();
             game.Start();
 
-            Vector2 expectedPos;
-            int initScore = game.Score;
-            int expectedScore = initScore + 20;
-            int actualScore;
+            //Arrange
+            GameState actualState;
+            GameState expectedState = GameState.Finished;
 
-            //Act 
-            game.DropDown();
-            //La position du Tetromino est comptée à partir de la position en haut à gauche de sa grille 
-            //2 = épaisseur bordure
+            //Act
+            var privateTestMethod = new PrivateObject(game);
+            privateTestMethod.Invoke("CheckForDeath");
+            actualState = game.State;
 
-            expectedPos = new Vector2(game.CurrentTetromino.Position.x, game.Rows - game.CurrentTetromino.Height - 2 ); //bas du tableau 
-            Vector2 actualPos = game.CurrentTetromino.Position;
-            actualScore = game.Score;
 
 
             //Assert
-            Assert.AreEqual(expectedPos, actualPos);
-            //Assert.AreEqual(expectedScore, actualScore);
+            Assert.AreEqual(expectedState, actualState);
         }
-
-
     }
 }
