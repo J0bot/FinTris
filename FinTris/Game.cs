@@ -5,8 +5,6 @@
 
 using System;
 using System.Timers;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace FinTris
 {
@@ -84,6 +82,11 @@ namespace FinTris
         public event EventHandler<GameState> StateChanged;
 
         /// <summary>
+        /// Événement qui se déclenche quand le prochain Tetromino se met en place.
+        /// </summary>
+        public event EventHandler TetrominoChanged;
+
+        /// <summary>
         /// Propriété read-only qui retourne le nombre de colones dans notre plateau de jeu.
         /// </summary>
         public int Cols
@@ -155,7 +158,7 @@ namespace FinTris
         {
             // On va spawn une pièce random.
             random = new Random();
-            
+
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
@@ -185,17 +188,16 @@ namespace FinTris
                 return;
             }
 
-
-
-            if (_tetromino.Position.x + _tetromino.Width < _cols && _tetromino.Position.y + _tetromino.Height < _rows)
+            // Avant de faire pivoter le Tetromino, vérifier si la nouvelle forme
+            // ne dépasse pas les limites du jeu.
+            if (_tetromino.Position.x + _tetromino.WidthAfterRotation > _cols ||
+                _tetromino.Position.y + _tetromino.HeightAfterRotation > _rows)
             {
-                _tetromino.Rotate();
-                UpdateBoard();
-
+                return;
             }
 
-
-
+            _tetromino.Rotate();
+            UpdateBoard();
         }
 
         /// <summary>
@@ -254,12 +256,10 @@ namespace FinTris
         /// </summary>
         public void MoveDown()
         {
-
             if (_state != GameState.Playing)
             {
                 return;
             }
-
 
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
 
@@ -308,9 +308,8 @@ namespace FinTris
 
         }
 
-
         /// <summary>
-        /// La fonction callback du timer du jeu. Sert à faire descendre le Tetromino à chaque certain nombre de millisecondes.
+        /// La méthode callback du timer du jeu. Sert à faire descendre le Tetromino à chaque certain nombre de millisecondes.
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="e">Les paramètres de l'événement.</param>
@@ -336,31 +335,25 @@ namespace FinTris
         private void UpdateBoard()
         {
             // On va commencer par réinitialiser le tableau de base pour effacer les données obsolètes.
-            for (int i = 0; i < _board.GetLength(0); i++)
+            for (int y = 0; y < _rows; y++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int x = 0; x < _cols; x++)
                 {
-                    if (_board[i, j].State != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste.
+                    if (_board[x, y].State != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste.
                     {
-                        _board[i, j].State = SquareState.Empty;
+                        _board[x, y].State = SquareState.Empty;
                     }
                 }
             }
 
-
             // Par la suite on va implémenter le Tetromino dans le terrain.
-
 
             foreach (Vector2 block in _tetromino.Blocks)
             {
-
-                Vector2 pos = block + _tetromino.Position;
-
-                _board[pos.x, pos.y].State = SquareState.MovingBlock;
-                _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
-
+                Vector2 blockPos = _tetromino.Position + block; 
+                _board[blockPos.x, blockPos.y].State = SquareState.MovingBlock;
+                _board[blockPos.x, blockPos.y].Color = _tetromino.TetrominoColor;
             }
-
 
             // Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
             BoardChanged?.Invoke(this, _board);
@@ -411,19 +404,22 @@ namespace FinTris
             // On va spawn une nouvelle pièce random
             _tetromino = _nextTetromino;
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-            //_tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
-            for (int a = 0; a < _board.GetLength(0); a++)
+            // Solidifier l'ancien Tetromino.
+            for (int y = 0; y < _rows; y++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int x = 0; x < _cols; x++)
                 {
-                    if (_board[a, j].State == SquareState.MovingBlock)
+                    if (_board[x, y].State == SquareState.MovingBlock)
                     {
-                        _board[a, j].State = SquareState.SolidBlock;
+                        _board[x, y].State = SquareState.SolidBlock;
                     }
                 }
             }
+
             CheckForDeath();
+
+            TetrominoChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -440,11 +436,12 @@ namespace FinTris
                     if (_board[x, y].State == SquareState.Empty)
                     {
                         isfull = false;
+                        break;
                     }
                 }
                 if (isfull)
                 {
-                    DeleteRow(y);
+                    ClearRow(y);
                     killedRows++;
                     //BoardChanged.Invoke(this, _board);
                     //System.Threading.Thread.Sleep(1000);
@@ -457,7 +454,7 @@ namespace FinTris
         /// Cette fonction va supprimer la ligne spécifiée.
         /// </summary>
         /// <param name="fullY">Les coordonnées Y de la ligne à supprimer.</param>
-        private void DeleteRow(int fullY)
+        private void ClearRow(int fullY)
         {
             for (int x = 0; x < _cols; x++)
             {
