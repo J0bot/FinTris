@@ -11,6 +11,7 @@ namespace ConsoleEngine
         protected UIComponent _parent;
         protected HorizontalAlignment _hAlignment;
         protected VerticalAlignment _vAlignment;
+        protected SizingMode _sizingMode;
         protected Scene _scene;
 
         public event EventHandler<ConsoleKey> KeyPressed;
@@ -51,6 +52,12 @@ namespace ConsoleEngine
         {
             get { return _vAlignment; }
             set { _vAlignment = value; }
+        }
+
+        public SizingMode SizeingMode
+        {
+            get { return _sizingMode; }
+            set { _sizingMode = value; }
         }
 
         public Scene Scene

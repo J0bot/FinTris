@@ -3,16 +3,13 @@ using System.Collections.Generic;
 
 namespace ConsoleEngine
 {
-    public class Scene : IDrawable
+    public class Scene : UIContainer<UIComponent>, IDrawable
     {
         const int DEFAULT_SCENE_WIDTH = 120;
         const int DEFAULT_SCENE_HEIGHT = 30;
 
         private string _name;
         private string _title;
-        private int _width;
-        private int _height;
-        private readonly List<UIComponent> _components;
 
         public string Name
         {
@@ -26,49 +23,31 @@ namespace ConsoleEngine
             set { _title = value; }
         }
 
-        public int Width
-        {
-            get { return _width; }
-            set { _width = value; }
-        }
-
-        public int Height
-        {
-            get { return _height; }
-            set { _height = value; }
-        }
-
-        public List<UIComponent> Components
-        {
-            get { return _components; }
-        }
-
-        public Scene(string name, int width = DEFAULT_SCENE_WIDTH, int height = DEFAULT_SCENE_HEIGHT)
+        public Scene(string name, int width = DEFAULT_SCENE_WIDTH, int height = DEFAULT_SCENE_HEIGHT) : base()
         {
             _name = name;
             _title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
             _width = width;
             _height = height;
-            _components = new List<UIComponent>();
         }
 
-        public void AddComponent(UIComponent component)
+        public override void AddComponent(UIComponent component)
         {
-            _components.Add(component);
+            base.AddComponent(component);
             component.Scene = this;
         }
 
         public void HandleInput(ConsoleKey input)
         {
-            foreach (UIComponent child in _components)
+            foreach (UIComponent child in _children)
             {
                 child.OnKeyPressed(input);
             }
         }
 
-        public void Render()
+        public override void Render()
         {
-            foreach (UIComponent component in _components)
+            foreach (UIComponent component in _children)
             {
                 component.Render();
             }

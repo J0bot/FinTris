@@ -1,143 +1,98 @@
-﻿/// ETML
-/// Auteur   	 : José Carlos Gasser, Ahmad Jano, Maxime Andrieux, Maxence Weyermann, Larissa Debarros
-/// Date     	 : 23.04.2021
-/// Description  : Fintris
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace ConsoleEngine
 {
-    /// <summary>
-    /// Un menu interactif.
-    /// </summary>
-    public class Menu
+    public class Menu : UIContainer<Button>
     {
-        /// <summary>
-        /// titre du menu en string.
-        /// </summary>
-        private string _title;
+        private int selectedIndex;
 
-        private MenuEntry _selectedOption;
-
-        public MenuEntry SelectedOption
+        public new HorizontalAlignment HorizontalAlignment
         {
-            get { return _selectedOption; }
-            set { _selectedOption = value; }
+            get => _hAlignment;
+            set { _hAlignment = value; UpdateChildren(nameof(HorizontalAlignment), value); }
         }
 
-
-        /// <summary>
-        /// Liste de toutes les entrées du menu.
-        /// </summary>
-        private readonly List<MenuEntry> _entries;
-
-        /// <summary>
-        /// Crée un menu qui contient des options.
-        /// </summary>
-        /// <param name="title">nom du titre du menu en string.</param>
-        public Menu(string title)
+        public Menu()
         {
-            this._title = title;
-            this._entries = new List<MenuEntry>();
+            selectedIndex = 0;
+            UpdateButtons();
         }
 
-        /// <summary>
-        /// Ajouter une entrée dans le menu.
-        /// </summary>
-        /// <param name="menuEntry">paramètre d'entrée du menu en MenuEntry.</param>
-        public void Add(MenuEntry menuEntry)
+        public override void OnKeyPressed(ConsoleKey input)
         {
-            _entries.Add(menuEntry);
+            base.OnKeyPressed(input);
 
-            // Force la sélection de la première option.
-            if (_entries.Count == 0)
+            if (input == ConsoleKey.DownArrow)
             {
-                Select(menuEntry);
+                UpdateButtons();
+                selectedIndex = (selectedIndex + 1) % _children.Count;
+            }
+            else if (input == ConsoleKey.Enter)
+            {
+                _children[selectedIndex].OnClicked();
             }
         }
 
-        /// <summary>
-        /// Afficher le menu et retourner l'option sélectionnée.
-        /// </summary>
-        /// <returns>Retourne l'option que l'on a choisit.</returns>
-        public MenuEntry ShowMenu()
+        private void UpdateButtons()
         {
-            Console.Clear();
-            Console.Write(_title);
-            Console.WriteLine();
-
-            int initialY = Console.CursorTop;
-
-            // Affichage des options de bases.
-            WriteOptions(initialY);
-
-            // TODO : gérer les flèches pour sélectionner une entrée.
-            MenuEntry selectedEntry = null;
-            int currentlySelected = 0;
-            while (selectedEntry == null)
+            foreach (Button child in _children)
             {
-                switch (Console.ReadKey().Key)
+                child.IsSelected = child == _children[selectedIndex];
+                child.Render();
+            }
+        }
+
+        public void Select(Button button)
+        {
+            foreach (Button btn in _children)
+            {
+                btn.IsSelected = btn == button;                
+            }
+        }
+
+        public override void AddComponent(Button child)
+        {
+            if (_sizingMode == SizingMode.AutoResize && child.Width > _width)
+            {
+                _width = child.Width;
+            }
+
+            child.Width = _width;
+            child.Parent = this;
+
+            if (_children.Count > 1)
+            {
+                //child.Position += new Vector2(child.Position.x, _children[-1].Height);
+
+            }
+
+            Children.Add(child);
+
+            _height += child.Height;
+        }
+
+        public new int Width
+        {
+            set
+            {
+                _width = value;
+                foreach (UIComponent child in _children)
                 {
-                    case ConsoleKey.UpArrow:
-                        if (currentlySelected > 0)
-                        {
-                            _entries[currentlySelected].Selected = false;
-                            _entries[currentlySelected - 1].Selected = true;
-                            currentlySelected--;
-                            Console.SetCursorPosition(0, initialY);
-
-                        }
-                        break;
-                    case ConsoleKey.DownArrow:
-                        if (currentlySelected < _entries.Count - 1)
-                        {
-                            _entries[currentlySelected].Selected = false;
-                            _entries[currentlySelected + 1].Selected = true;
-                            currentlySelected++;
-                            Console.SetCursorPosition(0, initialY);
-                        }
-                        break;
-                    case ConsoleKey.Enter:
-                        return _entries[currentlySelected];
-
-                }
-                WriteOptions(initialY);
-            }
-
-            Console.ReadLine();
-            return null;// TODO : retourner l'entrée sélectionnée.
-        }
-
-        /// <summary>
-        /// Affiche toutes les options depuis la position courante du curseur.
-        /// </summary>
-        private void WriteOptions(int y)
-        {
-            y = 10;
-            for (int i = 0; i < _entries.Count; i++)
-            {
-                int x = (Console.WindowWidth / 2) - (_entries[i].Text.Length / 2);
-
-                Console.SetCursorPosition(x, y); // x was 35.
-                y += 3;
-                _entries[i].WriteOption();
-            }
-        }
-
-        private void Select(MenuEntry newSelectedOption)
-        {
-            _selectedOption = newSelectedOption;
-
-            foreach (MenuEntry option in _entries)
-            {
-                if (option != newSelectedOption)
-                {
-                    option.Selected = false;
+                    child.Width = _width;
                 }
             }
-
-            _selectedOption.Selected = true;
+            get => _width;
         }
+
+        public override void Render()
+        {
+            foreach (UIComponent component in Children)
+            {
+                //component
+                component.Render();
+            }
+        }
+
+        
     }
 }

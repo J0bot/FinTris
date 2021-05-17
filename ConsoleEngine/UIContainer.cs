@@ -22,5 +22,13 @@ namespace ConsoleEngine
             _children.Add(child);
             child.Width = _width;
         }
+
+        protected void UpdateChildren(string propertyName, object value)
+        {
+            foreach (UIComponent child in _children)
+            {
+                child.GetType().GetProperty(propertyName).SetValue(child, value);
+            }
+        }
     }
 }

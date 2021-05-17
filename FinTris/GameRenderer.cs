@@ -30,8 +30,8 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
-        private Rect _rectGame;
-        private Rect _rectNextTetro;
+        private Panel _rectGame;
+        private Panel _rectNextTetro;
 
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
@@ -47,10 +47,10 @@ namespace FinTris
 
             int width = (_game.Cols + 2) * 2;
 
-            _rectGame = new Rect(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
+            _rectGame = new Panel(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
             _rectGame.Draw();
 
-            _rectNextTetro = new Rect(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
+            _rectNextTetro = new Panel(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
             _rectNextTetro.Draw();
 
             RenderNextTetromino();
@@ -184,26 +184,29 @@ namespace FinTris
         /// </summary>
         private void RenderNextTetromino()
         {
-            int initPosX = 62;
-            int initPosY = 5;
-
-            _rectNextTetro.Draw();
-
-            Console.SetCursorPosition(initPosX, initPosY);
-
-            Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
-
-            int posx = SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4;
-            int posy = SHIFT_Y + 2;
-
-            foreach (Vector2 blockDir in _game.NextTetromino.Blocks)
+            lock (this)
             {
-                Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
-                Console.SetCursorPosition(blockPos.x, blockPos.y);
-                Console.Write("██");
-            }
+                int initPosX = 62;
+                int initPosY = 5;
 
-            Console.ResetColor();
+                _rectNextTetro.Draw();
+
+                Console.SetCursorPosition(initPosX, initPosY);
+
+                Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
+
+                int posx = SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4;
+                int posy = SHIFT_Y + 2;
+
+                foreach (Vector2 blockDir in _game.NextTetromino.Blocks)
+                {
+                    Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
+                    Console.SetCursorPosition(blockPos.x, blockPos.y);
+                    Console.Write("██");
+                }
+
+                Console.ResetColor();
+            }
         }
 
 
