@@ -357,6 +357,7 @@ namespace FinTris
 
             // Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
             Played?.Invoke(this, _board);
+
         }
 
         /// <summary>

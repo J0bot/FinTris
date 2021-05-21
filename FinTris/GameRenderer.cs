@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using System.Threading;
 
 namespace FinTris
@@ -26,6 +27,7 @@ namespace FinTris
             { TetrominoType.Malong,     ConsoleColor.DarkBlue   },
             { TetrominoType.Pyramid,    ConsoleColor.Magenta    },
         };
+
 
         private const int BORDER_THICKNESS = 2;
         /// <summary>
@@ -58,6 +60,7 @@ namespace FinTris
         /// </summary>
         private StringBuilder _emptyString;
 
+
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
@@ -67,6 +70,7 @@ namespace FinTris
             _game = game;
 
             _game.Played += game_PositionChanged;
+
             _game.StateChanged += game_StateChanged;
             _game.TetrominoChanged += _game_TetrominoChanged;
 
@@ -212,6 +216,7 @@ namespace FinTris
                 int initPosX = 62;
                 int initPosY = 5;
 
+
                 _rectNextTetro.Draw();
 
                 Console.SetCursorPosition(initPosX, initPosY);
@@ -231,6 +236,7 @@ namespace FinTris
 
                 Console.ResetColor();
             }
+
         }
 
 
