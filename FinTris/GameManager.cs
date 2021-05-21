@@ -4,8 +4,8 @@
 ///Description  : Fintris
 
 using System;
-using Figgle;
 using System.Collections.Generic;
+using ConsoleEngine;
 
 namespace FinTris
 {
@@ -26,39 +26,38 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
-            
-            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+            //Menu _menu = new Menu(Resources.fintris_title);
 
-            MenuEntry play = new MenuEntry("Play");
-            MenuEntry options = new MenuEntry("Options");
-            MenuEntry playerName = new MenuEntry($"Player name: {Config.PlayerName}");
-            MenuEntry quit = new MenuEntry("Quit");
+            //MenuEntry play = new MenuEntry("Play");
+            //MenuEntry options = new MenuEntry("Options");
+            //MenuEntry playerName = new MenuEntry($"Player name: {Config.PlayerName}");
+            //MenuEntry quit = new MenuEntry("Quit");
 
-            _menu.Add(play);
-            _menu.Add(options);
-            _menu.Add(playerName);
-            _menu.Add(quit);
+            //_menu.Add(play);
+            //_menu.Add(options);
+            //_menu.Add(playerName);
+            //_menu.Add(quit);
 
-            MenuEntry choice = _menu.ShowMenu();
+            //MenuEntry choice = _menu.ShowMenu();
 
-            if (choice == play)
-            {
+            //if (choice == play)
+            //{
                 Play();
-            }
-            else if (choice == options)
-            {
-                ShowOptions();
-            }
-            if (choice == playerName)
-            {
-                Config.PlayerName = AskForInput();
-                //this is probably disgusting but I'll do it anyway
-                MainMenu();
-            }
-            else
-            {
-                Environment.Exit(0);
-            }
+            //}
+            //else if (choice == options)
+            //{
+            //    ShowOptions();
+            //}
+            //if (choice == playerName)
+            //{
+            //    Config.PlayerName = AskForInput();
+            //    //this is probably disgusting but I'll do it anyway
+            //    MainMenu();
+            //}
+            //else
+            //{
+            //    Environment.Exit(0);
+            //}
 
         }
 
@@ -83,33 +82,33 @@ namespace FinTris
         /// </summary>
         public static void ShowOptions()
         {
-            Menu optionMenu = new Menu("Options");
+            //Menu optionMenu = new Menu("Options");
 
-            MenuEntry bestScores = new MenuEntry("Show best scores");
-            MenuEntry difficulty = new MenuEntry($"Difficulty: {Config.DifficultyLevel}");
-            MenuEntry cancel = new MenuEntry("Return");
-            optionMenu.Add(bestScores);
-            optionMenu.Add(difficulty);
-            optionMenu.Add(cancel);
-            MenuEntry choice;
-            do
-            {
+            //MenuEntry bestScores = new MenuEntry("Show best scores");
+            //MenuEntry difficulty = new MenuEntry($"Difficulty: {Config.DifficultyLevel}");
+            //MenuEntry cancel = new MenuEntry("Return");
+            //optionMenu.Add(bestScores);
+            //optionMenu.Add(difficulty);
+            //optionMenu.Add(cancel);
+            //MenuEntry choice;
+            //do
+            //{
        
-                choice = optionMenu.ShowMenu();
+            //    choice = optionMenu.ShowMenu();
 
-                if (choice == bestScores)
-                {
-                    ShowBestScores();
-                }
-                if (choice == difficulty)
-                {
-                    SelectDifficulty();
-                }
-                else if (choice == cancel)
-                {
-                    MainMenu(); //huuuuh
-                }
-            } while (choice != cancel);
+            //    if (choice == bestScores)
+            //    {
+            //        ShowBestScores();
+            //    }
+            //    if (choice == difficulty)
+            //    {
+            //        SelectDifficulty();
+            //    }
+            //    else if (choice == cancel)
+            //    {
+            //        MainMenu(); //huuuuh
+            //    }
+            //} while (choice != cancel);
 
         }
 
@@ -137,28 +136,28 @@ namespace FinTris
 
         public static void SelectDifficulty()
         {
-            Menu optionMenu = new Menu("Difficulty levels");
-            MenuEntry diffEasy = new MenuEntry("Easy");
-            MenuEntry diffNormal = new MenuEntry("Normal");
-            MenuEntry diffHard = new MenuEntry("Hard");
-            optionMenu.Add(diffEasy);
-            optionMenu.Add(diffNormal);
-            optionMenu.Add(diffHard);
-            MenuEntry choice = optionMenu.ShowMenu();
+            //Menu optionMenu = new Menu("Difficulty levels");
+            //MenuEntry diffEasy = new MenuEntry("Easy");
+            //MenuEntry diffNormal = new MenuEntry("Normal");
+            //MenuEntry diffHard = new MenuEntry("Hard");
+            //optionMenu.Add(diffEasy);
+            //optionMenu.Add(diffNormal);
+            //optionMenu.Add(diffHard);
+            //MenuEntry choice = optionMenu.ShowMenu();
 
-            if (choice == diffEasy)
-            {
-                Config.DifficultyLevel = "Easy";
-            }
-            else if (choice == diffNormal)
-            {
-                Config.DifficultyLevel = "Normal";
-            }
-            else if (choice == diffHard)
-            {
-                Config.DifficultyLevel = "Hard";
-            }
-            ShowOptions();
+            //if (choice == diffEasy)
+            //{
+            //    Config.DifficultyLevel = "Easy";
+            //}
+            //else if (choice == diffNormal)
+            //{
+            //    Config.DifficultyLevel = "Normal";
+            //}
+            //else if (choice == diffHard)
+            //{
+            //    Config.DifficultyLevel = "Hard";
+            //}
+            //ShowOptions();
         }
 
         /// <summary>
