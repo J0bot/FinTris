@@ -20,7 +20,10 @@ namespace ConsoleEngine
         public virtual void AddComponent(T child)
         {
             _children.Add(child);
-            child.Width = _width;
+            if (child.SizeingMode == SizingMode.AutoResize)
+            {
+                child.Width = _width;
+            }
         }
 
         protected void UpdateChildren(string propertyName, object value)

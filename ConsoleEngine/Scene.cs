@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ConsoleEngine
 {
@@ -10,6 +11,7 @@ namespace ConsoleEngine
 
         private string _name;
         private string _title;
+        private bool _isCursorVisible;
 
         public string Name
         {
@@ -23,12 +25,19 @@ namespace ConsoleEngine
             set { _title = value; }
         }
 
+        public bool IsCursorVisible
+        {
+            get { return _isCursorVisible; }
+            set { _isCursorVisible = value; }
+        }
+
         public Scene(string name, int width = DEFAULT_SCENE_WIDTH, int height = DEFAULT_SCENE_HEIGHT) : base()
         {
             _name = name;
             _title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
             _width = width;
             _height = height;
+            _isCursorVisible = true;
         }
 
         public override void AddComponent(UIComponent component)

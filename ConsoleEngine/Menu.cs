@@ -24,8 +24,13 @@ namespace ConsoleEngine
 
             if (input == ConsoleKey.DownArrow)
             {
-                UpdateButtons();
                 selectedIndex = (selectedIndex + 1) % _children.Count;
+                UpdateButtons();
+            }
+            else if (input == ConsoleKey.UpArrow)
+            {
+                selectedIndex = mod((selectedIndex - 1), _children.Count); // Negative numbers aren't supported so i made something up
+                UpdateButtons();
             }
             else if (input == ConsoleKey.Enter)
             {
@@ -63,7 +68,6 @@ namespace ConsoleEngine
             if (_children.Count > 1)
             {
                 //child.Position += new Vector2(child.Position.x, _children[-1].Height);
-
             }
 
             Children.Add(child);
@@ -71,7 +75,7 @@ namespace ConsoleEngine
             _height += child.Height;
         }
 
-        public new int Width
+        public new int Width 
         {
             set
             {
@@ -86,13 +90,20 @@ namespace ConsoleEngine
 
         public override void Render()
         {
-            foreach (UIComponent component in Children)
+            int i = 0;
+            foreach (UIComponent component in _children)
             {
                 //component
+                component.Position += Vector2.Up * (component.Height * i);
                 component.Render();
+                i++;
             }
         }
 
-        
+        private int mod(int x, int m)
+        {
+            return (x % m + m) % m;
+        }
+
     }
 }

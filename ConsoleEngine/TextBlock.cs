@@ -11,6 +11,10 @@ namespace ConsoleEngine
         protected ConsoleColor _foregroundColor;
         protected ConsoleColor _backgroundColor;
 
+        private int _actualWidth;
+        private bool _isMultiLine;
+        private string[] _lines;
+
         public string Text
         {
             get => _text;
@@ -31,15 +35,24 @@ namespace ConsoleEngine
 
         public TextBlock(string text)
         {
-            if (text.Contains("\n"))
+            //if (text.Contains("\n"))
+            //{
+            //    throw new NotSupportedException("Multi-line UI Components are unsupported for the time being");
+            //}
+            _lines = text.Split('\n');
+            foreach (string line in _lines)
             {
-                throw new NotSupportedException("Multi-line UI Components are unsupported for the time being");
+                if (_actualWidth < line.Length)
+                {
+                    _actualWidth = line.Length;
+                }
             }
             _text = text;
-            _width = text.Length;
-            _height = 1;
+            _height = _lines.Length;
             _foregroundColor = DEFAULT_FOREGROUND_COLOR;
             _backgroundColor = DEFAULT_BACKGROUND_COLOR;
+            _width = _actualWidth;
+            _isMultiLine = _lines.Length > 0;
         }
 
         public override void Render()
@@ -52,11 +65,24 @@ namespace ConsoleEngine
 
             if (_hAlignment == HorizontalAlignment.Center)
             {
-                x += (_width - _text.Length) / 2;
+                if (_isMultiLine)
+                {
+                    x += (_width - _actualWidth) / 2;
+                }
+                else
+                {
+                    x += (_width - _text.Length) / 2;
+                }
             }
 
-            Console.SetCursorPosition(x, y);
-            Console.Write(_text);
+            int dy = 0;
+            foreach (string line in _lines)
+            {
+                Console.SetCursorPosition(x, y + dy);
+                Console.Write(line);
+                dy++;
+            }
+
             Console.ResetColor();
         }
     }
