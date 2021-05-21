@@ -113,7 +113,7 @@ namespace FinTris
         /// <summary>
         /// Couleur du Tetromino
         /// </summary>
-        private ConsoleColor _tetrominoColor;
+        //private ConsoleColor _tetrominoColor;
 
         /// <summary>
         /// Liste des positions des blocs du Tetromino
@@ -172,14 +172,14 @@ namespace FinTris
             get { return _shape; }
         }
 
-        /// <summary>
-        /// Couleur du Tetromino.
-        /// </summary>
-        public ConsoleColor TetrominoColor
-        {
-            get { return _tetrominoColor; }
-            set { _tetrominoColor = value; }
-        }
+        ///// <summary>
+        ///// Couleur du Tetromino.
+        ///// </summary>
+        //public ConsoleColor TetrominoColor
+        //{
+        //    get { return _tetrominoColor; }
+        //    set { _tetrominoColor = value; }
+        //}
 
         /// <summary>
         /// Liste des positions des bloca relatives au tetromino.
@@ -213,33 +213,33 @@ namespace FinTris
             _blocks = new List<Vector2>();
 
             //Switch pour attribuer la couleur à chaque type de Tetromino
-            switch (type)
-            {
-                case TetrominoType.Squarie:
-                    _tetrominoColor = ConsoleColor.Yellow;
-                    break;
-                case TetrominoType.Snake:
-                    _tetrominoColor = ConsoleColor.Green;
-                    break;
-                case TetrominoType.ISnake:
-                    _tetrominoColor = ConsoleColor.Red;
-                    break;
-                case TetrominoType.Malong:
-                    _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue
-                    break;
-                case TetrominoType.Lawlet:
-                    _tetrominoColor = ConsoleColor.DarkYellow; // We need orange
-                    break;
-                case TetrominoType.ILawlet:
-                    _tetrominoColor = ConsoleColor.Blue; //Blue
-                    break;
-                case TetrominoType.Pyramid:
-                    _tetrominoColor = ConsoleColor.Magenta;
-                    break;
-                default:
-                    _tetrominoColor = ConsoleColor.White;
-                    break;
-            }
+            //switch (type)
+            //{
+            //    case TetrominoType.Squarie:
+            //        _tetrominoColor = ConsoleColor.Yellow;
+            //        break;
+            //    case TetrominoType.Snake:
+            //        _tetrominoColor = ConsoleColor.Green;
+            //        break;
+            //    case TetrominoType.ISnake:
+            //        _tetrominoColor = ConsoleColor.Red;
+            //        break;
+            //    case TetrominoType.Malong:
+            //        _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue
+            //        break;
+            //    case TetrominoType.Lawlet:
+            //        _tetrominoColor = ConsoleColor.DarkYellow; // We need orange
+            //        break;
+            //    case TetrominoType.ILawlet:
+            //        _tetrominoColor = ConsoleColor.Blue; //Blue
+            //        break;
+            //    case TetrominoType.Pyramid:
+            //        _tetrominoColor = ConsoleColor.Magenta;
+            //        break;
+            //    default:
+            //        _tetrominoColor = ConsoleColor.White;
+            //        break;
+            //}
 
 
             UpdateBlocks();

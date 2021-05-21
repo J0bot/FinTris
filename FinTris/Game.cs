@@ -75,7 +75,7 @@ namespace FinTris
         /// <summary>
         /// Événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu.
         /// </summary>
-        public event EventHandler<Case[,]> BoardChanged;
+        public event EventHandler<Case[,]> Played;
 
         /// <summary>
         /// Événement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie.
@@ -349,15 +349,16 @@ namespace FinTris
 
             // Par la suite on va implémenter le Tetromino dans le terrain.
 
-            foreach (Vector2 block in _tetromino.Blocks)
+            for (int i = 0; i < _tetromino.Blocks.Count; i++)
             {
-                Vector2 blockPos = _tetromino.Position + block; 
+                Vector2 blockPos = _tetromino.Position + _tetromino.Blocks[i];
                 _board[blockPos.x, blockPos.y].State = SquareState.MovingBlock;
-                _board[blockPos.x, blockPos.y].Color = _tetromino.TetrominoColor;
+                //_board[blockPos.x, blockPos.y].Color = _tetromino.TetrominoColor;
             }
 
             // Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
-            BoardChanged?.Invoke(this, _board);
+            Played?.Invoke(this, _board);
+
         }
 
         /// <summary>
@@ -367,11 +368,11 @@ namespace FinTris
         /// <returns>Retourne true s'il y a une collision, sinon retourne false.</returns>
         private bool CollideAt(Vector2 tetroPos)
         {
-            foreach (Vector2 bloc in _tetromino.Blocks)
-            {   
+            for (int i = 0; i < _tetromino.Blocks.Count; i++)
+            {
                 // Conversion des coordonées de blocs à des coordonées relatives au plateau
-                Vector2 pos = tetroPos + bloc;
-                if (!WithinRange(pos) || _board[pos.x,pos.y].State == SquareState.SolidBlock)
+                Vector2 pos = tetroPos + _tetromino.Blocks[i];
+                if (!WithinRange(pos) || _board[pos.x, pos.y].State == SquareState.SolidBlock)
                 {
                     return true;
                 }

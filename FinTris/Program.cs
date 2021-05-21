@@ -8,7 +8,7 @@ using ConsoleEngine;
 
 namespace FinTris
 {
-    /// <summary>
+    /// <summary> 
     /// Classe principle du programme/jeu.
     /// </summary>
     class Program

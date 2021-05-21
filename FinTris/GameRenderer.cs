@@ -4,6 +4,9 @@
 /// Description  : Fintris
 
 using System;
+using System.Collections.Generic;
+using System.Text;
+
 using System.Threading;
 using ConsoleEngine;
 
@@ -14,6 +17,19 @@ namespace FinTris
     /// </summary>
     public class GameRenderer
     {
+        
+        private static readonly Dictionary<TetrominoType, ConsoleColor> TetroColors = new Dictionary<TetrominoType, ConsoleColor>()
+        {
+            { TetrominoType.Lawlet,     ConsoleColor.DarkYellow },
+            { TetrominoType.ILawlet,    ConsoleColor.Blue       },
+            { TetrominoType.Squarie,    ConsoleColor.Yellow     },
+            { TetrominoType.Snake,      ConsoleColor.Green      },
+            { TetrominoType.ISnake,     ConsoleColor.Red        },
+            { TetrominoType.Malong,     ConsoleColor.DarkBlue   },
+            { TetrominoType.Pyramid,    ConsoleColor.Magenta    },
+        };
+
+
         private const int BORDER_THICKNESS = 2;
         /// <summary>
         /// Attribut _game représentant la référance de l'instance de Game.
@@ -33,6 +49,19 @@ namespace FinTris
         private Panel _rectGame;
         private Panel _rectNextTetro;
 
+        private ConsoleColor[,] _colorBoard;
+
+        /// <summary>
+        /// A string that contains the string value of a SOLID and MOVING block
+        /// </summary>
+        private StringBuilder _blockString;
+
+        /// <summary>
+        /// A string that contains the string value of a EMPTY block
+        /// </summary>
+        private StringBuilder _emptyString;
+
+
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
@@ -41,7 +70,8 @@ namespace FinTris
         {
             _game = game;
 
-            _game.BoardChanged += game_PositionChanged;
+            _game.Played += game_PositionChanged;
+
             _game.StateChanged += game_StateChanged;
             _game.TetrominoChanged += _game_TetrominoChanged;
 
@@ -54,6 +84,9 @@ namespace FinTris
             _rectNextTetro.Draw();
 
             RenderNextTetromino();
+
+            _blockString = new StringBuilder("██");
+            _emptyString = new StringBuilder("  ");
         }
 
         private void _game_TetrominoChanged(object sender, EventArgs e)
@@ -77,32 +110,27 @@ namespace FinTris
 
         /// <summary>
         /// Fonction qui se déclenche quand il y a eu un changememt dans le plateau du jeu.
+        /// 
+        /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
         private void game_PositionChanged(object sender, Case[,] board)
         {
             // Mettre à jour l'affichage du plateau après les nouveaux changements.
-            Refresh(board);
-        }
-
-        /// <summary>
-        /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
-        /// </summary>
-        /// <param name="board">Le tableau contenant les informations des cases.</param>
-        private void Refresh(Case[,] board)
-        {
             // Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement.
             lock (this)
             {
                 for (int y = 0; y < _game.Rows; y++)
                 {
+                    StringBuilder stringBuilder = new StringBuilder();
                     for (int x = 0; x < _game.Cols; x++)
                     {
-                        Console.ForegroundColor = board[x, y].Color;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                        Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
+                         stringBuilder.Append(board[x, y].State == SquareState.Empty ? _emptyString : _blockString);
                     }
+                    Console.SetCursorPosition(SHIFT_X + 2, y + SHIFT_Y + 1);
+                    Console.ForegroundColor = TetroColors[_game.CurrentTetromino.Shape];
+                    Console.Write(stringBuilder);
                 }
                 Console.ResetColor();
                 DrawScore();
@@ -139,7 +167,7 @@ namespace FinTris
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                        Console.Write("██");
+                        Console.Write(_blockString);
                     }
                     Thread.Sleep(100);
                 }
@@ -151,7 +179,7 @@ namespace FinTris
                     {
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
-                        Console.Write("██");
+                        Console.Write(_blockString);
                     }
 
                     Thread.Sleep(8);
@@ -189,24 +217,27 @@ namespace FinTris
                 int initPosX = 62;
                 int initPosY = 5;
 
+
                 _rectNextTetro.Draw();
 
                 Console.SetCursorPosition(initPosX, initPosY);
 
-                Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
+                //Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
 
                 int posx = SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4;
                 int posy = SHIFT_Y + 2;
 
-                foreach (Vector2 blockDir in _game.NextTetromino.Blocks)
+                for (int i = 0; i < _game.NextTetromino.Blocks.Count; i++)
                 {
+                    Vector2 blockDir = _game.NextTetromino.Blocks[i];
                     Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
                     Console.SetCursorPosition(blockPos.x, blockPos.y);
-                    Console.Write("██");
+                    Console.Write(_blockString);
                 }
 
                 Console.ResetColor();
             }
+
         }
 
 
