@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace FinTris
+namespace ConsoleEngine
 {
-    public class Rect
+    public class Panel
     {
         const char CHAR = '█';
         const int THICKNESS = 2;
@@ -41,7 +41,7 @@ namespace FinTris
             set { _fillColor = value; }
         }
 
-        public Rect(int x, int y, int width, int height, ConsoleColor borderColor = ConsoleColor.White, ConsoleColor fillColor = ConsoleColor.Black)
+        public Panel(int x, int y, int width, int height, ConsoleColor borderColor = ConsoleColor.White, ConsoleColor fillColor = ConsoleColor.Black)
         {
             _width = width / THICKNESS;
             _height = height;
