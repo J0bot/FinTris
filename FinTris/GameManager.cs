@@ -80,8 +80,11 @@ namespace FinTris
         /// <summary>
         /// Shows the options panel.
         /// </summary>
-        public static void ShowOptions()
+        public static void ShowOptions(Scene scene)
         {
+            Menu menuOptions = new Menu();
+
+
             //Menu optionMenu = new Menu("Options");
 
             //MenuEntry bestScores = new MenuEntry("Show best scores");

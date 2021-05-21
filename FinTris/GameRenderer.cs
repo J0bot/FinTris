@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using System.Threading;
 using ConsoleEngine;
 
@@ -48,7 +47,6 @@ namespace FinTris
 
         private Panel _rectGame;
         private Panel _rectNextTetro;
-
         private ConsoleColor[,] _colorBoard;
 
         /// <summary>

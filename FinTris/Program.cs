@@ -25,9 +25,19 @@ namespace FinTris
                 Width = 60,
                 IsCursorVisible = false
             };
+
+            Scene sceneOptions = new Scene("Options")
+            {
+                Title = "Options",
+                Width = 60,
+                IsCursorVisible = false
+            };
+
             Scene sceneMain = new Scene("Main")
             {
-                IsCursorVisible = false
+                IsCursorVisible = false,
+                Width = 100,
+                Height = 28
             };
 
             Menu menu = new Menu();
@@ -40,21 +50,39 @@ namespace FinTris
             sceneMenu.AddComponent(menu);
             sceneMenu.AddComponent(title);
 
-            Button play = new Button("Play") { Height = 3 };
-            menu.AddComponent(play);
-            menu.AddComponent(new Button("Options") { Height = 3 });
-            menu.AddComponent(new Button("Player name:") { Height = 3 });
-            menu.AddComponent(new Button("Quit") { Height = 3 });
+            Button btnPlay = new Button("Play") { Height = 3 };
+            menu.AddComponent(btnPlay);
+
+            Button btnOptions = new Button("Options") { Height = 3 };
+            menu.AddComponent(btnOptions);
+
+            Button btnPlayerName = new Button("Player name:") { Height = 3};
+            menu.AddComponent(btnPlayerName);
+
+            Button btnQuit = new Button("Quit") { Height = 3 };
+            menu.AddComponent(btnQuit);
             menu.HorizontalAlignment = HorizontalAlignment.Center;
 
-            play.Clicked += (_, __) =>
+            btnPlay.Clicked += (_, __) =>
             {
                 ScenesManager.SetActiveScene("Main");
                 GameManager.MainMenu();
             };
 
+            btnQuit.Clicked += (_, __) =>
+            {
+                Environment.Exit(0);
+            };
+
+            btnOptions.Clicked += (_, __) =>
+            {
+                GameManager.ShowOptions(sceneOptions);
+            };
+
             ScenesManager.Add(sceneMenu);
             ScenesManager.Add(sceneMain);
+            ScenesManager.Add(sceneOptions);
+
             ScenesManager.SetActiveScene("Menu");
 
             // Game development
