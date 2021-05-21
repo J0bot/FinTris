@@ -287,7 +287,11 @@ namespace FinTris
         {
             // Lancement de la première voix.
             SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
-            bowserSound2.Play();
+
+            if (GameManager.checkSound == true)
+            {
+                bowserSound2.Play();
+            }
 
             Console.Clear();
             Console.SetCursorPosition(50, 14);
@@ -309,7 +313,11 @@ namespace FinTris
 
             // Lancement de la deuxième voix.
             SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
-            bowserSound.Play();
+
+            if (GameManager.checkSound == true)
+            {
+                bowserSound.Play();
+            }         
 
             string[] bowserString = new string[] {
                 "                                   @                                  ",

@@ -506,13 +506,18 @@ namespace FinTris
                 _score += 1200;
             }
 
-            // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
+            // Changement de niveau tout les 1000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
             _gameTimer.Interval = _MS / (_level * 0.5);
 
             SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
-            fallSound.Play();       
+
+            if (GameManager.checkSound == true)
+            {
+                fallSound.Play();
+            }
+                
         }
 
 #if DEBUG

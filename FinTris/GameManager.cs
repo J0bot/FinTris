@@ -23,6 +23,8 @@ namespace FinTris
         /// </summary>
         private static GameRenderer _gameRenderer;
 
+        public static bool checkSound = true;
+
         /// <summary>
         /// Fonction qui s'occupe du Menu
         /// </summary>
@@ -30,8 +32,13 @@ namespace FinTris
         {
             SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
             themeSound.PlayLooping();
-           
 
+            if (checkSound == false)
+            {
+                themeSound.Stop();
+            }
+
+           
             Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
@@ -65,7 +72,6 @@ namespace FinTris
             {
                 Environment.Exit(0);
             }
-
         }
 
         /// <summary>
@@ -131,10 +137,12 @@ namespace FinTris
 
             MenuEntry bestScores = new MenuEntry("Show best scores");
             MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry sounds = new MenuEntry("Sounds");
             MenuEntry cancel = new MenuEntry("Return");
 
             optionMenu.Add(bestScores);
             optionMenu.Add(difficulty);
+            optionMenu.Add(sounds);
             optionMenu.Add(cancel);
 
             MenuEntry choice;
@@ -146,10 +154,17 @@ namespace FinTris
                 {
                     ShowBestScores();
                 }
-                if (choice == difficulty)
+                else if (choice == difficulty)
                 {
                     SelectDifficulty();
                 }
+
+                else if (choice == sounds)
+                {
+                    SoundSettings();
+                }
+
+
                 else if (choice == cancel)
                 {
                     SoundCancel();
@@ -168,10 +183,12 @@ namespace FinTris
 
             MenuEntry bestScores = new MenuEntry("Show best scores");
             MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry sounds = new MenuEntry("Sounds");
             MenuEntry cancel = new MenuEntry("Return");
 
             optionMenu.Add(bestScores);
             optionMenu.Add(difficulty);
+            optionMenu.Add(sounds);
             optionMenu.Add(cancel);
 
             MenuEntry choice;
@@ -183,10 +200,16 @@ namespace FinTris
                 {
                     ShowBestScores();
                 }
-                if (choice == difficulty)
+                else if (choice == difficulty)
                 {
                     SelectDifficultyInGame();
                 }
+
+                else if (choice == sounds)
+                {
+                    SoundSettings();
+                }
+
                 else if (choice == cancel)
                 {
                     SoundCancel();
@@ -272,6 +295,29 @@ namespace FinTris
             ShowOptionsInGame();
         }
 
+        public static void SoundSettings()
+        {
+            Menu soundMenu = new Menu("Sounds settings");
+            MenuEntry soundOn = new MenuEntry("Sound On");
+            MenuEntry soundOff = new MenuEntry("Sound off");
+
+            soundMenu.Add(soundOn);
+            soundMenu.Add(soundOff);
+            MenuEntry choice = soundMenu.ShowMenu();
+
+            if (choice == soundOff)
+            {
+                SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
+                themeSound.Stop();
+                checkSound = false;
+            }
+
+            else
+            {
+                checkSound = true;
+            }
+        }
+
         /// <summary>
         /// Méthode play permet de lancer tous les éléments du jeu et de reset le jeu
         /// </summary>
@@ -280,7 +326,11 @@ namespace FinTris
             SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
             Stopwatch stopWatch = new Stopwatch();
 
-            okSound.Play();
+            if (checkSound == true)
+            {
+                okSound.Play();
+            }
+            
             stopWatch.Start();
             do
             {
@@ -292,7 +342,10 @@ namespace FinTris
 
             Console.Clear();
 
-            SoundReady();
+            if (checkSound == true)
+            {
+                SoundReady();
+            }     
 
             stopWatch.Restart();
             do
@@ -307,7 +360,11 @@ namespace FinTris
                 Console.Clear();
 
                 SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
-                goSound.Play();
+
+                if (checkSound == true)
+                {
+                    goSound.Play();
+                }
 
                 do
                 {
@@ -392,7 +449,12 @@ namespace FinTris
         public static void SoundCancel()
         {
             SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
-            cancelSound.Play();
+
+            if (checkSound == true)
+            {
+                cancelSound.Play();
+            }
+            
         }          
 
         public static void SoundReady()
