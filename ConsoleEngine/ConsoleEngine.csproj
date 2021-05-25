@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,20 +42,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Button.cs" />
+    <Compile Include="Core\GameObject.cs" />
+    <Compile Include="Core\IGameObject.cs" />
+    <Compile Include="UI\ConsoleBackground.cs" />
+    <Compile Include="UI\Button.cs" />
     <Compile Include="Enums\SizingMode.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="UI\StackPanel.cs" />
     <Compile Include="Enums\HorizontalAlignment.cs" />
     <Compile Include="Enums\VerticalAlignment.cs" />
-    <Compile Include="IDrawable.cs" />
+    <Compile Include="Core\IDrawable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Panel.cs" />
-    <Compile Include="Scene.cs" />
+    <Compile Include="UI\Panel.cs" />
+    <Compile Include="Core\Scene.cs" />
     <Compile Include="ScenesManager.cs" />
-    <Compile Include="TextBlock.cs" />
-    <Compile Include="UIComponent.cs" />
-    <Compile Include="UIContainer.cs" />
-    <Compile Include="Vector2.cs" />
+    <Compile Include="UI\TextBlock.cs" />
+    <Compile Include="Core\Vector2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

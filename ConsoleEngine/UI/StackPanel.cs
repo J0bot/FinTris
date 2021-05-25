@@ -2,17 +2,11 @@
 
 namespace ConsoleEngine
 {
-    public class Menu : UIContainer<Button>
+    public class StackPanel<T> : GameObject where T : GameObject
     {
         private int selectedIndex;
 
-        public new HorizontalAlignment HorizontalAlignment
-        {
-            get => _hAlignment;
-            set { _hAlignment = value; UpdateChildren(nameof(HorizontalAlignment), value); }
-        }
-
-        public Menu()
+        public StackPanel()
         {
             selectedIndex = 0;
             UpdateButtons();
@@ -34,7 +28,7 @@ namespace ConsoleEngine
             }
             else if (input == ConsoleKey.Enter)
             {
-                _children[selectedIndex].OnClicked();
+                (_children[selectedIndex] as Button).OnClicked();
             }
         }
 
@@ -55,47 +49,34 @@ namespace ConsoleEngine
             }
         }
 
-        public override void AddComponent(Button child)
+        public override void AddComponent(GameObject child)
         {
-            if (_sizingMode == SizingMode.AutoResize && child.Width > _width)
+            base.AddComponent(child);
+
+            child.HorizontalAlignment = _hAlignment;
+
+            if (child.Width > _width)
             {
                 _width = child.Width;
             }
 
-            child.Width = _width;
-            child.Parent = this;
-
             if (_children.Count > 1)
             {
-                //child.Position += new Vector2(child.Position.x, _children[-1].Height);
+                IGameObject last = _children[_children.Count - 2];
+                child.Position = new Vector2(child.Position.x, last.Position.y + last.Height);
             }
-
-            Children.Add(child);
 
             _height += child.Height;
         }
 
-        public new int Width 
-        {
-            set
-            {
-                _width = value;
-                foreach (UIComponent child in _children)
-                {
-                    child.Width = _width;
-                }
-            }
-            get => _width;
-        }
-
-        public override void Render()
+        public void Render()
         {
             int i = 0;
-            foreach (UIComponent component in _children)
+            foreach (Button child in _children)
             {
                 //component
-                component.Position += Vector2.Up * (component.Height * i);
-                component.Render();
+                child.Position += Vector2.Up * (child.Height * i);
+                child.Render();
                 i++;
             }
         }

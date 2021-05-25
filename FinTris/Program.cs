@@ -19,57 +19,60 @@ namespace FinTris
         /// <param name="args">Les paramètres passés après l'exécution du programme/jeu.</param>
         static void Main(string[] args)
         {
-            Scene sceneMenu = new Scene("Menu")
-            {
-                Title = "Fintris",
-                Width = 60,
-                IsCursorVisible = false
-            };
-            Scene sceneMain = new Scene("Main")
+            // SCENE 1 : (menu)
+            Scene sceneMenu = new Scene("Menu", "Fintris", 60)
             {
                 IsCursorVisible = false
             };
 
-            Menu menu = new Menu();
+            StackPanel<Button> menu = new StackPanel<Button>()
+            {
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Width = sceneMenu.Width
+            };
             TextBlock title = new TextBlock(Resources.fintris_title)
             {
-                HorizontalAlignment = HorizontalAlignment.Center
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Width = sceneMenu.Width
             };
             menu.Position += Vector2.Up * (title.Height + 3);
 
-            sceneMenu.AddComponent(menu);
-            sceneMenu.AddComponent(title);
+            sceneMenu.AddObject(menu);
+            sceneMenu.AddObject(title);
 
             Button play = new Button("Play") { Height = 3 };
             menu.AddComponent(play);
             menu.AddComponent(new Button("Options") { Height = 3 });
             menu.AddComponent(new Button("Player name:") { Height = 3 });
             menu.AddComponent(new Button("Quit") { Height = 3 });
-            menu.HorizontalAlignment = HorizontalAlignment.Center;
+
+            // SCENE 2 (main) :
+            Scene sceneMain = new Scene("Main", "Fintris", 100, 40)
+            {
+                BackgroundColor = ConsoleColor.DarkGray,
+                BackgroundImage = new ConsoleBackground(Resources.fintris_background),
+                IsCursorVisible = false,
+            };
+
+            Game game = new Game();
+
+            GameRenderer renderer = new GameRenderer(game)
+            {
+                Position = new Vector2(38, 13)
+            };
+            sceneMain.AddObject(renderer);
+
 
             play.Clicked += (_, __) =>
             {
-                ScenesManager.SetActiveScene("Main");
-                GameManager.MainMenu();
+                ScenesManager.LoadScene("Main");
+                game.Start();
             };
+
 
             ScenesManager.Add(sceneMenu);
             ScenesManager.Add(sceneMain);
-            ScenesManager.SetActiveScene("Menu");
-
-            // Game development
-
-
-
-            //// Agrandir la font
-            //ConsoleHelper.SetCurrentFont("Consolas", 20);
-
-            //// Changer le titre de la fenêtre.
-            //Console.Title = "FinTris";
-
-            //// Commencer le jeu.
-            
-
+            ScenesManager.LoadScene("Menu");
 
         }
     }

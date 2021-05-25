@@ -7,9 +7,14 @@ namespace ConsoleEngine
     public static class ScenesManager
     {
         private static readonly Dictionary<string, Scene> _scenes = new Dictionary<string, Scene>();
+        private static readonly Thread threadScene = new Thread(HandleInput);
 
         private static Scene activeScene;
-        private static Thread threadScene = new Thread(HandleInput);
+
+        public static Scene ActiveScene
+        {
+            get => activeScene;
+        }
 
         public static void Add(Scene scene)
         {
@@ -32,7 +37,7 @@ namespace ConsoleEngine
         {
             if (activeScene == null)
             {
-                return;
+                throw new Exception("Attempted to handle user input on an empty scene.");
             }
 
             while (true)
@@ -42,7 +47,7 @@ namespace ConsoleEngine
             }
         }
 
-        public static void SetActiveScene(string sceneName)
+        public static void LoadScene(string sceneName)
         {
             if (_scenes.ContainsKey(sceneName))
             {
@@ -50,18 +55,24 @@ namespace ConsoleEngine
                 activeScene = scene;
 
                 Console.Clear();
-                Console.WindowWidth = scene.Width;
-                Console.BufferWidth = scene.Width;
-                Console.WindowHeight = scene.Height;
-                Console.BufferHeight = scene.Height;
-                Console.Title = scene.Title;
-                Console.CursorVisible = scene.IsCursorVisible;
+                Console.WindowWidth = scene._width;
+                Console.WindowHeight = scene._height;
+                Console.BufferWidth = scene._width;
+                Console.Title = scene._title;
+                Console.CursorVisible = scene._isCursorVisible;
 
+                // Render the background image if assigned.
+                activeScene.BackgroundImage?.Render();
+
+                // Render the scene components.
                 scene.Render();
+
+                // Fix the auto scroll issue.
+                Console.CursorTop = 0;
             }
             else
             {
-                throw new Exception($"Scene with name {sceneName} was not found.");
+                throw new Exception($"Scene with name `{sceneName}` was not found.");
             }
         }
 

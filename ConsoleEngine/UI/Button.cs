@@ -47,7 +47,7 @@ namespace ConsoleEngine
 
             if (_hAlignment == HorizontalAlignment.Center)
             {
-                x += (_width - _text.Length) / 2;
+                x += (_width - _actualWidth) / 2;
             }
 
             Console.SetCursorPosition(x, y);
