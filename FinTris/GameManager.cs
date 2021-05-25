@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using ConsoleEngine;
 
 namespace FinTris
 {
@@ -165,8 +164,6 @@ namespace FinTris
         /// </summary>
         public static void Play()
         {
-            Console.Clear();
-
             _game = new Game();
             _gameRenderer = new GameRenderer(_game);
             _game.Start();

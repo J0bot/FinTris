@@ -15,7 +15,7 @@ namespace FinTris
     /// <summary>
     /// Classe qui s'occupe d'afficher le jeu.
     /// </summary>
-    public class GameRenderer
+    public class GameRenderer : GameObject
     {
         
         private static readonly Dictionary<TetrominoType, ConsoleColor> TetroColors = new Dictionary<TetrominoType, ConsoleColor>()
@@ -29,6 +29,7 @@ namespace FinTris
             { TetrominoType.Pyramid,    ConsoleColor.Magenta    },
         };
 
+        private TextBlock _tbScore;
 
         private const int BORDER_THICKNESS = 2;
         /// <summary>
@@ -37,56 +38,30 @@ namespace FinTris
         private readonly Game _game;
 
         /// <summary>
-        /// Le déplacement horizontal du plateau.
-        /// </summary>
-        private const int SHIFT_X = 30;
-
-        /// <summary>
-        /// Le déplacement vertical du plateau.
-        /// </summary>
-        private const int SHIFT_Y = 2;
-
-        private Panel _rectGame;
-        private Panel _rectNextTetro;
-
-        private ConsoleColor[,] _colorBoard;
-
-        /// <summary>
-        /// A string that contains the string value of a SOLID and MOVING block
-        /// </summary>
-        private StringBuilder _blockString;
-
-        /// <summary>
-        /// A string that contains the string value of a EMPTY block
-        /// </summary>
-        private StringBuilder _emptyString;
-
-
-        /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
         /// <param name="game">La référence de l'instance de Game. Sert à récupérer certaines informations importantes par rapport à l'affichage.</param>
         public GameRenderer(Game game)
         {
             _game = game;
+            _width = game.Columns * 2;
+            _height = game.Rows;
+
+            _tbScore = new TextBlock("Score : ")
+            {
+                Format = "Score : {0}",
+                Parent = this
+            };
+            _tbScore.Position += _position + (Vector2.Right * (_width + 6));
+            _tbScore.Position += Vector2.Up * (_height / 2 - 3);
+            AddComponent(_tbScore);
 
             _game.Played += game_PositionChanged;
 
             _game.StateChanged += game_StateChanged;
             _game.TetrominoChanged += _game_TetrominoChanged;
 
-            int width = (_game.Cols + 2) * 2;
-
-            _rectGame = new Panel(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
-            _rectGame.Draw();
-
-            _rectNextTetro = new Panel(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
-            _rectNextTetro.Draw();
-
             RenderNextTetromino();
-
-            _blockString = new StringBuilder("██");
-            _emptyString = new StringBuilder("  ");
         }
 
         private void _game_TetrominoChanged(object sender, EventArgs e)
@@ -124,16 +99,17 @@ namespace FinTris
                 for (int y = 0; y < _game.Rows; y++)
                 {
                     StringBuilder stringBuilder = new StringBuilder();
-                    for (int x = 0; x < _game.Cols; x++)
+                    for (int x = 0; x < _game.Columns; x++)
                     {
-                         stringBuilder.Append(board[x, y].State == SquareState.Empty ? _emptyString : _blockString);
+                         stringBuilder.Append(board[x, y].State == SquareState.Empty ? "  " : "██");
                     }
-                    Console.SetCursorPosition(SHIFT_X + 2, y + SHIFT_Y + 1);
+                    Console.SetCursorPosition(_position.x, y + _position.y);
                     Console.ForegroundColor = TetroColors[_game.CurrentTetromino.Shape];
                     Console.Write(stringBuilder);
                 }
                 Console.ResetColor();
-                DrawScore();
+                //DrawScore();
+                _tbScore.Render();
             }
         }
 
@@ -157,54 +133,54 @@ namespace FinTris
         /// </summary>
         public void DeathAnim()
         {
-            lock (this)
-            {
-                Config.SaveScore();
-                _game.Stop();
-                for (int y = _game.Rows - 1; y >= 0; y--)
-                {
-                    for (int x = _game.Cols - 1; x >= 0; x--)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                        Console.Write(_blockString);
-                    }
-                    Thread.Sleep(100);
-                }
+            //lock (this)
+            //{
+            //    Config.SaveScore();
+            //    _game.Stop();
+            //    for (int y = _game.Rows - 1; y >= 0; y--)
+            //    {
+            //        for (int x = _game.Cols - 1; x >= 0; x--)
+            //        {
+            //            Console.ForegroundColor = ConsoleColor.Blue;
+            //            Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+            //            Console.Write("██");
+            //        }
+            //        Thread.Sleep(100);
+            //    }
 
 
-                for (int y = _game.Rows; y > 0; y--)
-                {
-                    for (int x = 0; x < _game.Cols; x++)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
-                        Console.Write(_blockString);
-                    }
+            //    for (int y = _game.Rows; y > 0; y--)
+            //    {
+            //        for (int x = 0; x < _game.Cols; x++)
+            //        {
+            //            Console.ForegroundColor = ConsoleColor.Gray;
+            //            Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
+            //            Console.Write("██");
+            //        }
 
-                    Thread.Sleep(8);
-                }
+            //        Thread.Sleep(8);
+            //    }
 
 
-                Thread.Sleep(1200);
+            //    Thread.Sleep(1200);
 
-                Console.ResetColor();
+            //    Console.ResetColor();
 
-                int cursorX = SHIFT_X + _game.Cols / 2;
-                int cursorY = SHIFT_Y + _game.Rows / 4;
+            //    int cursorX = SHIFT_X + _game.Cols / 2;
+            //    int cursorY = SHIFT_Y + _game.Rows / 4;
 
-                WriteAt("╔═════════════╗", cursorX, ++cursorY);
-                WriteAt("║             ║", cursorX, ++cursorY);
-                WriteAt("║  Game Over  ║", cursorX, ++cursorY);
-                WriteAt("║             ║", cursorX, ++cursorY);
-                WriteAt("╚═════════════╝", cursorX, ++cursorY);
-                cursorY += 5;
-                WriteAt("Please", cursorX += 2, ++cursorY);
-                WriteAt("Try", cursorX += 2, ++cursorY);
-                WriteAt("Again❤", cursorX += 2, ++cursorY);
+            //    WriteAt("╔═════════════╗", cursorX, ++cursorY);
+            //    WriteAt("║             ║", cursorX, ++cursorY);
+            //    WriteAt("║  Game Over  ║", cursorX, ++cursorY);
+            //    WriteAt("║             ║", cursorX, ++cursorY);
+            //    WriteAt("╚═════════════╝", cursorX, ++cursorY);
+            //    cursorY += 5;
+            //    WriteAt("Please", cursorX += 2, ++cursorY);
+            //    WriteAt("Try", cursorX += 2, ++cursorY);
+            //    WriteAt("Again❤", cursorX += 2, ++cursorY);
 
-                Thread.Sleep(1500);
-            }
+            //    Thread.Sleep(1500);
+            //}
         }
 
         /// <summary>
@@ -217,22 +193,19 @@ namespace FinTris
                 int initPosX = 62;
                 int initPosY = 5;
 
-
-                _rectNextTetro.Draw();
-
                 Console.SetCursorPosition(initPosX, initPosY);
 
                 //Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
 
-                int posx = SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4;
-                int posy = SHIFT_Y + 2;
+                int posx = _position.x + ((_game.Columns + 2) * BORDER_THICKNESS) + 4;
+                int posy = _position.y + 2;
 
                 for (int i = 0; i < _game.NextTetromino.Blocks.Count; i++)
                 {
                     Vector2 blockDir = _game.NextTetromino.Blocks[i];
                     Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
                     Console.SetCursorPosition(blockPos.x, blockPos.y);
-                    Console.Write(_blockString);
+                    Console.Write("██");
                 }
 
                 Console.ResetColor();

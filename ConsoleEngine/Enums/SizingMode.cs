@@ -2,7 +2,7 @@
 {
     public enum SizingMode
     {
-        AutoResize,
+        ParentWidth,
         Manual
     }
 }

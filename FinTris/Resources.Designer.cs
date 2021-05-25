@@ -61,6 +61,16 @@ namespace FinTris {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fintris_background {
+            get {
+                object obj = ResourceManager.GetObject("fintris_background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  _____ _     _____     _     
         ///|  ___(_)_ _|_   _| __(_)___ 
         ///| |_  | | &apos;_ \| || &apos;__| / __|
