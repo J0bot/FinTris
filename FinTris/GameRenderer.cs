@@ -79,7 +79,6 @@ namespace FinTris
             if (newState == GameState.Finished)
             {
                 DeathAnim();
-                GameManager.Play();
             }
         }
 
@@ -109,6 +108,7 @@ namespace FinTris
                 }
                 Console.ResetColor();
                 //DrawScore();
+                _tbScore.SetText(_game.Score.ToString());
                 _tbScore.Render();
             }
         }
@@ -190,20 +190,17 @@ namespace FinTris
         {
             lock (this)
             {
-                int initPosX = 62;
-                int initPosY = 5;
-
-                Console.SetCursorPosition(initPosX, initPosY);
-
                 //Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
 
-                int posx = _position.x + ((_game.Columns + 2) * BORDER_THICKNESS) + 4;
-                int posy = _position.y + 2;
+                int posx = _position.x + ((_game.Columns + 2) * BORDER_THICKNESS) + BORDER_THICKNESS;
+                int posy = _position.y ;
+
+
 
                 for (int i = 0; i < _game.NextTetromino.Blocks.Count; i++)
                 {
                     Vector2 blockDir = _game.NextTetromino.Blocks[i];
-                    Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
+                    Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
                     Console.SetCursorPosition(blockPos.x, blockPos.y);
                     Console.Write("██");
                 }

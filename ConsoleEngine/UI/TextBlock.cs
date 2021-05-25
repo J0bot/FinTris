@@ -10,6 +10,7 @@ namespace ConsoleEngine
         protected string _text;
         protected string _format;
         protected int _actualWidth;
+        protected int _actualHeight;
         protected ConsoleColor _foregroundColor;
         protected ConsoleColor _backgroundColor;
 
@@ -56,6 +57,7 @@ namespace ConsoleEngine
                     _actualWidth = line.Length;
                 }
             }
+
             _text = text;
             _height = _lines.Length;
             _foregroundColor = DEFAULT_FOREGROUND_COLOR;
@@ -93,6 +95,11 @@ namespace ConsoleEngine
             }
 
             Console.ResetColor();
+        }
+
+        public void SetText(string text)
+        {
+            UpdateText(_format.Replace("{0}", text));
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ConsoleEngine
 {
-    public class StackPanel<T> : GameObject where T : GameObject
+    public class StackPanel<T> : GameObject, IDrawable where T : GameObject
     {
         private int selectedIndex;
 
@@ -41,7 +41,7 @@ namespace ConsoleEngine
             }
         }
 
-        public void Select(Button button)
+        public void Select(T button)
         {
             foreach (Button btn in _children)
             {
@@ -49,34 +49,34 @@ namespace ConsoleEngine
             }
         }
 
-        public override void AddComponent(GameObject child)
+        public override void AddComponent(GameObject component)
         {
-            base.AddComponent(child);
+            base.AddComponent(component);
 
-            child.HorizontalAlignment = _hAlignment;
+            component.HorizontalAlignment = _hAlignment;
 
-            if (child.Width > _width)
+            if (component.Width > _width)
             {
-                _width = child.Width;
+                _width = component.Width;
             }
 
             if (_children.Count > 1)
             {
                 IGameObject last = _children[_children.Count - 2];
-                child.Position = new Vector2(child.Position.x, last.Position.y + last.Height);
+                //child.Position = new Vector2(child.Position.x, last.Position.y + last.Height);
             }
 
-            _height += child.Height;
+            _height += component._height;
         }
 
         public void Render()
         {
             int i = 0;
-            foreach (Button child in _children)
+            foreach (T child in _children)
             {
                 //component
-                child.Position += Vector2.Up * (child.Height * i);
-                child.Render();
+                child._position = (Vector2.Up * (child._height * i));
+                ((IDrawable)child).Render();
                 i++;
             }
         }

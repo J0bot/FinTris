@@ -42,8 +42,8 @@ namespace ConsoleEngine
             Console.ForegroundColor = _isSelected ? _sForegroundColor : _foregroundColor;
             Console.BackgroundColor = _isSelected ? _sBackgroundColor : _backgroundColor;
 
-            int x = (_parent != null ? _parent.Position.x : 0) + _position.x;
-            int y = (_parent != null ? _parent.Position.y : 0) + _position.y;
+            int x = (_parent != null ? _parent._position.x : 0) + _position.x;
+            int y = (_parent != null ? _parent._position.y : 0) + _position.y;
 
             if (_hAlignment == HorizontalAlignment.Center)
             {

@@ -84,7 +84,7 @@ namespace ConsoleEngine
         }
 
         public void Render()
-        {
+         {
             foreach (GameObject child in _objects)
             {
                 if (child is IDrawable)
