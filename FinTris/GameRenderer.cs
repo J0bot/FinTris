@@ -165,10 +165,12 @@ namespace FinTris
             {
                 Config.SaveScore();
                 _game.Stop();
-                /*for (int y = _game.Rows - 1; y >= 0; y--)
 
-                SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
-                koSound.Play();
+                for (int y = _game.Rows - 1; y >= 0; y--)
+                {
+                    SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
+                    koSound.Play();
+                }
 
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
@@ -180,7 +182,7 @@ namespace FinTris
                     }
 
                     System.Threading.Thread.Sleep(100);
-                }*/
+                }
 
 
                 for (int y = _game.Rows; y > 0; y--)

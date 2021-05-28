@@ -206,7 +206,7 @@ namespace FinTris
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(Config.PlayerName);
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.CursorLeft = Console.CursorLeft - Config.PlayerName.Length;
+                //Console.CursorLeft = Console.CursorLeft - Config.PlayerName.Length;
             }
             else
             {
