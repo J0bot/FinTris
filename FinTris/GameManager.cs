@@ -76,7 +76,7 @@ namespace FinTris
                 Console.Clear();
                 Console.SetCursorPosition(55,9);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Développeur : ");
+                Console.WriteLine("Développeurs : ");
                 Console.ResetColor();
 
                 Console.SetCursorPosition(52, 11);
