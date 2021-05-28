@@ -132,7 +132,7 @@ namespace FinTris
             {
                 Config.SaveScore();
                 _game.Stop();
-                for (int y = _game.Rows - 1; y >= 0; y--)
+                /*for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
                     {
@@ -140,8 +140,9 @@ namespace FinTris
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
                         Console.Write("██");
                     }
-                    Thread.Sleep(100);
-                }
+
+                    System.Threading.Thread.Sleep(100);
+                }*/
 
 
                 for (int y = _game.Rows; y > 0; y--)

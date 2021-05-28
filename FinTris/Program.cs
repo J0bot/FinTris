@@ -22,7 +22,7 @@ namespace FinTris
             Console.CursorVisible = false;
 
             // Agrandir la font
-            ConsoleHelper.SetCurrentFont("Consolas", 20);
+            //ConsoleHelper.SetCurrentFont("Consolas", 20);
 
             // Changer le titre de la fenêtre.
             Console.Title = "FinTris";

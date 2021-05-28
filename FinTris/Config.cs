@@ -8,50 +8,46 @@ namespace FinTris
 {
     public static class Config
     {
-        //is this valid in .NET framework 1.6?
         /// <summary>
-        /// The game score. (used in the Game class.)
+        /// Le score du jeu. Utilisé dans la classe "Game".
         /// </summary>
         static private int _gameScore;
 
         /// <summary>
-        /// The config location.
+        /// L'emplacement du fichier de configuration, où est gardé le nom du joueur actuel ainsi que les scores
+        /// de tous les autres joueurs.
         /// </summary>
         static string _configLocation = "./config.cfg";
-
+            
         /// <summary>
-        /// string to temporarily store all the content of the configuration file.
-        /// </summary>
-        static string _configStream;
-
-        /// <summary>
-        /// The list that will store the content of the configuration file, line by line
+        /// La liste qui servira à stocker le fichier de configuration, une ligne à la fois
         /// </summary>
         static List<string> _configFile = new List<string>();
 
         /// <summary>
-        /// Initializes the Config class.
+        /// Constructeur servant à initialiser la classe "Config".
         /// </summary>
         static Config()
         {
             CheckIfFileExists();
-            //add to the _configFile list the content of the configStream string,
-            //splitted at every line ending.
-            _configStream = File.ReadAllText(_configLocation);
-            _configFile.AddRange(_configStream.Split('\n'));
+
+            //ajouter au string temporaire configStream le contenu du fichier de configuration.
+            string configStream = File.ReadAllText(_configLocation);
+            //ajouter à la liste "_configFile" le contenu de configSteam, coupé à chaque fin de ligne.
+            _configFile.AddRange(configStream.Split('\n'));
 
             Debug.WriteLine("config loaded");
         }
 
         /// <summary>
-        /// The error string that is used if no result was found from parsing the config file.
+        /// Le string d'erreur qui est retourné si aucun résultat n'a été trouvé dans le fichier de configuration.
         /// </summary>
-        static readonly string _errorString = "NOTFOUND";
+        static readonly string _errorString = "-111111111";
 
         /// <summary>
-        /// Gets or sets the name of the player.
+        /// Retourne ou assigne le nom du joueur actuel.
         /// </summary>
-        /// <value>The name of the player.</value>
+        /// <value>Le nouveau nom du joueur.</value>
         public static string PlayerName
         {
             get { return ParseConfig("PlayerName"); }
@@ -59,9 +55,9 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Gets or sets the difficulty level.
+        /// Retourne ou assigne le niveau de difficulté.
         /// </summary>
-        /// <value>The difficulty level.</value>
+        /// <value>Le niveau de difficulté.</value>
         public static string DifficultyLevel
         {
             get { return ParseConfig("Difficulty"); }
@@ -69,10 +65,10 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Gets or sets the game score. This is used to compare if
-        /// the current score is higher than the one found in the config file.
+        /// Retourne le score. Ceci est utilisé afin de savoir si le score actuel est
+        /// plus élevé que celui stocké dans le fichier de configuration.
         /// </summary>
-        /// <value>The game score.</value>
+        /// <value>The nouveau score.</value>
         public static int GameScore
         {
             get { return _gameScore; }
@@ -80,46 +76,49 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Parses the config for a pattern that was given to it.
+        /// Méthode qui cherche dans le fichier de configuration le patterne (clé) qui lui a été passé.
         /// </summary>
-        /// <returns>The value associated with the pattern.</returns>
-        /// <param name="pattern">The pattern we want to search.</param>
+        /// <returns>La valeur associée à la clé.</returns>
+        /// <param name="pattern">La clé que nous voulons chercher.</param>
         public static string ParseConfig(string pattern)
         {
             CheckIfFileExists();
             string line;
 
-            //regex to find the pattern and the value after it
+            //regex servant à chercher la clé et la valeur qui la suit
             Regex patternFinder = new Regex("^" + pattern + "=.*");
 
             for (int i = 0; i < _configFile.Count; i++)
             {
                 line = _configFile[i];
+                //la variable "result" contiendra statut de la recherche.
                 Match result = patternFinder.Match(line);
                 if (result.Success)
                 {
+                    //si la clé a été trouvé, le match est coupé en 2 au niveau du signe "="
+                    //et la valeur de la clé est retournée.
                     Debug.WriteLine(result);
                     string[] splittedResult = result.ToString().Split('=');
                     return splittedResult[1];
                 }
             }
+            //si on arrive là, cela veut dire que la clé n'existe pas.
             return _errorString;
         }
 
         /// <summary>
-        /// Parse the config file for a pattern and replace the value associated to it. Maybe there's a way to
-        /// use the ParseConfig method instead of parsing it another time here?
+        /// Cherche dans le fichier de configuration une clé et remplace la valeur qui lui est associée.
         /// </summary>
-        /// <param name="pattern">The pattern we want to search</param>
-        /// <param name="newValue">The new value to the pattern.</param>
-        /// <param name="append">If set to <c>true</c>, append to the config file instead of searching for
-        /// the pattern.</param>
+        /// <param name="pattern">La clé que nous voulons chercher.</param>
+        /// <param name="newValue">La nouvelle valeur à inscrire.</param>
+        /// <param name="append">Si vrai, la clé passée ainsi que sa valeur seront ajoutés à la fin du
+        /// fichier, utile si nous voulons ajouter une nouvelle clé au fichier de configuration.</param>
         public static void UpdateConfig(string pattern, string newValue, bool append)
         {
             CheckIfFileExists();
 
-            //if we know the parameter doesn't exist, we can simply append it to the end here
-            //and not go any further
+            //Si nous savons que la clé n'existe pas, nous pouvons simplement l'ajouter en fin de fichier ici et ne
+            //pas aller plus loin.
             if (append)
             {
                 _configFile.Add(pattern + "=" + newValue);
@@ -128,30 +127,35 @@ namespace FinTris
                 return;
             }
 
+            //Ici, nous effectuons presque le même code que dans la méthode "ParseConfig". Si le temps le permet, il serait
+            //bien de créer une troisième méthode commune à ces deux-ci afin d'éviter de répéter le code.
+
             string line;
-            //regex to find the pattern and the value after it
+            //regex servant à chercher la clé et la valeur qui la suit
             Regex patternFinder = new Regex("^" + pattern + "=.*");
 
             for (int i = 0; i < _configFile.Count; i++)
             {
                 line = _configFile[i];
+                //la variable "result" contiendra statut de la recherche.
                 Match result = patternFinder.Match(line);
                 if (result.Success)
                 {
-                    //replace the current line with the new parameter,
-                    //then write everything to the config file.
+                    //si la clé a été trouvé, le match est coupé en 2 au niveau du signe "="
+                    //et la valeur de la clé est retournée.
                     Debug.WriteLine("MATCH = " + result);
                     _configFile[i] = pattern + "=" + newValue;
                     Debug.WriteLine("NEW VALUE = " + pattern + "=" + newValue);
                     Debug.WriteLine("\n" + line);
                 }
             }
-            //write everything back to the config file.
+            //Écrasement du fichier de configuration avec le nouveau contenu.
             File.WriteAllText(_configLocation, String.Join("\n", _configFile));
         }
 
         /// <summary>
-        /// Checks if the config file exists.
+        /// Méthode qui vérifie si le fichier de configuration existe. Si ce n'est pas le cas, cette méthode
+        /// le créera et insérera les paramètres de base à l'intérieur.
         /// </summary>
         private static void CheckIfFileExists()
         {
@@ -164,13 +168,15 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Saves the score if the current player if it's higher than their previous best. Add it anyway
-        /// if the player doesn't already have a best score (new player).
+        /// Cette méthode enregistre le score du joueur actuel en fin de partie si celui-ci est plus haut que
+        /// son record précédent. Si le joueur est nouveau, le score sera ajouté à la fin du fichier de configuration.
         /// </summary>
         public static void SaveScore()
         {
             Debug.WriteLine("SCORE: " + PlayerName + " " + ParseConfig(PlayerName + "_MaxScore"));
-            if (ParseConfig(PlayerName + "_MaxScore") == _errorString)//but what if the player has the same name as the error string? :(
+            // TODO: Mais que ce passe-t'il si le joueur a le même nom que le string d'erreur? Il faudrait trouver un moyent
+            //plus propre de vérifier si le joueur existe ou non dans le fichier de configuration!
+            if (ParseConfig(PlayerName + "_MaxScore") == _errorString)
             {
                 UpdateConfig(PlayerName + "_MaxScore", GameScore.ToString(), true);
             }
@@ -182,25 +188,24 @@ namespace FinTris
 
 
         /// <summary>
-        /// returns a list of 5 arrays containing the name of the best players and their best score, sorted
-        /// from the best to the lowest score.
+        /// Cette méthode retourne une liste de 5 tableaux contenant le nom des meilleurs joueurs ainsi que leur
+        /// meilleur score, arrangé du meilleur au plus mauvais.
         /// </summary>
-        /// <returns>A list of string arrays.</returns>
+        /// <returns>Une liste de tableau de strings.</returns>
         public static List<string[]> GetBestScores()
         {
             List<string[]> maxScores = new List<string[]>();
-            //regex to search every entry referencing a best score (example: Yannick_MaxScore=1432)
+            //regex pour cherche toutes les clefs contenant un meilleur score (example: Yannick_MaxScore=1432)
             Regex scorePattern = new Regex(".*_MaxScore=.*");
             for (int i = 0; i < _configFile.Count; i++)
             {
                 string line = _configFile[i];
-                //try to match the regex to the current line
+                //Essait de matcher le regex à la ligne actuelle
                 Match result = scorePattern.Match(line);
 
-                //if it succeeds...
                 if (result.Success)
                 {
-                    //add the name of the player in the first case, its score in the second
+                    //Ajoute le nom du joueur dans la première case du tableau et so score dans la seconde
                     string[] splittedResult = result.Groups[0].ToString().Split('=');
                     string[] entry = new string[2];
                     entry[0] = splittedResult[0].Remove(splittedResult[0].LastIndexOf('_'));
@@ -208,11 +213,11 @@ namespace FinTris
                     maxScores.Add(entry);
                 }
             }
-            //orders the list of arrays from the higher score to the lowest
+            //Arrange la liste de tableau du meilleur score au plus mauvait
             //what did I just do, how, why does it work, I have SO many questions
             maxScores = maxScores.OrderBy(arr => Convert.ToInt32(arr[1])).ToList();
             maxScores.Reverse();
-            //only keep the 5 best players
+            //Ne garde que les 5 meilleurs joueurs
             if (maxScores.Count > 5)
             {
                 maxScores.RemoveRange(5, maxScores.Count - 5);

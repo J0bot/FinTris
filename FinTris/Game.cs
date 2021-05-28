@@ -162,10 +162,27 @@ namespace FinTris
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
+
+            if (Config.DifficultyLevel == "Normal")
+            {
+                //_gameTimer.Interval -= 100;
+                _MS -= 100;
+            }
+            else if (Config.DifficultyLevel == "Hard")
+            {
+                //_gameTimer.Interval -= 300;
+                _MS -= 300;
+            }
+
+
+
             _gameTimer = new Timer(_MS);
             _gameTimer.Elapsed += timerHandler;
             _rows = rows;
             _cols = cols;
+
+
+
 
             _board = new Case[cols, rows];
 
@@ -176,6 +193,10 @@ namespace FinTris
                     _board[i, j] = new Case();
                 }
             }
+
+
+
+
         }
 
         /// <summary>
@@ -528,7 +549,8 @@ namespace FinTris
             // Changement de niveau tout les 5000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
-            _gameTimer.Interval = _MS / (_level * 0.5);
+            //_gameTimer.Interval = _MS / (_level * 0.5f);
+            _gameTimer.Interval = _MS - (_level / 0.5);
 
         }
 
@@ -549,6 +571,14 @@ namespace FinTris
         {
             // Mettre à jour l'état du jeu.
             _state = GameState.Playing;
+
+
+
+
+
+
+
+
 
             // Commencer le timer.
             _gameTimer.Start();            

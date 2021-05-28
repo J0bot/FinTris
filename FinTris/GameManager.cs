@@ -6,6 +6,7 @@
 using System;
 using Figgle;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FinTris
 {
@@ -68,14 +69,72 @@ namespace FinTris
         /// <returns>Le nouveau nom du joueur</returns>
         public static string AskForInput()
         {
+            //Rend le curseur visible
+            Console.CursorVisible = true;
+
+            //déclare les variables nécessaires
             string askNewName = "Enter a new name: ";
+            string newName = "";
+            byte maxNameLength = 30;
+            int input;
+
+            //rafraîchit l'écran et écrit le string askNewName et le nom bien centré
+            RefreshAskForName(askNewName, newName);
+
+            do
+            {
+                RefreshAskForName(askNewName, newName);
+
+                input = Console.Read();
+
+                //si input égale 0, la touche BACKSPACE a été pressée
+                //checker aussi si la taille du nom actuel est plus grande que zéro
+                if (input == 0 && newName.Length > 0)
+                {
+                    //retirer le dernier caractère du nom actuel
+                    newName = newName.Remove(newName.Length - 1);
+                }
+                //sinon, si la taille du nom est inférieure au maximum et que la touche pressée n'est pas ESCAPE...
+                else if (newName.Length < maxNameLength && input != 0)
+                {
+                    //ajouter le caractère qui vient d'être pressé au nom actuel
+                    newName += Convert.ToChar(input);
+                }
+
+                //continuer cette boucle tant que input n'égal pas à ces valeurs.
+                //27 veut dire ESCAPE, 10 et 13 sont des terminateurs de lignes sur Windows, Mac et UNIX (donc équivaut à ENTER)
+            } while (input != 27 && input != 10 && input != 13);
+            Console.CursorVisible = false;
+
+            //Si le joueur a annulé le changement de nom, on renvoie juste l'ancien nom
+            if (input == 27 || newName.Length < 2) //pourquoi le nom comporte 1 caractère d'office?
+            {
+                return Config.PlayerName;
+            }
+            return newName;
+        }
+
+
+        private static void RefreshAskForName(string askNewName, string newName)
+        {
             Console.Clear();
-            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
-            Console.CursorTop = (Console.BufferHeight / 2);
+            Console.CursorTop = Console.WindowHeight / 2;
+            Console.CursorLeft = (Console.WindowWidth - askNewName.Length - newName.Length) / 2;
+            //Console.Write(askNewName + newName);
+
             Console.Write(askNewName);
-            string entry = Console.ReadLine();
-            
-            return entry;
+            if (newName == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write(Config.PlayerName);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.CursorLeft = Console.CursorLeft - Config.PlayerName.Length;
+            }
+            else
+            {
+                Console.Write(newName);
+            }
+
         }
 
         /// <summary>
