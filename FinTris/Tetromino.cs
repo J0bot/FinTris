@@ -92,7 +92,7 @@ namespace FinTris
         /// <summary>
         /// Forme du Tetromino
         /// </summary>
-        private readonly TetrominoType _shape;
+        private TetrominoType _shape;
 
         /// <summary>
         /// Position du Tetromino dans deux dimensions
@@ -119,15 +119,10 @@ namespace FinTris
         /// </summary>
         private List<Vector2> _blocks;
 
-        public int WidthAfterRotation
-        {
-            get => _height;
-        }
-
-        public int HeightAfterRotation
-        {
-            get => _width;
-        }
+        /// <summary>
+        /// Variable random qui permet de générer des nombres random
+        /// </summary>
+        private Random _random;
 
         /// <summary>
         /// Largeur du Tetromino
@@ -189,6 +184,7 @@ namespace FinTris
             set { _blocks = value; }
         }
 
+
         /// <summary>
         /// Permet de créer une nouvelle instance de Tetromino.
         /// </summary>
@@ -199,6 +195,7 @@ namespace FinTris
         /// <param name="tetrominoState">Etat du Tetromino</param>
         public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
         {
+            _random = new Random();
             _shape = type;
             _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
@@ -268,6 +265,7 @@ namespace FinTris
         /// </summary>
         public void Rotate()
         {
+
             if (_shape == TetrominoType.Squarie)
             {
                 return;
@@ -291,6 +289,7 @@ namespace FinTris
             _data = newData;
 
             UpdateBlocks();
+
         }
     }
 }

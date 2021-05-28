@@ -55,6 +55,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Structs\Case.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuEntry.cs" />
@@ -70,7 +75,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
-    <Compile Include="UI\Rect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\App.config" />
@@ -85,7 +89,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Bowser.txt" />
+    <Content Include="Resources\bowserSound.wav" />
+    <Content Include="Resources\bowserSound2.wav" />
+    <Content Include="Resources\tetrisSoundCancel.wav" />
+    <Content Include="Resources\tetrisSoundFall.wav" />
+    <Content Include="Resources\tetrisSoundGo.wav" />
+    <Content Include="Resources\TetrisSoundKo.wav" />
+    <Content Include="Resources\tetrisSoundLvlUp.wav" />
+    <Content Include="Resources\tetrisSoundOK.wav" />
+    <Content Include="Resources\TetrisSoundPause.wav" />
+    <Content Include="Resources\tetrisSoundReady.wav" />
+    <Content Include="Resources\tetrisSoundTheme.wav" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lang\" />
