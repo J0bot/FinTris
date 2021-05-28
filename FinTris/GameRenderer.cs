@@ -3,11 +3,11 @@
 /// Date     	 : 09.03.2021
 /// Description  : Fintris
 
+using FinTris.Properties;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Media;
 using System.Threading;
-using ConsoleEngine;
 
 namespace FinTris
 {
@@ -15,21 +15,7 @@ namespace FinTris
     /// Classe qui s'occupe d'afficher le jeu.
     /// </summary>
     public class GameRenderer
-    {
-        
-        private static readonly Dictionary<TetrominoType, ConsoleColor> TetroColors = new Dictionary<TetrominoType, ConsoleColor>()
-        {
-            { TetrominoType.Lawlet,     ConsoleColor.DarkYellow },
-            { TetrominoType.ILawlet,    ConsoleColor.Blue       },
-            { TetrominoType.Squarie,    ConsoleColor.Yellow     },
-            { TetrominoType.Snake,      ConsoleColor.Green      },
-            { TetrominoType.ISnake,     ConsoleColor.Red        },
-            { TetrominoType.Malong,     ConsoleColor.DarkBlue   },
-            { TetrominoType.Pyramid,    ConsoleColor.Magenta    },
-        };
-
-
-        private const int BORDER_THICKNESS = 2;
+    {        
         /// <summary>
         /// Attribut _game représentant la référance de l'instance de Game.
         /// </summary>
@@ -45,21 +31,6 @@ namespace FinTris
         /// </summary>
         private const int SHIFT_Y = 2;
 
-        private Panel _rectGame;
-        private Panel _rectNextTetro;
-        private ConsoleColor[,] _colorBoard;
-
-        /// <summary>
-        /// A string that contains the string value of a SOLID and MOVING block
-        /// </summary>
-        private StringBuilder _blockString;
-
-        /// <summary>
-        /// A string that contains the string value of a EMPTY block
-        /// </summary>
-        private StringBuilder _emptyString;
-
-
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
@@ -68,71 +39,93 @@ namespace FinTris
         {
             _game = game;
 
-            _game.Played += game_PositionChanged;
+            _game.BoardChanged += _game_PositionChanged;
+            _game.IsDead += _game_IsDed;
 
-            _game.StateChanged += game_StateChanged;
-            _game.TetrominoChanged += _game_TetrominoChanged;
-
-            int width = (_game.Cols + 2) * 2;
-
-            _rectGame = new Panel(SHIFT_X, SHIFT_Y, width, _game.Rows + 2, ConsoleColor.DarkRed);
-            _rectGame.Draw();
-
-            _rectNextTetro = new Panel(SHIFT_X + width + 4 , SHIFT_Y + 2, 12, 6);
-            _rectNextTetro.Draw();
-
-            RenderNextTetromino();
-
-            _blockString = new StringBuilder("██");
-            _emptyString = new StringBuilder("  ");
-        }
-
-        private void _game_TetrominoChanged(object sender, EventArgs e)
-        {
-            RenderNextTetromino();
-        }
-
-        /// <summary>
-        /// La fonction callback de l'événement StateChanged. Déclenché par la Game quand le jeu est terminé.
-        /// </summary>
-        /// <param name="sender">Le déclencheur de l'événement.</param>
-        /// <param name="newState">Le nouveau état du jeu.</param>
-        private void game_StateChanged(object sender, GameState newState)
-        {
-            if (newState == GameState.Finished)
-            {
-                DeathAnim();
-                GameManager.Play();
-            }
+            BorderStyle();
         }
 
         /// <summary>
         /// Fonction qui se déclenche quand il y a eu un changememt dans le plateau du jeu.
-        /// 
-        /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
-        private void game_PositionChanged(object sender, Case[,] board)
+        private void _game_PositionChanged(object sender, Case[,] board)
         {
             // Mettre à jour l'affichage du plateau après les nouveaux changements.
+            Refresh(board);
+        }
+
+        /// <summary>
+        /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
+        /// </summary>
+        /// <param name="board">Le tableau contenant les informations des cases.</param>
+        private void Refresh(Case[,] board)
+        {
             // Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement.
             lock (this)
             {
                 for (int y = 0; y < _game.Rows; y++)
                 {
-                    StringBuilder stringBuilder = new StringBuilder();
                     for (int x = 0; x < _game.Cols; x++)
                     {
-                         stringBuilder.Append(board[x, y].State == SquareState.Empty ? _emptyString : _blockString);
+                        Console.ForegroundColor = board[x, y].Color;
+                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
                     }
-                    Console.SetCursorPosition(SHIFT_X + 2, y + SHIFT_Y + 1);
-                    Console.ForegroundColor = TetroColors[_game.CurrentTetromino.Shape];
-                    Console.Write(stringBuilder);
                 }
                 Console.ResetColor();
                 DrawScore();
+                NextTetrominoRender();
             }
+        }
+
+        /// <summary>
+        /// Permet de créer la bordure du jeu.
+        /// </summary>
+        private void BorderStyle()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(SHIFT_X, SHIFT_Y);
+            Console.Write(new string('█', 26));
+
+            for (int i = 0; i < 22; i++)
+            {
+                Console.SetCursorPosition(SHIFT_X, i + SHIFT_Y+1);
+                Console.Write("██"+ new string(' ', 22) + "██");
+            }
+            Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
+            Console.Write(new string('█', 26));
+            
+            Console.ResetColor();
+
+            // Bordure du prochain Tetromino.
+            Console.SetCursorPosition(58, 2);
+            Console.Write("NEXT TETROMINO");
+
+            byte min = 4;
+            byte max = 9;
+            byte decal = 60;
+            byte length = 10;
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            for (int l = min; l < max; l++)
+            {
+                if (l == min || l == max - 1)
+                {
+                    Console.SetCursorPosition(decal, l);
+
+                    Console.Write(new string('█', length));
+                }
+                else
+                {
+                    Console.SetCursorPosition(decal, l);
+                    Console.Write("██"+new string(' ', length-4)+"██");
+                }
+
+            }
+
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -149,6 +142,19 @@ namespace FinTris
             Console.WriteLine($"Niveau : {_game.Level}");
         }
 
+        /// <summary>
+        /// La fonction callback de l'événement IsDead. Déclenché par la Game quand le jeu est terminé.
+        /// </summary>
+        /// <param name="sender">Le déclencheur de l'événement.</param>
+        /// <param name="e">If set to <c>true</c> e.</param>
+        private void _game_IsDed(object sender, bool e)
+        {
+            if (e == true)
+            {
+                DeathAnim();
+                GameManager.Play();
+            }
+        }
 
         /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.
@@ -159,15 +165,19 @@ namespace FinTris
             {
                 Config.SaveScore();
                 _game.Stop();
+
+                SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
+                koSound.Play();
+
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Cols - 1; x >= 0; x--)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
-                        Console.Write(_blockString);
+                        Console.Write("██");
                     }
-                    Thread.Sleep(100);
+                    System.Threading.Thread.Sleep(100);
                 }
 
 
@@ -177,16 +187,18 @@ namespace FinTris
                     {
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
-                        Console.Write(_blockString);
+                        Console.Write("██");
                     }
 
-                    Thread.Sleep(8);
+                    System.Threading.Thread.Sleep(8);
                 }
 
 
-                Thread.Sleep(1200);
+                System.Threading.Thread.Sleep(1200);
 
                 Console.ResetColor();
+
+                BorderStyle();
 
                 int cursorX = SHIFT_X + _game.Cols / 2;
                 int cursorY = SHIFT_Y + _game.Rows / 4;
@@ -201,43 +213,180 @@ namespace FinTris
                 WriteAt("Try", cursorX += 2, ++cursorY);
                 WriteAt("Again❤", cursorX += 2, ++cursorY);
 
-                Thread.Sleep(1500);
+                System.Threading.Thread.Sleep(1500);
             }
         }
 
         /// <summary>
         /// Fonction qui va s'occuper de render le prochain Tetromino.
         /// </summary>
-        private void RenderNextTetromino()
+        private void NextTetrominoRender()
         {
-            lock (this)
+
+            int initPosX =62;
+            int initPosY =5;
+
+            Console.SetCursorPosition(initPosX, initPosY);
+
+            Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
+
+            if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
             {
-                int initPosX = 62;
-                int initPosY = 5;
+                Console.Write(  "██    ");
+                WriteAt(        "██    ", initPosX, initPosY + 1);
+                WriteAt(        "████  ", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
+            {
+                Console.Write(  "    ██");
+                WriteAt(        "    ██", initPosX, initPosY + 1);
+                WriteAt(        "  ████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
+            {
+                Console.Write(  "      ");
+                WriteAt(        "  ██  ", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Snake)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "████  ", initPosX, initPosY + 1);
+                WriteAt(        "██    ", initPosX, initPosY + 2);
 
-
-                _rectNextTetro.Draw();
-
-                Console.SetCursorPosition(initPosX, initPosY);
-
-                //Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
-
-                int posx = SHIFT_X + ((_game.Cols + 2) * BORDER_THICKNESS) + 4;
-                int posy = SHIFT_Y + 2;
-
-                for (int i = 0; i < _game.NextTetromino.Blocks.Count; i++)
-                {
-                    Vector2 blockDir = _game.NextTetromino.Blocks[i];
-                    Vector2 blockPos = new Vector2(posx + BORDER_THICKNESS, posy + 1) + new Vector2(blockDir.x * BORDER_THICKNESS, blockDir.y);
-                    Console.SetCursorPosition(blockPos.x, blockPos.y);
-                    Console.Write(_blockString);
-                }
-
-                Console.ResetColor();
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ████", initPosX, initPosY + 1);
+                WriteAt(        "    ██", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
+            {
+                Console.Write(  "██████");
+                WriteAt(        "██████", initPosX, initPosY + 1);
+                WriteAt(        "██████", initPosX, initPosY + 2);
+            }
+            else if (_game.NextTetromino.Shape == TetrominoType.Malong)
+            {
+                Console.Write(  "  ██  ");
+                WriteAt(        "  ██  ", initPosX, initPosY+1);
+                WriteAt(        "  ██  ", initPosX, initPosY+2);
             }
 
+
+
+            Console.ResetColor();
         }
 
+#if DEBUG
+        /// <summary>
+        /// Si le joueur appuie sur A, il entre dans une zone interdite.
+        /// </summary>
+        public void CheatCode()
+        {
+            // Lancement de la première voix.
+            SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
+
+            if (GameManager.checkSound == true)
+            {
+                bowserSound2.Play();
+            }
+
+            Console.Clear();
+            Console.SetCursorPosition(50, 14);
+            TypewriterEffect("??? : Tricheur !");
+            Thread.Sleep(200);
+
+            Console.SetCursorPosition(35, 16);
+            TypewriterEffect("??? : Tu ne devais pas avoir accès à cette zone !");
+
+            Thread.Sleep(200);
+
+
+            Console.SetCursorPosition(39, 18);
+            TypewriterEffect("??? : Maintenant il va falloir...");
+            Thread.Sleep(100);
+            TypewriterEffect(" payer !", 100);
+            Thread.Sleep(1000);
+            Console.Clear();
+
+            // Lancement de la deuxième voix.
+            SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
+
+            if (GameManager.checkSound == true)
+            {
+                bowserSound.Play();
+            }         
+
+            string[] bowserString = new string[] {
+                "                                   @                                  ",
+                "                                 @@@@@                                ",
+                "                          *@@@&@@@@@@@@##@@@@                         ",
+                "                         @@@@@@@@@@@@@@@@@@@@@.                       ",
+                "         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        ",
+                "       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      ",
+                "     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@     ",
+                "     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
+                "     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
+                "      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
+                "        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ",
+                "          @@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@         ",
+                "          @@@@@@@@       &@@@@@@@@@@@@@@@@@@@@.      &@@@@@@@         ",
+                "       #@@@@@@@@@@,         @@@@@@@@@@@@@@@          @@@@@@@@@@,      ",
+                "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   ",
+                "  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ",
+                " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+                ".@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+                " @@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@",
+                " @@@@@@@@@@@@       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       ,@@@@@@@@@@@",
+                "  @@@@@@@@@@@*         @@@@@@,           ,@@@@@@          @@@@@@@@@@@ ",
+                "   @@@@@@@@@@@           @@                 @@.          @@@@@@@@@@@  ",
+                "     @@@@@@@@@@           @                 @           @@@@@@@@@@    ",
+                "        @@@@@@@@                                       @@@@@@@@       ",
+                "          @@@@@@@                                     @@@@@@@         ",
+                "            @@@@@@                                   @@@@@@           ",
+                "              @@@@@@     @@@              ,@@@      @@@@@.            ",
+                "               @@@@@@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@@@@@              ",
+                "                 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                ",
+                "                 (@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                ",
+                "                  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                 ",
+                "                   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                  ",
+                "                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   ",
+                "                      &@@@@@@@@        #@@@@@@@@                      "
+            };
+
+            // Affichage du monstre.
+            // 
+            for (int i = 0; i < 5; i++)
+            {
+
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                //string[] bowser = File.ReadAllLines(Resources.Bowser);
+
+                //for (int w = 0; w < bowser.Length; w++)
+                //{
+                //    Console.WriteLine(bowser[w]);
+                //}
+                for (int j = 0; j < bowserString.Length; j++)
+                {
+                    Console.WriteLine(bowserString[j]);
+                }
+
+
+                Thread.Sleep(100);
+                Console.Clear();
+                Thread.Sleep(100);
+
+            }
+            Console.ResetColor();
+            BorderStyle();
+
+            _game.CheatCode();
+
+        }
+#endif
 
         /// <summary>
         /// Ecris ue texte à une position donnée. (repris de la documentation de Microsoft)

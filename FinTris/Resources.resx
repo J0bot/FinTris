@@ -117,11 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="fintris_title" xml:space="preserve">
-    <value> _____ _     _____     _     
-|  ___(_)_ _|_   _| __(_)___ 
-| |_  | | '_ \| || '__| / __|
-|  _| | | | | | || |  | \__ \
-|_|   |_|_| |_|_||_|  |_|___/</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="bowserSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bowsersound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bowserSound2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bowsersound2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tetrisSoundCancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundcancel.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TetrisSoundFall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundfall.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tetrisSoundGo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundgo.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TetrisSoundKo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundko.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tetrisSoundLvlUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundlvlup.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tetrisSoundOK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundok.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tetrisSoundReady" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundready.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tetrisSoundTheme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundtheme.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Bowser" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bowser.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="TetrisSoundPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\tetrissoundpause.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
