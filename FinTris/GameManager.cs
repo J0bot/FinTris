@@ -6,6 +6,7 @@
 using System;
 using Figgle;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FinTris
 {
@@ -168,6 +169,12 @@ namespace FinTris
         {
             Console.Clear();
 
+            int cooldown = 50;
+            long lastClicked = 0;
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             _game = new Game();
             _gameRenderer = new GameRenderer(_game);
             _game.Start();
@@ -177,6 +184,7 @@ namespace FinTris
             do
             {
                 input = Console.ReadKey(true).Key;
+
                 if (input == ConsoleKey.RightArrow)
                 {
                     _game.MoveRight();
@@ -191,7 +199,11 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Spacebar)
                 {
-                    _game.Rotate();
+                    if (sw.ElapsedMilliseconds > lastClicked + cooldown)
+                    {
+                        _game.Rotate();
+                        lastClicked = sw.ElapsedMilliseconds;         
+                    }
                 }
                 else if (input == ConsoleKey.DownArrow)
                 {
@@ -212,6 +224,8 @@ namespace FinTris
                 }
 
             } while (input != ConsoleKey.Escape);
+
+            sw.Stop();
         }
     }
 }
