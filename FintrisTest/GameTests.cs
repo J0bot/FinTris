@@ -15,10 +15,11 @@ namespace FintrisTest
         //    game.Start();
 
         //    //Arrange
+
         //    List<Vector2> initialAngle = game.CurrentTetromino.Blocks;
+        //    TetrominoType currentTetromino = game.CurrentTetromino.Shape;
         //    TetrominoType expected;
-        //    TetrominoType newAngle;
-            
+
         //    //Configurations de Tetromino Possibles après rotation 
 
         //    byte[,] squarieRotated = new byte[,]
@@ -79,32 +80,34 @@ namespace FintrisTest
 
 
 
-            ////Act
-            //game.Rotate();
-            //newAngle = game.CurrentTetromino.Shape;
-            //switch (initialAngle)
-            //{
-            //    case TetrominoType.Squarie:
-            //        expected = squarieRotated;
-            //        break;
-            //    case TetrominoType.Snake:
-            //        break;
-            //    case TetrominoType.ISnake:
-            //        break;
-            //    case TetrominoType.Malong:
-            //        break;
-            //    case TetrominoType.Lawlet:
-            //        break;
-            //    case TetrominoType.ILawlet:
-            //        break;
-            //    case TetrominoType.Pyramid:
-            //        break;
-            //    default:
-            //        break;
-            //}
+        //    //Act
+        //    game.Rotate();
+        //    var newAngle = game.CurrentTetromino.Blocks;
 
-            ////Assert
-            //Assert.AreEqual(expected, newAngle);
+
+        //    switch (currentTetromino)
+        //    {
+        //        case TetrominoType.Squarie:
+        //            expected = squarieRotated;
+        //            break;
+        //        case TetrominoType.Snake:
+        //            break;
+        //        case TetrominoType.ISnake:
+        //            break;
+        //        case TetrominoType.Malong:
+        //            break;
+        //        case TetrominoType.Lawlet:
+        //            break;
+        //        case TetrominoType.ILawlet:
+        //            break;
+        //        case TetrominoType.Pyramid:
+        //            break;
+        //        default:
+        //            break;
+        //    }
+
+        //    //Assert
+        //    Assert.AreEqual(expected, newAngle);
         //}
 
         [TestMethod]
@@ -203,7 +206,7 @@ namespace FintrisTest
         //[TestMethod]
         //public void UpdateBoardTest()
         //{
-         
+
         //    Game game = new Game();
         //    game.Start();
 
@@ -238,34 +241,7 @@ namespace FintrisTest
         //    //Assert.AreEqual(expected, newPos);
         //}
 
-        //[TestMethod]
-        //public void WithinRangeTest()
-        //{
-        //    //Idée de test: faire tester toutes les conditions du bord du range et à l'intérieur et si un n'a pas le resultat escompté--> test fail, si il passe la boucle -->Test réussi
-
-
-        //    Game game = new Game();
-        //    game.Start();
-
-        //    //Arrange
-        //    Vector2 actualPos;
-        //    Vector2 expectedPos;
-        //    bool testIsRunning = true;
-
-        //    //Act
-        //    actualPos = game.CurrentTetromino.Position;
-        //    var privateTestMethod = new PrivateObject(game);
-        //    var args = actualPos;
-        //    var res = privateTestMethod.Invoke("WithinRange", args); //on appelle les méthodes via un string et pas par la méthode standard
-
-
-
-        //    //Assert
-        //    Assert.IsFalse(res);
-        //    Assert.IsTrue(res);
-        //}
-
-
+        //TODO revoir le test, inutile
         [TestMethod]
         public void CheckForDeathTest()
         {
@@ -274,17 +250,96 @@ namespace FintrisTest
 
             //Arrange
             GameState actualState;
-            GameState expectedState = GameState.Finished;
+            GameState expectedState = GameState.Playing;
+            int expectedScore = 0;
+            int actualScore;
 
             //Act
             var privateTestMethod = new PrivateObject(game);
             privateTestMethod.Invoke("CheckForDeath");
             actualState = game.State;
-
-
+            actualScore = game.Score;
 
             //Assert
             Assert.AreEqual(expectedState, actualState);
+            Assert.AreEqual(expectedScore, actualScore);
+
+        }
+
+        //TODO Test inutile?, revoir
+        //[TestMethod]
+        //public void ScoreManagerTest()
+        //{
+        //    Game game = new Game();
+        //    game.Start();
+
+        //    //Arrange
+
+
+        //    //Act
+        //    var privateTestMethod = new PrivateObject(game);
+        //    int args = 1;
+        //    privateTestMethod.Invoke("ScoreManager", args);
+
+
+        //    //Assert
+        //    Assert.AreEqual(expectedState, actualState);
+
+        //}
+
+        [TestMethod]
+        public void PauseTest()
+        {
+            Game game = new Game();
+            game.Start();
+
+            //Arrange
+            GameState actualState;
+            GameState expectedState = GameState.Paused;
+
+            //Act
+            game.Pause();
+            actualState = game.State;
+
+            //Assert
+            Assert.AreEqual(expectedState, actualState);
+        }
+
+        [TestMethod]
+        public void WithinRangeTest()
+        {
+            Game game = new Game();
+            game.Start();
+
+            //Arrange
+            Vector2 pos;
+            bool expectedRangeState;
+
+            //Act
+            PrivateObject privateTestMethod = new PrivateObject(game);
+
+            //Assert
+            for (int y = 0; y < game.Rows; y++)
+            {
+                for (int x = 0; x < game.Cols; x++)
+                {
+                    pos = new Vector2(x, y);
+                    bool actualRangeState = (bool)privateTestMethod.Invoke("WithinRange", pos);
+
+                    if ((pos.x >= 0 && pos.x < game.Cols) && (pos.y >= 0 && pos.y < game.Rows))
+                    {
+                        expectedRangeState = true;
+                        Assert.AreEqual(expectedRangeState, actualRangeState);
+                    }
+                    else
+                    {
+                        expectedRangeState = false;
+                        Assert.AreEqual(expectedRangeState, actualRangeState);
+
+                    }
+                }
+
+            }
         }
     }
 }
