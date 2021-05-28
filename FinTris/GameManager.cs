@@ -44,11 +44,13 @@ namespace FinTris
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
             MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
+            MenuEntry credits = new MenuEntry("Credits");
             MenuEntry quit = new MenuEntry("Quit");
 
             _menu.Add(play);
             _menu.Add(options);
             _menu.Add(playerName);
+            _menu.Add(credits);
             _menu.Add(quit);
 
             MenuEntry choice = _menu.ShowMenu();
@@ -62,12 +64,39 @@ namespace FinTris
             {
                 ShowOptions();
             }
-            if (choice == playerName)
+            else if (choice == playerName)
             {
                 Config.PlayerName = AskForInput();
                 //this is probably disgusting but I'll do it anyway
                 MainMenu();
             }
+
+            else if (choice == credits)
+            {
+                Console.Clear();
+                Console.SetCursorPosition(55,9);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Développeur : ");
+                Console.ResetColor();
+
+                Console.SetCursorPosition(52, 11);
+                Console.WriteLine("José Carlos Gasser");
+
+                Console.SetCursorPosition(56, 13);
+                Console.WriteLine("Ahmad Jano");
+
+                Console.SetCursorPosition(53, 15);
+                Console.WriteLine("Maxime Andrieux");
+
+                Console.SetCursorPosition(53, 17);
+                Console.WriteLine("Maxence Weyermann");
+
+                Console.SetCursorPosition(53, 19);
+                Console.WriteLine("Larissa Debarros");
+                Console.Read();
+                MainMenu();
+            }
+
             else
             {
                 Environment.Exit(0);
@@ -138,12 +167,13 @@ namespace FinTris
             MenuEntry bestScores = new MenuEntry("Show best scores");
             MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
             MenuEntry sounds = new MenuEntry("Sounds");
+            
             MenuEntry cancel = new MenuEntry("Return");
 
             optionMenu.Add(bestScores);
             optionMenu.Add(difficulty);
             optionMenu.Add(sounds);
-            optionMenu.Add(cancel);
+            optionMenu.Add(cancel);       
 
             MenuEntry choice;
             do
