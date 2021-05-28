@@ -8,11 +8,11 @@ namespace FintrisTest
     public class GameTests
     {
 
-        //[TestMethod]
-        //public void RotateTest()
-        //{
-        //    Game game = new Game();
-        //    game.Start();
+        [TestMethod]
+        public void RotateTest()
+        {
+            Game game = new Game();
+            game.Start();
 
         //    //Arrange
         //    List<Vector2> initialAngle = game.CurrentTetromino.Blocks;
@@ -106,6 +106,7 @@ namespace FintrisTest
             ////Assert
             //Assert.AreEqual(expected, newAngle);
         //}
+            }
 
         [TestMethod]
         public void MoveRightTest()
@@ -265,7 +266,7 @@ namespace FintrisTest
         //    Assert.IsTrue(res);
         //}
 
-
+        //TODO revoir le test, inutile
         [TestMethod]
         public void CheckForDeathTest()
         {
@@ -274,17 +275,89 @@ namespace FintrisTest
 
             //Arrange
             GameState actualState;
-            GameState expectedState = GameState.Finished;
+            GameState expectedState = GameState.Playing;
+            int expectedScore = 0;
+            int actualScore;
 
             //Act
             var privateTestMethod = new PrivateObject(game);
             privateTestMethod.Invoke("CheckForDeath");
             actualState = game.State;
+            actualScore = game.Score;
+           
+            //Assert
+            Assert.AreEqual(expectedState, actualState);
+            Assert.AreEqual(expectedScore, actualScore);
+
+        }
+
+        //TODO Test inutile?, revoir
+        //[TestMethod]
+        //public void ScoreManagerTest()
+        //{
+        //    Game game = new Game();
+        //    game.Start();
+
+        //    //Arrange
 
 
+        //    //Act
+        //    var privateTestMethod = new PrivateObject(game);
+        //    int args = 1;
+        //    privateTestMethod.Invoke("ScoreManager", args);
+
+
+        //    //Assert
+        //    Assert.AreEqual(expectedState, actualState);
+
+        //}
+
+        [TestMethod]
+        public void PauseTest()
+        {
+            Game game = new Game();
+            game.Start();
+
+            //Arrange
+            GameState actualState;
+            GameState expectedState = GameState.Paused;
+
+            //Act
+            game.Pause();
+            actualState = game.State;
 
             //Assert
             Assert.AreEqual(expectedState, actualState);
+        }
+
+        [TestMethod]
+        public void WithinRangeTest()
+        {
+            Game game = new Game();
+            game.Start();
+
+            //Arrange
+            Vector2 pos;
+            //bool expectedRangeState;
+            //bool actualRangestate;
+
+            //Act
+            //var privateTestMethod = new PrivateObject(game);
+            //privateTestMethod.Invoke("WithinRange", pos);
+
+            pos.x >= 0 && pos.x < _cols && pos.y >= 0 && pos.y < _rows;
+            //Assert
+            for (int y = 0; y < game.Rows; y++)
+            {
+                for (int x = 0; x < game.Cols; x++)
+                {
+                    pos = new Vector2(x, y);
+
+                    if(pos.x >= 0 && pos.x < game.Cols && è)
+                }
+
+                Assert.AreEqual(expectedState, actualState);
+            }
         }
     }
 }
