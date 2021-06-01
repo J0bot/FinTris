@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Media;
+using System.Threading;
 
 namespace FinTris
 {
@@ -354,21 +355,16 @@ namespace FinTris
         public static void Play()
         {
             SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
-            Stopwatch stopWatch = new Stopwatch();
+            SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
+            SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
 
             if (checkSound == true)
             {
                 okSound.Play();
             }
-            
-            stopWatch.Start();
-            do
-            {
-                Console.Clear();
 
-            } while (stopWatch.Elapsed.TotalSeconds < 1);
+            Console.Clear();
 
-            stopWatch.Stop();
 
             Console.Clear();
 
@@ -377,36 +373,33 @@ namespace FinTris
                 SoundReady();
             }     
 
-            stopWatch.Restart();
-            do
+            int y = 0;
+            foreach (string line in Resources.ready_title.Split('\n'))
             {
-                do
-                {
-                    Console.SetCursorPosition(0, 5);
-                    Console.WriteLine(FiggleFonts.Starwars.Render("Ready"));
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 14, Console.WindowHeight / 2 + y - 5);
+                Console.Write(line);
+                y++;
+            }
 
-                } while (stopWatch.Elapsed.TotalSeconds < 0.8);
-
-                Console.Clear();
-
-                SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
-
-                if (checkSound == true)
-                {
-                    goSound.Play();
-                }
-
-                do
-                {
-                    Console.SetCursorPosition(0, 5);
-                    Console.WriteLine(FiggleFonts.Starwars.Render("GO"));
-                    
-
-                } while (stopWatch.Elapsed.TotalSeconds < 2);
+            Thread.Sleep(1500);
+            Console.Clear();
 
 
-            } while (stopWatch.Elapsed.TotalSeconds < 1.3);
-            stopWatch.Stop();
+            if (checkSound == true)
+            {
+                goSound.Play();
+            }
+
+            y = 0;
+            foreach (string line in Resources.go_title.Split('\n'))
+            {
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2 + y - 5);
+                Console.Write(line);
+                y++;
+            }
+            Thread.Sleep(1500);
+            Console.Clear();
+
 
             Console.Clear();
 
@@ -445,7 +438,6 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Escape)
                 {
-                    SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
                     pauseMenu();
 
                     /*

@@ -154,4 +154,26 @@
   <data name="TetrisSoundPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\tetrissoundpause.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="fintris_title" xml:space="preserve">
+    <value> _____ _     _____     _     
+ |  ___(_)_ _|_   _| __(_)___ 
+ | |_  | | '_ \| || '__| / __|
+ |  _| | | | | | || |  | \__ \
+ |_|   |_|_| |_|_||_|  |_|___/</value>
+  </data>
+  <data name="go_title" xml:space="preserve">
+    <value>   ____       
+  / ___| ___  
+ | |  _ / _ \ 
+ | |_| | (_) |
+  \____|\___/</value>
+  </data>
+  <data name="ready_title" xml:space="preserve">
+    <value>  ____                _       
+ |  _ \ ___  __ _  __| |_   _ 
+ | |_) / _ \/ _` |/ _` | | | |
+ |  _ &lt;  __/ (_| | (_| | |_| |
+ |_| \_\___|\__,_|\__,_|\__, |
+                        |___/</value>
+  </data>
 </root>
