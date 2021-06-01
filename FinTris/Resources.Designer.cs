@@ -95,10 +95,10 @@ namespace FinTris {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à  _____ _     _____     _     
-        /// |  ___(_)_ _|_   _| __(_)___ 
-        /// | |_  | | &apos;_ \| || &apos;__| / __|
-        /// |  _| | | | | | || |  | \__ \
-        /// |_|   |_|_| |_|_||_|  |_|___/.
+        ///|  ___(_)_ _|_   _| __(_)___ 
+        ///| |_  | | &apos;_ \| || &apos;__| / __|
+        ///|  _| | | | | | || |  | \__ \
+        ///|_|   |_|_| |_|_||_|  |_|___/.
         /// </summary>
         public static string fintris_title {
             get {

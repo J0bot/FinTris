@@ -3,7 +3,6 @@
 ///Date     	: 19.03.2021
 ///Description  : Fintris
 
-using Figgle;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +39,7 @@ namespace FinTris
             }
 
            
-            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
+            Menu _menu = new Menu(Resources.fintris_title);
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
@@ -381,7 +380,7 @@ namespace FinTris
                 y++;
             }
 
-            Thread.Sleep(1500);
+            Thread.Sleep(750);
             Console.Clear();
 
 
@@ -397,7 +396,7 @@ namespace FinTris
                 Console.Write(line);
                 y++;
             }
-            Thread.Sleep(1500);
+            Thread.Sleep(750);
             Console.Clear();
 
 

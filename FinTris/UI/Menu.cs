@@ -54,12 +54,16 @@ namespace FinTris
         {
             Console.Clear();
 
-            Console.WriteLine(_title);
-            Console.WriteLine();
-            int initialY = Console.CursorTop;
+            int y = 0;
+            foreach (string line in _title.Split('\n'))
+            {
+                Console.SetCursorPosition((Console.WindowWidth - 31) / 2, y);
+                Console.WriteLine(line);
+                y++;
+            }
 
             //Affichage des options de bases
-            WriteOptions(initialY);
+            WriteOptions();
 
             //TODO gérer les flèches pour sélectionner une entrée
             MenuEntry selectedEntry = null;
@@ -74,7 +78,7 @@ namespace FinTris
                             _entries[currentlySelected].IsSelected = false;
                             _entries[currentlySelected - 1].IsSelected = true;
                             currentlySelected--;
-                            Console.SetCursorPosition(0, initialY);
+                            Console.SetCursorPosition(0, 0);
 
                         }
                         break;
@@ -84,14 +88,14 @@ namespace FinTris
                             _entries[currentlySelected].IsSelected = false;
                             _entries[currentlySelected + 1].IsSelected = true;
                             currentlySelected++;
-                            Console.SetCursorPosition(0, initialY);
+                            Console.SetCursorPosition(0, 0);
                         }
                         break;
                     case ConsoleKey.Enter:
                         return _entries[currentlySelected];
 
                 }
-                WriteOptions(initialY);
+                WriteOptions();
             }
 
             Console.ReadLine();
@@ -101,9 +105,9 @@ namespace FinTris
         /// <summary>
         /// Affiche toutes les options depuis la position courante du curseur
         /// </summary>
-        private void WriteOptions(int y)
+        private void WriteOptions()
         {
-            y = 10;
+            int y = 10;
             for (int i = 0; i < _entries.Count; i++)
             {
                 int x = (Console.BufferWidth / 2) - (_entries[i].Text.Length / 2);
