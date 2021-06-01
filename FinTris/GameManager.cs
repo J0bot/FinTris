@@ -30,11 +30,9 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
-            themeSound.PlayLooping();
-
-            if (checkSound == false)
+            if (checkSound)
             {
-                themeSound.Stop();
+                themeSound.PlayLooping();
             }
 
             Menu _menu = new Menu(Resources.fintris_title);
