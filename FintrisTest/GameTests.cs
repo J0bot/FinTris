@@ -1,6 +1,5 @@
 ﻿using FinTris;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace FintrisTest
 {
@@ -18,7 +17,7 @@ namespace FintrisTest
 
         //    List<Vector2> initialAngle = game.CurrentTetromino.Blocks;
         //    TetrominoType currentTetromino = game.CurrentTetromino.Shape;
-        //    TetrominoType expected;
+        //    List<Vector2> expected;
 
         //    //Configurations de Tetromino Possibles après rotation 
 
@@ -77,8 +76,6 @@ namespace FintrisTest
         //            {1},
         //            {1}
         //         };
-
-
 
         //    //Act
         //    game.Rotate();
@@ -173,34 +170,27 @@ namespace FintrisTest
             Assert.AreEqual(expected, newPos);
         }
 
-        //[TestMethod]
-        //public void DropDownTest()   //TODO test est buggé, corriger le test, actual position du tetromino a un y de 0 ?
-        //{
-        //    //Arrange
-        //    Game game = new Game();
-        //    GameRenderer gameRenderer = new GameRenderer(game); //TODO implémenter la variable d'épaisseur de la bordure lorsqu'elle sera mise à jour par Ahmad
+        [TestMethod]
+        public void DropDownTest()   //TODO test est buggé, corriger le test, actual position du tetromino a un y de 0 ?
+        {
+            //Arrange
+            Game game = new Game();
+            Tetromino tetromino = game.CurrentTetromino;
+            Vector2 expectedPos = new Vector2(game.CurrentTetromino.Position.x, game.Rows - tetromino.Height);
 
-        //    game.Start();
+            game.Start();
 
-        //    Vector2 expectedPos;
-        //    int initScore = game.Score;
-        //    int expectedScore = initScore + 20;
-        //    int actualScore;
+            //épaisseur bordure
 
-        //    //Act 
-        //    game.DropDown();
-        //    //La position du Tetromino est comptée à partir de la position en haut à gauche de sa grille 
-        //    //2 = épaisseur bordure
+            //Act 
+            game.DropDown();
+            //La position du Tetromino est comptée à partir de la position en haut à gauche de sa grille 
 
-        //    expectedPos = new Vector2(game.CurrentTetromino.Position.x, game.Rows - game.CurrentTetromino.Height - 2 ); //bas du tableau 
-        //    Vector2 actualPos = game.CurrentTetromino.Position;
-        //    actualScore = game.Score;
+            Vector2 actualPos = tetromino.Position;
 
-
-        //    //Assert
-        //    Assert.AreEqual(expectedPos, actualPos);
-        //    //Assert.AreEqual(expectedScore, actualScore);
-        //}
+            //Assert
+            Assert.AreEqual(expectedPos, actualPos);
+        }
 
         //TODO implémenter UpdateBoardTest
         //[TestMethod]
@@ -241,7 +231,6 @@ namespace FintrisTest
         //    //Assert.AreEqual(expected, newPos);
         //}
 
-        //TODO revoir le test, inutile
         [TestMethod]
         public void CheckForDeathTest()
         {
@@ -250,19 +239,44 @@ namespace FintrisTest
 
             //Arrange
             GameState actualState;
-            GameState expectedState = GameState.Playing;
-            int expectedScore = 0;
-            int actualScore;
+            GameState expectedState;
+
 
             //Act
             var privateTestMethod = new PrivateObject(game);
-            privateTestMethod.Invoke("CheckForDeath");
-            actualState = game.State;
-            actualScore = game.Score;
 
-            //Assert
-            Assert.AreEqual(expectedState, actualState);
-            Assert.AreEqual(expectedScore, actualScore);
+            //teste l'état donné par CheckForDeath pour chaque position de tetromino
+            //(est censé affiché finished lorsqu'il sort du tableau)
+            for (int y = 0; y < game.Rows; y++)
+            {
+                for (int x = 0; x < game.Cols; x++)
+                {
+                    Vector2 tetroPosTest = new Vector2(x, y);
+
+                    if ((bool)privateTestMethod.Invoke("WithinRange", tetroPosTest))
+                    {
+                        expectedState = GameState.Playing;
+
+                        privateTestMethod.Invoke("CheckForDeath");
+                        actualState = game.State;
+
+                        //Assert
+                        Assert.AreEqual(expectedState, actualState);
+
+                    }
+                    else
+                    {
+                        expectedState = GameState.Finished;
+
+                        privateTestMethod.Invoke("CheckForDeath");
+                        actualState = game.State;
+
+                        //Assert
+                        Assert.AreEqual(expectedState, actualState);
+                    }
+
+                }
+            }
 
         }
 

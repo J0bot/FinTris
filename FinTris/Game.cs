@@ -289,7 +289,6 @@ namespace FinTris
                 return;
             }
 
-
             _gameTimer.Stop();
 
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
@@ -304,7 +303,6 @@ namespace FinTris
 
             _gameTimer.Start();
             NewTetromino();
-
         }
 
 
