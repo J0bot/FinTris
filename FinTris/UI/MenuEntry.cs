@@ -14,11 +14,6 @@ namespace FinTris
         /// </summary>
         private static int _instanceCounter = 0;
 
-        /// <summary>
-        /// valeur du texte le plus long
-        /// </summary>
-        private static int _longestText = 0;
-
         //Couleurs par défaut
         private const ConsoleColor selectedBGColor = ConsoleColor.DarkRed;
         private const ConsoleColor selectedFGColor = ConsoleColor.White;
@@ -78,13 +73,6 @@ namespace FinTris
         {
             this._id = _instanceCounter++;
             this._text = text;
-
-            //Stocke la plus longue option en terme de caractères
-            if (text.Length > _longestText)
-            {
-                _longestText = text.Length;
-            }
-
         }
 
 
@@ -93,19 +81,12 @@ namespace FinTris
             this._id = _instanceCounter++;
             this._text = text;
             this._suffix = suffix;
-
-            //Stocke la plus longue option en terme de caractères
-            if (text.Length > _longestText)
-            {
-                _longestText = text.Length;
-            }
-
         }
 
         /// <summary>
         /// Affichage de l'entrée actuelle
         /// </summary>
-        public void WriteOption()
+        public void RenderOption()
         {
             //backup state
             ConsoleColor previousBG = Console.BackgroundColor;
@@ -136,7 +117,7 @@ namespace FinTris
         /// <returns></returns>
         public override string ToString()
         {
-            return _text + _suffix;
+            return $"{_text}{_suffix}";
         }
     }
 }

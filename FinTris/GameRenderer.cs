@@ -42,6 +42,7 @@ namespace FinTris
             _game.BoardChanged += _game_PositionChanged;
             _game.IsDead += _game_IsDed;
 
+            Console.Clear();
             BorderStyle();
         }
 
@@ -177,7 +178,7 @@ namespace FinTris
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
                         Console.Write("██");
                     }
-                    System.Threading.Thread.Sleep(100);
+                    Thread.Sleep(100);
                 }
 
 
@@ -190,11 +191,11 @@ namespace FinTris
                         Console.Write("██");
                     }
 
-                    System.Threading.Thread.Sleep(8);
+                    Thread.Sleep(8);
                 }
 
 
-                System.Threading.Thread.Sleep(1200);
+                Thread.Sleep(1200);
 
                 Console.ResetColor();
 
@@ -213,7 +214,7 @@ namespace FinTris
                 WriteAt("Try", cursorX += 2, ++cursorY);
                 WriteAt("Again❤", cursorX += 2, ++cursorY);
 
-                System.Threading.Thread.Sleep(1500);
+                Thread.Sleep(1500);
             }
         }
 
@@ -383,8 +384,6 @@ namespace FinTris
             Console.ResetColor();
             BorderStyle();
 
-            _game.CheatCode();
-
         }
 #endif
 
@@ -396,10 +395,7 @@ namespace FinTris
         /// <param name="y">La position Y.</param>
         public static void WriteAt(string s, int x, int y)
         {
-            int origRow = 0;
-            int origCol = 0;
-
-            Console.SetCursorPosition(origCol + x, origRow + y);
+            Console.SetCursorPosition(x, y);
             Console.Write(s);
         }
 

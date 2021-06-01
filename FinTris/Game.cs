@@ -520,16 +520,6 @@ namespace FinTris
                 
         }
 
-#if DEBUG
-        /// <summary>
-        /// Choses qui se passent si on utilise les codes de triche.
-        /// </summary>
-        public void CheatCode()
-        {
-            _gameTimer.Interval = _MS * 0.5;
-        }
-#endif
-
         /// <summary>
         /// Sert à commencer le jeu.
         /// </summary>
@@ -555,8 +545,26 @@ namespace FinTris
         /// </summary>
         public void Pause()
         {
-            _gameTimer.Enabled = !_gameTimer.Enabled;
-            _state = _gameTimer.Enabled ? GameState.Playing : GameState.Paused;
+            _gameTimer.Stop();
+            _state = GameState.Paused;
+        }
+
+        public void Resume()
+        {
+            _gameTimer.Start();
+            _state = GameState.Playing;
+        }
+
+        public void PauseOrResume()
+        {
+            if (_state == GameState.Playing)
+            {
+                Pause();
+            }
+            else
+            {
+                Resume();
+            }
         }
 
     }
