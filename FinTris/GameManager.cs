@@ -23,14 +23,19 @@ namespace FinTris
         private static GameRenderer _gameRenderer;
         private static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
 
-        public static bool checkSound = true;
+        private static bool _muted = false;
+        public static bool Muted
+        {
+            get { return _muted; }
+            set { _muted = value; }
+        }
 
         /// <summary>
         /// Fonction qui s'occupe du Menu
         /// </summary>
         public static void MainMenu()
         {
-            if (checkSound)
+            if (!_muted)
             {
                 themeSound.PlayLooping();
             }
@@ -323,12 +328,11 @@ namespace FinTris
             {
                 SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
                 themeSound.Stop();
-                checkSound = false;
+                _muted = true;
             }
-
             else
             {
-                checkSound = true;
+                _muted = false;
             }
         }
 
@@ -341,17 +345,14 @@ namespace FinTris
             SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
             SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
 
-            if (checkSound == true)
+            if (!_muted)
             {
                 okSound.Play();
             }
 
             Console.Clear();
 
-
-            Console.Clear();
-
-            if (checkSound == true)
+            if (!_muted)
             {
                 SoundReady();
             }     
@@ -367,8 +368,7 @@ namespace FinTris
             Thread.Sleep(750);
             Console.Clear();
 
-
-            if (checkSound == true)
+            if (!_muted)
             {
                 goSound.Play();
             }
@@ -381,9 +381,6 @@ namespace FinTris
                 y++;
             }
             Thread.Sleep(750);
-            Console.Clear();
-
-
             Console.Clear();
 
             _game = new Game();
@@ -453,7 +450,7 @@ namespace FinTris
         {
             SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
 
-            if (checkSound == true)
+            if (!_muted)
             {
                 cancelSound.Play();
             }

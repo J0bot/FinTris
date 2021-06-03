@@ -75,7 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\App.config" />
-    <None Include="Config\packages.config" />
     <None Include="config.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
