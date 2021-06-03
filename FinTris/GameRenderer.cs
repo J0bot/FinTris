@@ -68,7 +68,7 @@ namespace FinTris
             {
                 for (int y = 0; y < _game.Rows; y++)
                 {
-                    for (int x = 0; x < _game.Cols; x++)
+                    for (int x = 0; x < _game.Columns; x++)
                     {
                         Console.ForegroundColor = board[x, y].Color;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
@@ -172,7 +172,7 @@ namespace FinTris
 
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
-                    for (int x = _game.Cols - 1; x >= 0; x--)
+                    for (int x = _game.Columns - 1; x >= 0; x--)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
@@ -184,7 +184,7 @@ namespace FinTris
 
                 for (int y = _game.Rows; y > 0; y--)
                 {
-                    for (int x = 0; x < _game.Cols; x++)
+                    for (int x = 0; x < _game.Columns; x++)
                     {
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
@@ -201,7 +201,7 @@ namespace FinTris
 
                 BorderStyle();
 
-                int cursorX = SHIFT_X + _game.Cols / 2;
+                int cursorX = SHIFT_X + _game.Columns / 2;
                 int cursorY = SHIFT_Y + _game.Rows / 4;
 
                 WriteAt("╔═════════════╗", cursorX, ++cursorY);

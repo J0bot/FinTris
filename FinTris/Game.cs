@@ -85,7 +85,7 @@ namespace FinTris
         /// <summary>
         /// Propriété read-only qui retourne le nombre de colones dans notre plateau de jeu.
         /// </summary>
-        public int Cols
+        public int Columns
         {
             get { return _cols; }
         }
