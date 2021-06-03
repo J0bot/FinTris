@@ -289,7 +289,7 @@ namespace FinTris
             // Lancement de la première voix.
             SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
 
-            if (GameManager.checkSound == true)
+            if (!GameManager.Muted)
             {
                 bowserSound2.Play();
             }
@@ -315,7 +315,7 @@ namespace FinTris
             // Lancement de la deuxième voix.
             SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
 
-            if (GameManager.checkSound == true)
+            if (!GameManager.Muted)
             {
                 bowserSound.Play();
             }         

@@ -20,7 +20,7 @@ namespace FinTris
         /// <summary>
         /// Cette constante définit la vitesse de chute de notre Tetromino.
         /// </summary>
-        private int _MS = 500;
+        private int _speed = 500;
 
         /// <summary>
         /// Attribut _tetromino.
@@ -35,17 +35,22 @@ namespace FinTris
         /// <summary>
         /// Attribut de timer pour gerer le temps.
         /// </summary>
-        private Timer _gameTimer;
+        private readonly Timer _gameTimer;
 
         /// <summary>
         /// Attribut de nombre de lignes.
         /// </summary>
-        private int _rows;
+        private readonly int _rows;
 
         /// <summary>
         /// Attribut de nombre de colones.
         /// </summary>
-        private int _cols;
+        private readonly int _columns;
+
+        /// <summary>
+        /// Variable random pour executer toutes les fonctions avec random.
+        /// </summary>
+        private readonly Random random;
 
         /// <summary>
         /// Attribut de score.
@@ -63,11 +68,6 @@ namespace FinTris
         private GameState _state;
 
         /// <summary>
-        /// Variable random pour executer toutes les fonctions avec random.
-        /// </summary>
-        private readonly Random random;
-
-        /// <summary>
         /// C'est le tableau qui contient les états de tous les blocs du jeu.
         /// </summary>
         private readonly Case[,] _board;
@@ -76,6 +76,8 @@ namespace FinTris
         /// Événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu.
         /// </summary>
         public event EventHandler<Case[,]> BoardChanged;
+
+        public event EventHandler<Vector2> TetroMoved;
 
         /// <summary>
         /// Événement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie.
@@ -87,7 +89,7 @@ namespace FinTris
         /// </summary>
         public int Columns
         {
-            get { return _cols; }
+            get { return _columns; }
         }
 
         /// <summary>
@@ -158,10 +160,10 @@ namespace FinTris
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
-            _gameTimer = new Timer(_MS);
+            _gameTimer = new Timer(_speed);
             _gameTimer.Elapsed += timerHandler;
             _rows = rows;
-            _cols = cols;
+            _columns = cols;
 
             _board = new Case[cols, rows];
 
@@ -314,7 +316,8 @@ namespace FinTris
             }
             else
             {
-                NewTetromino(); 
+                NewTetromino();
+                return;
             }
 
             UpdateBoard();
@@ -326,9 +329,9 @@ namespace FinTris
         private void UpdateBoard()
         {
             // On va commencer par réinitialiser le tableau de base pour effacer les données obsolètes.
-            for (int i = 0; i < _board.GetLength(0); i++)
+            for (int i = 0; i < _columns; i++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int j = 0; j < _rows; j++)
                 {
                     if (_board[i, j].State != SquareState.SolidBlock) // On va laisser les Tetrominos qui sont déjà tombés et on va reset le reste.
                     {
@@ -348,6 +351,7 @@ namespace FinTris
 
 
             // Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
+            TetroMoved?.Invoke(this, _tetromino.Position);
             BoardChanged?.Invoke(this, _board);
         }
 
@@ -378,7 +382,7 @@ namespace FinTris
         /// <returns>Retourne true si la position donnée est dans le monde, retourne false sinon.</returns>
         private bool WithinRange(Vector2 pos)
         {
-            return pos.x >= 0 && pos.x < _cols && pos.y >= 0 && pos.y < _rows ;
+            return pos.x >= 0 && pos.x < _columns && pos.y >= 0 && pos.y < _rows ;
         }
 
         /// <summary>
@@ -418,9 +422,9 @@ namespace FinTris
         {
             for (int y = _tetromino.Position.y; y < _tetromino.Position.y + _tetromino.Height; y++)
             {
-                int killedRows = 0;
+                int rowsCount = 0;
                 bool isfull = true;
-                for (byte x = 0; x < _cols; x++)
+                for (byte x = 0; x < _columns; x++)
                 {
                     if (_board[x, y].State == SquareState.Empty)
                     {
@@ -430,11 +434,9 @@ namespace FinTris
                 if (isfull)
                 {
                     DeleteRow(y);
-                    killedRows++;
-                    //BoardChanged.Invoke(this, _board);
-                    //System.Threading.Thread.Sleep(1000);
+                    rowsCount++;
                 }
-                ScoreManager(killedRows);
+                ScoreManager(rowsCount);
             }
         }
 
@@ -444,13 +446,13 @@ namespace FinTris
         /// <param name="fullY">Les coordonnées Y de la ligne à supprimer.</param>
         private void DeleteRow(int fullY)
         {
-            for (int x = 0; x < _cols; x++)
+            for (int x = 0; x < _columns; x++)
             {
                 _board[x, fullY].State = SquareState.Empty;
                 _board[x, fullY].Color = ConsoleColor.White;
             }
 
-            for (int x = 0; x < _cols; x++)
+            for (int x = 0; x < _columns; x++)
             {
                 for (int y = fullY; y > 0; y--)
                 {
@@ -495,12 +497,10 @@ namespace FinTris
             {
                 _score += 100;
             }
-
             else if (nbrKill == 3)
             {
                 _score += 300;
             }
-
             else if (nbrKill == 4)
             {
                 _score += 1200;
@@ -509,11 +509,11 @@ namespace FinTris
             // Changement de niveau tout les 1000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
-            _gameTimer.Interval = _MS / (_level * 0.5);
+            _gameTimer.Interval = _speed / (_level * 0.5);
 
             SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
 
-            if (GameManager.checkSound == true)
+            if (!GameManager.Muted)
             {
                 fallSound.Play();
             }
