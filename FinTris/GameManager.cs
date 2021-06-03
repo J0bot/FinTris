@@ -148,12 +148,15 @@ namespace FinTris
         {
             string askNewName = "Enter a new name: ";
             Console.Clear();
-            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
-            Console.CursorTop = (Console.BufferHeight / 2);
+            Console.CursorLeft = (Console.WindowWidth / 2) - askNewName.Length / 2;
+            Console.CursorTop = (Console.WindowHeight / 2);
             Console.Write(askNewName);
             string entry = Console.ReadLine();
-            
-            return entry;
+            if (entry.Length > 0)
+            {
+                return entry;
+            }
+            return Config.PlayerName;
         }
 
         /// <summary>
