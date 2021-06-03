@@ -237,7 +237,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Shows the best scores.
+        /// Affiche les meilleurs scores.
         /// </summary>
         public static void ShowBestScores()
         {
@@ -423,7 +423,9 @@ namespace FinTris
                 {
                     _game.Pause();
                     ShowOptions();
-                    _gameRenderer = new GameRenderer(_game);
+                    //_gameRenderer = new GameRenderer(_game);
+                    Console.Clear();
+                    _gameRenderer.BorderStyle();
                     _game.Resume();
                 }
                 else if (input == ConsoleKey.R)

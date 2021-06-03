@@ -84,7 +84,7 @@ namespace FinTris
         /// <summary>
         /// Permet de créer la bordure du jeu.
         /// </summary>
-        private void BorderStyle()
+        public void BorderStyle()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(SHIFT_X, SHIFT_Y);
