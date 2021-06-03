@@ -28,8 +28,11 @@ namespace FinTris
             // Changer le titre de la fenêtre.
             Console.Title = "FinTris";
 
+            GameManager.PlaySound(GameManager.themeSound, true);
+
             // Commencer le jeu.
             GameManager.MainMenu();
+
         }
 
     }

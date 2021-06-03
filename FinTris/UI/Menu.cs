@@ -27,7 +27,7 @@ namespace FinTris
 
         public MenuEntry SelectedOption
         {
-            get { return _entries[_index]; }
+            get { return _index > -1 ? _entries[_index] : null; }
         }
 
         /// <summary>
@@ -93,6 +93,11 @@ namespace FinTris
                         _entries[_index + 1].IsSelected = true;
                         _index++;
                     }
+                }
+                else if (input == ConsoleKey.Escape)
+                {
+                    _index = -1;
+                    return;
                 }
             } while (input != ConsoleKey.Enter);
         }

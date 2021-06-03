@@ -28,7 +28,7 @@ namespace FinTris
         /// <summary>
         /// Texte du menu
         /// </summary>
-        private readonly string _text;
+        private string _text;
 
         /// <summary>
         /// bool pour savoir si un élément est séléctionné
@@ -46,6 +46,13 @@ namespace FinTris
         public string Text
         {
             get { return _text + _suffix; }
+            set { _text = value; }
+        }
+
+        public string Suffix
+        {
+            get { return _suffix; }
+            set { _suffix = value; }
         }
 
         /// <summary>

@@ -511,13 +511,7 @@ namespace FinTris
 
             _gameTimer.Interval = _speed / (_level * 0.5);
 
-            SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
-
-            if (!GameManager.Muted)
-            {
-                fallSound.Play();
-            }
-                
+            //GameManager.PlaySound(GameManager.fallSound);                
         }
 
         /// <summary>
