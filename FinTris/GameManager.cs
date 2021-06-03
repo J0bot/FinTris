@@ -318,15 +318,11 @@ namespace FinTris
                 {
                     _game.DropDown();
                 }
-                /*else if (input == ConsoleKey.Escape)
+                else if (input == ConsoleKey.Escape)
                 {
                     _game.Pause();
-                    ShowOptions();
-                    //_gameRenderer = new GameRenderer(_game);
-                    Console.Clear();
-                    _gameRenderer.BorderStyle();
-                    _game.Resume();
-                }*/
+                    MainMenu();
+                }
                 else if (input == ConsoleKey.R)
                 {
                     _game.Stop();

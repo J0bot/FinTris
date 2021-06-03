@@ -160,6 +160,15 @@ namespace FinTris
             _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
             _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
 
+            if (Config.DifficultyLevel == "Normal")
+            {
+                _speed -= 100;
+            }
+            else if (Config.DifficultyLevel == "Hard")
+            {
+                _speed -= 300;
+            }
+
             _gameTimer = new Timer(_speed);
             _gameTimer.Elapsed += timerHandler;
             _rows = rows;
@@ -261,7 +270,7 @@ namespace FinTris
                 _tetromino.Position -= Vector2.Down;
 
                 // Si on accèlère la chute on gagne plus de point
-                _score += 10; // Si on presse 1 seconde on a 10 points en plus   
+                _score += 1; // Si on presse 1 seconde on a 10 points en plus   
 
                 UpdateBoard();
                 _gameTimer.Start();
@@ -509,7 +518,7 @@ namespace FinTris
             // Changement de niveau tout les 1000 points, chute accélérée selon le niveau
             _level = (_score / 1000) + 1;
 
-            _gameTimer.Interval = _speed / (_level * 0.5);
+            _gameTimer.Interval = _speed - (_level * 0.5);
 
             //GameManager.PlaySound(GameManager.fallSound);                
         }
