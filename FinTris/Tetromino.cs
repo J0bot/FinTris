@@ -218,7 +218,7 @@ namespace FinTris
                     _tetrominoColor = ConsoleColor.Green;
                     break;
                 case TetrominoType.ISnake:
-                    _tetrominoColor = ConsoleColor.DarkRed;
+                    _tetrominoColor = ConsoleColor.Red;
                     break;
                 case TetrominoType.Malong:
                     _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue

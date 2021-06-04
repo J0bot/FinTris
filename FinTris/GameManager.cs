@@ -3,11 +3,11 @@
 ///Date     	: 19.03.2021
 ///Description  : Fintris
 
+using Figgle;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Media;
-using System.Threading;
 
 namespace FinTris
 {
@@ -16,35 +16,30 @@ namespace FinTris
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
-        private static Game _game;
+        private static Game _game; //######################PS: j'ai changé en public pour pouvoir avoir les scores, y'a t-il un meilleur moyen? maxime
 
         /// <summary>
         /// Attribut GameRenderer de la classe Program
         /// </summary>
-        public static GameRenderer _gameRenderer;
-        public static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
-        public static readonly SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
-        public static readonly SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
-        public static readonly SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
-        public static readonly SoundPlayer readySound = new SoundPlayer(Resources.tetrisSoundReady);
-        public static readonly SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
-        public static readonly SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
+        private static GameRenderer _gameRenderer;
 
-
-        private static bool _muted = false;
-        public static bool Muted
-        {
-            get { return _muted; }
-            set { _muted = value; }
-        }
+        public static bool checkSound = true;
 
         /// <summary>
         /// Fonction qui s'occupe du Menu
         /// </summary>
         public static void MainMenu()
         {
+            SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
+            themeSound.PlayLooping();
 
-            Menu _menu = new Menu(Resources.fintris_title);
+            if (checkSound == false)
+            {
+                themeSound.Stop();
+            }
+
+           
+            Menu _menu = new Menu(FiggleFonts.Starwars.Render("FinTris"));
 
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
@@ -58,85 +53,114 @@ namespace FinTris
             _menu.Add(credits);
             _menu.Add(quit);
 
-            _menu.ShowMenu();
+            MenuEntry choice = _menu.ShowMenu();
 
-            if (_menu.SelectedOption == play)
+            if (choice == play)
             {
-                Play();                
+                Play();
+                
             }
-            else if (_menu.SelectedOption == options)
+            else if (choice == options)
             {
                 ShowOptions();
-                MainMenu();
             }
-            else if (_menu.SelectedOption == playerName)
+            else if (choice == playerName)
             {
                 Config.PlayerName = AskForInput();
                 //this is probably disgusting but I'll do it anyway
                 MainMenu();
             }
-            else if (_menu.SelectedOption == credits)
+
+            else if (choice == credits)
             {
-                PrintCredit();
+                Console.Clear();
+                Console.SetCursorPosition(55,9);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Développeur : ");
+                Console.ResetColor();
+
+                Console.SetCursorPosition(52, 11);
+                Console.WriteLine("José Carlos Gasser");
+
+                Console.SetCursorPosition(56, 13);
+                Console.WriteLine("Ahmad Jano");
+
+                Console.SetCursorPosition(53, 15);
+                Console.WriteLine("Maxime Andrieux");
+
+                Console.SetCursorPosition(53, 17);
+                Console.WriteLine("Maxence Weyermann");
+
+                Console.SetCursorPosition(53, 19);
+                Console.WriteLine("Larissa Debarros");
+                Console.Read();
+                MainMenu();
             }
+
             else
             {
                 Environment.Exit(0);
             }
         }
 
-        private static void PrintCredit()
+        /// <summary>
+        /// Méthode qui affiche le menu lorsqu'on appuie sur esc
+        /// </summary>
+        public static void pauseMenu()
         {
-            Console.Clear();
-            Console.SetCursorPosition(55, 9);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Développeurs : ");
-            Console.ResetColor();
+            _game.Pause();
 
-            Console.SetCursorPosition(52, 11);
-            Console.WriteLine("José Carlos Gasser");
+            Menu pauseMenu = new Menu("Pause");
+            MenuEntry choice;
 
-            Console.SetCursorPosition(56, 13);
-            Console.WriteLine("Ahmad Jano");
+            MenuEntry goBack = new MenuEntry("Resume");
+            MenuEntry option = new MenuEntry("Option");
+            MenuEntry menuBack = new MenuEntry("Return to the menu");
 
-            Console.SetCursorPosition(53, 15);
-            Console.WriteLine("Maxime Andrieux");
+            pauseMenu.Add(goBack);
+            pauseMenu.Add(option);
+            pauseMenu.Add(menuBack);
 
-            Console.SetCursorPosition(53, 17);
-            Console.WriteLine("Maxence Weyermann");
+            choice = pauseMenu.ShowMenu();
 
-            Console.SetCursorPosition(53, 19);
-            Console.WriteLine("Larissa Debarros");
+            if (choice == goBack)
+            {
+                Console.Clear();
+                _gameRenderer = new GameRenderer(_game);
+                _game.Pause();
+            }
 
-            Console.ReadKey();
+            else if (choice == option)
+            {
+                ShowOptionsInGame();
+            }
 
-            MainMenu();
+            else if (choice == menuBack)
+            {
+                MainMenu();
+            }      
         }
-
 
         /// <summary>
         /// Méthode pour choisir un nouveau nom. Assez banal pour l'instant.
         /// </summary>
         /// <returns>Le nouveau nom du joueur</returns>
-        private static string AskForInput()
+        public static string AskForInput()
         {
             string askNewName = "Enter a new name: ";
             Console.Clear();
-            Console.CursorLeft = (Console.WindowWidth / 2) - askNewName.Length / 2;
-            Console.CursorTop = (Console.WindowHeight / 2);
+            Console.CursorLeft = (Console.BufferWidth / 2) - askNewName.Length / 2;
+            Console.CursorTop = (Console.BufferHeight / 2);
             Console.Write(askNewName);
             string entry = Console.ReadLine();
-            if (entry.Length > 0)
-            {
-                return entry;
-            }
-            return Config.PlayerName;
+            
+            return entry;
         }
 
         /// <summary>
         /// Shows the options panel.
         /// </summary>
-        private static void ShowOptions()
+        public static void ShowOptions()
         {
             Menu optionMenu = new Menu("Options");
 
@@ -151,32 +175,84 @@ namespace FinTris
             optionMenu.Add(sounds);
             optionMenu.Add(cancel);       
 
+            MenuEntry choice;
             do
-            {
-                optionMenu.ShowMenu();
+            {      
+                choice = optionMenu.ShowMenu();
 
-                if (optionMenu.SelectedOption == bestScores)
+                if (choice == bestScores)
                 {
                     ShowBestScores();
                 }
-                else if (optionMenu.SelectedOption == difficulty)
+                else if (choice == difficulty)
                 {
                     SelectDifficulty();
-                    difficulty.Suffix = Config.DifficultyLevel;
                 }
-                else if (optionMenu.SelectedOption == sounds)
+
+                else if (choice == sounds)
                 {
                     SoundSettings();
                 }
 
-            } while (optionMenu.SelectedOption != cancel && optionMenu.SelectedOption != null);
+
+                else if (choice == cancel)
+                {
+                    SoundCancel();
+                    MainMenu(); //huuuuh
+                }
+            } while (choice != cancel);
 
         }
 
         /// <summary>
-        /// Affiche les meilleurs scores.
+        /// Affiche le menu option depuis le menu pause
         /// </summary>
-        private static void ShowBestScores()
+        public static void ShowOptionsInGame()
+        {
+            Menu optionMenu = new Menu("Options");
+
+            MenuEntry bestScores = new MenuEntry("Show best scores");
+            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry sounds = new MenuEntry("Sounds");
+            MenuEntry cancel = new MenuEntry("Return");
+
+            optionMenu.Add(bestScores);
+            optionMenu.Add(difficulty);
+            optionMenu.Add(sounds);
+            optionMenu.Add(cancel);
+
+            MenuEntry choice;
+            do
+            {
+                choice = optionMenu.ShowMenu();
+
+                if (choice == bestScores)
+                {
+                    ShowBestScores();
+                }
+                else if (choice == difficulty)
+                {
+                    SelectDifficultyInGame();
+                }
+
+                else if (choice == sounds)
+                {
+                    SoundSettings();
+                }
+
+                else if (choice == cancel)
+                {
+                    SoundCancel();
+                    pauseMenu();
+                }
+            } while (choice != cancel);
+
+        }
+
+        /// <summary>
+        /// Shows the best scores.
+        /// </summary>
+        public static void ShowBestScores()
         {
             Console.Clear();
             List<string[]> scores = Config.GetBestScores();
@@ -197,7 +273,7 @@ namespace FinTris
         /// <summary>
         /// Méthode qui change la difficulté du jeu
         /// </summary>
-        private static void SelectDifficulty()
+        public static void SelectDifficulty()
         {
             Menu optionMenu = new Menu("Difficulty levels");
             MenuEntry diffEasy = new MenuEntry("Easy");
@@ -206,24 +282,50 @@ namespace FinTris
             optionMenu.Add(diffEasy);
             optionMenu.Add(diffNormal);
             optionMenu.Add(diffHard);
+            MenuEntry choice = optionMenu.ShowMenu();
 
-            optionMenu.ShowMenu();
-            if (optionMenu.SelectedOption == diffEasy)
+            if (choice == diffEasy)
             {
                 Config.DifficultyLevel = "Easy";
             }
-            else if (optionMenu.SelectedOption == diffNormal)
+            else if (choice == diffNormal)
             {
                 Config.DifficultyLevel = "Normal";
             }
-            else if (optionMenu.SelectedOption == diffHard)
+            else if (choice == diffHard)
             {
                 Config.DifficultyLevel = "Hard";
             }
-
+            ShowOptions();
         }
 
-        private static void SoundSettings()
+        public static void SelectDifficultyInGame()
+        {
+            Menu optionMenu = new Menu("Difficulty levels");
+            MenuEntry diffEasy = new MenuEntry("Easy");
+            MenuEntry diffNormal = new MenuEntry("Normal");
+            MenuEntry diffHard = new MenuEntry("Hard");
+            optionMenu.Add(diffEasy);
+            optionMenu.Add(diffNormal);
+            optionMenu.Add(diffHard);
+            MenuEntry choice = optionMenu.ShowMenu();
+
+            if (choice == diffEasy)
+            {
+                Config.DifficultyLevel = "Easy";
+            }
+            else if (choice == diffNormal)
+            {
+                Config.DifficultyLevel = "Normal";
+            }
+            else if (choice == diffHard)
+            {
+                Config.DifficultyLevel = "Hard";
+            }
+            ShowOptionsInGame();
+        }
+
+        public static void SoundSettings()
         {
             Menu soundMenu = new Menu("Sounds settings");
             MenuEntry soundOn = new MenuEntry("Sound On");
@@ -231,18 +333,18 @@ namespace FinTris
 
             soundMenu.Add(soundOn);
             soundMenu.Add(soundOff);
+            MenuEntry choice = soundMenu.ShowMenu();
 
-            soundMenu.ShowMenu();
-
-            if (soundMenu.SelectedOption == soundOff)
+            if (choice == soundOff)
             {
-                _muted = true;
+                SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
                 themeSound.Stop();
+                checkSound = false;
             }
+
             else
             {
-                _muted = false;
-                PlaySound(themeSound, true);
+                checkSound = true;
             }
         }
 
@@ -251,36 +353,60 @@ namespace FinTris
         /// </summary>
         public static void Play()
         {
+            SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
+            Stopwatch stopWatch = new Stopwatch();
+
+            if (checkSound == true)
+            {
+                okSound.Play();
+            }
+            
+            stopWatch.Start();
+            do
+            {
+                Console.Clear();
+
+            } while (stopWatch.Elapsed.TotalSeconds < 1);
+
+            stopWatch.Stop();
+
             Console.Clear();
 
-            int y = 0;
-            foreach (string line in Resources.ready_title.Split('\n'))
+            if (checkSound == true)
             {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 14, Console.WindowHeight / 2 + y - 5);
-                Console.Write(line);
-                y++;
-            }
+                SoundReady();
+            }     
 
-            if (!_muted)
+            stopWatch.Restart();
+            do
             {
-                readySound.PlaySync();
-            }
+                do
+                {
+                    Console.SetCursorPosition(0, 5);
+                    Console.WriteLine(FiggleFonts.Starwars.Render("Ready"));
+
+                } while (stopWatch.Elapsed.TotalSeconds < 0.8);
+
+                Console.Clear();
+
+                SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
+
+                if (checkSound == true)
+                {
+                    goSound.Play();
+                }
+
+                do
+                {
+                    Console.SetCursorPosition(0, 5);
+                    Console.WriteLine(FiggleFonts.Starwars.Render("GO"));
+                    
+
+                } while (stopWatch.Elapsed.TotalSeconds < 2);
 
 
-            Console.Clear();
-
-            y = 0;
-            foreach (string line in Resources.go_title.Split('\n'))
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2 + y - 5);
-                Console.Write(line);
-                y++;
-            }
-
-            if (!_muted)
-            {
-                goSound.PlaySync();
-            }
+            } while (stopWatch.Elapsed.TotalSeconds < 1.3);
+            stopWatch.Stop();
 
             Console.Clear();
 
@@ -288,19 +414,11 @@ namespace FinTris
             _gameRenderer = new GameRenderer(_game);
             _game.Start();
 
-            PlaySound(themeSound, true);
-
-            long lastRotation = 0;
-            long lastDrop = 0;
-            int rotCooldown = 100;
-            int dropCoolDown = 1000;
-            Stopwatch sw = Stopwatch.StartNew();
             ConsoleKey input;
 
             do
             {
                 input = Console.ReadKey(true).Key;
-
                 if (input == ConsoleKey.RightArrow)
                 {
                     _game.MoveRight();
@@ -315,11 +433,7 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Spacebar)
                 {
-                    if (sw.ElapsedMilliseconds > lastRotation + rotCooldown)
-                    {
-                        _game.Rotate();
-                        lastRotation = sw.ElapsedMilliseconds;
-                    }
+                    _game.Rotate();
                 }
                 else if (input == ConsoleKey.DownArrow)
                 {
@@ -327,16 +441,19 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Enter)
                 {
-                    if (sw.ElapsedMilliseconds > lastDrop + dropCoolDown)
-                    {
-                        _game.DropDown();
-                        lastDrop = sw.ElapsedMilliseconds;
-                    }
+                    _game.DropDown();
                 }
                 else if (input == ConsoleKey.Escape)
                 {
-                    _game.Pause();
+                    SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
+                    pauseMenu();
+
+                    /*
+                    _game.Stop();
+
+                    SoundCancel();
                     MainMenu();
+                    */
                 }
                 else if (input == ConsoleKey.R)
                 {
@@ -345,7 +462,7 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.P)
                 {
-                    _game.PauseOrResume();
+                    _game.Pause();
                 }
                 else if (input == ConsoleKey.A)
                 {
@@ -357,23 +474,23 @@ namespace FinTris
                 }
 
             } while (input != ConsoleKey.Q);
-
-            sw.Stop();
         }
 
-        public static void PlaySound(SoundPlayer sound, bool looping = false)
+        public static void SoundCancel()
         {
-            if (!_muted)
+            SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
+
+            if (checkSound == true)
             {
-                if (looping)
-                {
-                    sound.PlayLooping();
-                }
-                else
-                {
-                    sound.Play();
-                }
+                cancelSound.Play();
             }
+            
+        }          
+
+        public static void SoundReady()
+        {
+            SoundPlayer readySound = new SoundPlayer(Resources.tetrisSoundReady);
+            readySound.Play();
         }
     }
 }

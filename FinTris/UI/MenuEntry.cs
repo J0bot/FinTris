@@ -14,6 +14,11 @@ namespace FinTris
         /// </summary>
         private static int _instanceCounter = 0;
 
+        /// <summary>
+        /// valeur du texte le plus long
+        /// </summary>
+        private static int _longestText = 0;
+
         //Couleurs par défaut
         private const ConsoleColor selectedBGColor = ConsoleColor.DarkRed;
         private const ConsoleColor selectedFGColor = ConsoleColor.White;
@@ -28,7 +33,7 @@ namespace FinTris
         /// <summary>
         /// Texte du menu
         /// </summary>
-        private string _text;
+        private readonly string _text;
 
         /// <summary>
         /// bool pour savoir si un élément est séléctionné
@@ -46,13 +51,6 @@ namespace FinTris
         public string Text
         {
             get { return _text + _suffix; }
-            set { _text = value; }
-        }
-
-        public string Suffix
-        {
-            get { return _suffix; }
-            set { _suffix = value; }
         }
 
         /// <summary>
@@ -80,6 +78,13 @@ namespace FinTris
         {
             this._id = _instanceCounter++;
             this._text = text;
+
+            //Stocke la plus longue option en terme de caractères
+            if (text.Length > _longestText)
+            {
+                _longestText = text.Length;
+            }
+
         }
 
 
@@ -88,12 +93,19 @@ namespace FinTris
             this._id = _instanceCounter++;
             this._text = text;
             this._suffix = suffix;
+
+            //Stocke la plus longue option en terme de caractères
+            if (text.Length > _longestText)
+            {
+                _longestText = text.Length;
+            }
+
         }
 
         /// <summary>
         /// Affichage de l'entrée actuelle
         /// </summary>
-        public void RenderOption()
+        public void WriteOption()
         {
             //backup state
             ConsoleColor previousBG = Console.BackgroundColor;
@@ -124,7 +136,7 @@ namespace FinTris
         /// <returns></returns>
         public override string ToString()
         {
-            return $"{_text}{_suffix}";
+            return _text + _suffix;
         }
     }
 }
