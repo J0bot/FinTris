@@ -206,8 +206,8 @@ namespace FinTris
             }
 
             // Si on peut effectuer la rotation sans collision avec les murs.
-            if (_tetromino.Position.x + _tetromino.Height < _columns &&
-                _tetromino.Position.y + _tetromino.Width < _rows)
+            if (_tetromino.Position.x + _tetromino.Height <= _columns &&
+                _tetromino.Position.y + _tetromino.Width <= _rows)
             {
                 _tetromino.Rotate();
                 UpdateBoard();
