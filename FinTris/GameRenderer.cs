@@ -43,7 +43,6 @@ namespace FinTris
             _game.IsDead += _game_IsDed;
             _game.NextTetroSpawned += OnNextTetroSpawned;
 
-
             Console.Clear();
             RenderGameBorder();
             RenderNextTetro();

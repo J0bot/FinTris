@@ -19,7 +19,7 @@ namespace FinTris
         /// <summary>
         /// Cette constante définit la vitesse de chute de notre Tetromino.
         /// </summary>
-        private int _speed = 500;
+        private int _speed = 600;
 
         /// <summary>
         /// Attribut _tetromino.
@@ -186,9 +186,9 @@ namespace FinTris
 
             _board = new Case[cols, rows];
 
-            for (int i = 0; i < _board.GetLength(0); i++)
+            for (int i = 0; i < _columns; i++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int j = 0; j < _rows; j++)
                 {
                     _board[i, j] = new Case();
                 }
@@ -205,8 +205,13 @@ namespace FinTris
                 return;
             }
 
-            _tetromino.Rotate();
-            UpdateBoard();
+            // Si on peut effectuer la rotation sans collision avec les murs.
+            if (_tetromino.Position.x + _tetromino.Height < _columns &&
+                _tetromino.Position.y + _tetromino.Width < _rows)
+            {
+                _tetromino.Rotate();
+                UpdateBoard();
+            }
         }
 
         /// <summary>
