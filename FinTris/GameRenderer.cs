@@ -3,9 +3,8 @@
 /// Date     	 : 09.03.2021
 /// Description  : Fintris
 
-using FinTris.Properties;
 using System;
-using System.IO;
+using System.Diagnostics;
 using System.Media;
 using System.Threading;
 
@@ -266,7 +265,7 @@ namespace FinTris
         /// </summary>
         private void RenderNextTetro()
         {
-            int max = 10;
+            int max = 10; // 10 parceque le tetromino le plus large est de 6 caractères + 4 de bordures.
             int width = _game.NextTetromino.Width + 4;
             int height = _game.NextTetromino.Height + 4;
 
@@ -275,8 +274,8 @@ namespace FinTris
             {
                 for (int y = 0; y < max; y++)
                 {
-                    Vector2 pos = _nextTetroPos + new Vector2(x * 2, y);
-                    DrawTile(pos, Console.BackgroundColor);
+                    Console.SetCursorPosition(_nextTetroPos.x + x * 2, _nextTetroPos.y + y);
+                    Console.Write("  ");
                 }
             }
 
