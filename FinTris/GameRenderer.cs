@@ -93,6 +93,7 @@ namespace FinTris
         /// </summary>
         public void ResetRender()
         {
+            Console.Clear();
             RenderGameBorder();
             RenderNextTetro();
             RenderScore();

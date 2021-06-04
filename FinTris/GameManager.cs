@@ -104,22 +104,19 @@ namespace FinTris
 
             pauseMenu.ShowMenu();
 
-            if (pauseMenu.SelectedOption == goBack)
-            {
-                Console.Clear();
-                _game.Resume();
-                _gameRenderer.ResetRender();
-            }
-
-            else if (pauseMenu.SelectedOption == option)
-            {
-                ShowOptionsInGame();
-            }
-
-            else if (pauseMenu.SelectedOption == menuBack)
-            {
-                MainMenu();
-            }
+                if (pauseMenu.SelectedOption == goBack)
+                {
+                    _game.Resume();
+                    _gameRenderer.ResetRender();
+                }
+                else if (pauseMenu.SelectedOption == option)
+                {
+                    ShowOptionsInGame();
+                }
+                else if (pauseMenu.SelectedOption == menuBack)
+                {
+                    MainMenu();
+                }
         }
 
         private static void PrintCredit()
@@ -448,6 +445,11 @@ namespace FinTris
                     {
                         _game.Pause();
                         pauseMenu();
+                    }
+                    else if (_game.State == GameState.Paused)
+                    {
+                        _game.Start();
+                        _gameRenderer.ResetRender();
                     }
                     else
                     {
