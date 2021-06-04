@@ -89,6 +89,16 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Permet de tout redessiner
+        /// </summary>
+        public void ResetRender()
+        {
+            RenderGameBorder();
+            RenderNextTetro();
+            RenderScore();
+        }
+
+        /// <summary>
         /// Permet de dessiner une case du jeu 
         /// </summary>
         /// <param name="position">position de la case à dessiner en Vector2</param>

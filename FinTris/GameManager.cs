@@ -85,6 +85,43 @@ namespace FinTris
             }
         }
 
+        /// <summary>
+        /// Méthode qui affiche le menu lorsqu'on appuie sur esc
+        /// </summary>
+        public static void pauseMenu()
+        {
+            _game.Pause();
+
+            Menu pauseMenu = new Menu("Pause");
+
+            MenuEntry goBack = new MenuEntry("Resume");
+            MenuEntry option = new MenuEntry("Option");
+            MenuEntry menuBack = new MenuEntry("Return to the menu");
+
+            pauseMenu.Add(goBack);
+            pauseMenu.Add(option);
+            pauseMenu.Add(menuBack);
+
+            pauseMenu.ShowMenu();
+
+            if (pauseMenu.SelectedOption == goBack)
+            {
+                Console.Clear();
+                _game.Resume();
+                _gameRenderer.ResetRender();
+            }
+
+            else if (pauseMenu.SelectedOption == option)
+            {
+                ShowOptionsInGame();
+            }
+
+            else if (pauseMenu.SelectedOption == menuBack)
+            {
+                MainMenu();
+            }
+        }
+
         private static void PrintCredit()
         {
             Console.Clear();
@@ -174,6 +211,51 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Affiche le menu option depuis le menu pause
+        /// </summary>
+        public static void ShowOptionsInGame()
+        {
+            Menu optionMenu = new Menu("Options");
+
+            MenuEntry bestScores = new MenuEntry("Show best scores");
+            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
+            MenuEntry sounds = new MenuEntry("Sounds");
+            MenuEntry cancel = new MenuEntry("Return");
+
+            optionMenu.Add(bestScores);
+            optionMenu.Add(difficulty);
+            optionMenu.Add(sounds);
+            optionMenu.Add(cancel);
+
+
+            optionMenu.ShowMenu();
+            do
+            {
+
+
+                if (optionMenu.SelectedOption == bestScores)
+                {
+                    ShowBestScores();
+                }
+                else if (optionMenu.SelectedOption == difficulty)
+                {
+                    SelectDifficultyInGame();
+                }
+
+                else if (optionMenu.SelectedOption == sounds)
+                {
+                    SoundSettings();
+                }
+
+                else if (optionMenu.SelectedOption == cancel)
+                {
+                    pauseMenu();
+                }
+            } while (optionMenu.SelectedOption != cancel);
+
+        }
+
+        /// <summary>
         /// Affiche les meilleurs scores.
         /// </summary>
         private static void ShowBestScores()
@@ -221,6 +303,33 @@ namespace FinTris
                 Config.DifficultyLevel = "Hard";
             }
 
+        }
+
+
+        public static void SelectDifficultyInGame()
+        {
+            Menu optionMenu = new Menu("Difficulty levels");
+            MenuEntry diffEasy = new MenuEntry("Easy");
+            MenuEntry diffNormal = new MenuEntry("Normal");
+            MenuEntry diffHard = new MenuEntry("Hard");
+            optionMenu.Add(diffEasy);
+            optionMenu.Add(diffNormal);
+            optionMenu.Add(diffHard);
+            optionMenu.ShowMenu();
+
+            if (optionMenu.SelectedOption == diffEasy)
+            {
+                Config.DifficultyLevel = "Easy";
+            }
+            else if (optionMenu.SelectedOption == diffNormal)
+            {
+                Config.DifficultyLevel = "Normal";
+            }
+            else if (optionMenu.SelectedOption == diffHard)
+            {
+                Config.DifficultyLevel = "Hard";
+            }
+            ShowOptionsInGame();
         }
 
         private static void SoundSettings()
@@ -335,8 +444,17 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Escape)
                 {
-                    _game.Pause();
-                    MainMenu();
+                    if (_game.State == GameState.Playing)
+                    {
+                        _game.Pause();
+                        pauseMenu();
+                    }
+                    else
+                    {
+                        _game.Pause();
+                        MainMenu();
+                    
+                    }
                 }
                 else if (input == ConsoleKey.R)
                 {

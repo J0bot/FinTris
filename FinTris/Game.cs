@@ -564,6 +564,7 @@ namespace FinTris
         {
             _gameTimer.Start();
             _state = GameState.Playing;
+            
         }
 
         public void PauseOrResume()
