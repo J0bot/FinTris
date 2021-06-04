@@ -95,7 +95,7 @@ namespace FinTris
             Menu pauseMenu = new Menu("Pause");
 
             MenuEntry goBack = new MenuEntry("Resume");
-            MenuEntry option = new MenuEntry("Option");
+            MenuEntry option = new MenuEntry("Options");
             MenuEntry menuBack = new MenuEntry("Return to the menu");
 
             pauseMenu.Add(goBack);
