@@ -70,7 +70,7 @@ namespace FinTris
         /// </summary>
         /// <param name="board">Le tableau contenant les informations des cases.</param>
         private void Refresh(Case[,] board)
-        {
+        {            
             // Cette fonction fonctionnne indépendamment du temps pour assurer que dès qu'on bouge quelque chose, tout s'affiche directement.
             lock (this)
             {
@@ -88,12 +88,21 @@ namespace FinTris
             }
         }
 
+        /// <summary>
+        /// Permet de dessiner une case du jeu 
+        /// </summary>
+        /// <param name="position">position de la case à dessiner en Vector2</param>
         private void DrawTile(Vector2 position)
         {
             Console.SetCursorPosition(position.x, position.y);
             Console.Write("██");
         }
 
+        /// <summary>
+        /// Permet de dessiner une case du jeu 
+        /// </summary>
+        /// <param name="position">position de la case à dessiner en Vector2</param>
+        /// <param name="color">permet d'implémenter la couleur à notre Tile en ConsoleColor</param>
         private void DrawTile(Vector2 position, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -101,6 +110,12 @@ namespace FinTris
             Console.Write("██");
         }
 
+        /// <summary>
+        /// Permet de dessiner une case du jeu 
+        /// </summary>
+        /// <param name="position">position de la case à dessiner en Vector2</param>
+        /// <param name="shift">permet d'ajouter un décalement x et y en Vector2</param>
+        /// <param name="color">permet d'implémenter la couleur à notre Tile en ConsoleColor</param>
         private void DrawTile(Vector2 position, Vector2 shift, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -108,6 +123,13 @@ namespace FinTris
             Console.Write("██");
         }
 
+        /// <summary>
+        /// Permet de dessiner un rectangle
+        /// </summary>
+        /// <param name="position">position en Vector2 de notre objet</param>
+        /// <param name="width">largeur du border</param>
+        /// <param name="height">hauteur du border </param>
+        /// <param name="color">couleur en ConsoleColor du border</param>
         private void DrawBorder(Vector2 position, int width, int height, ConsoleColor color)
         {
             for (int j = 0; j < height; j++)
@@ -152,17 +174,21 @@ namespace FinTris
         /// </summary>
         private void RenderScore()
         {
-            // Affichage du score.
-            Console.SetCursorPosition(60, 15);
-            Console.WriteLine($"Score : {_game.Score} pts");
+            //On va tout lock pour éviter des bugs visuels
+            lock (this)
+            {
+                // Affichage du score.
+                Console.SetCursorPosition(60, 15);
+                Console.WriteLine($"Score : {_game.Score} pts");
 
-            // Affichage des lignes supprimées.
-            Console.SetCursorPosition(60, 17);
-            Console.WriteLine($"Lignes : {_game.RowsCleared}");
+                // Affichage des lignes supprimées.
+                Console.SetCursorPosition(60, 17);
+                Console.WriteLine($"Lignes : {_game.RowsCleared}");
 
-            // Affichage du niveau.
-            Console.SetCursorPosition(60, 19);
-            Console.WriteLine($"Niveau : {_game.Level}");
+                // Affichage du niveau.
+                Console.SetCursorPosition(60, 19);
+                Console.WriteLine($"Niveau : {_game.Level}");
+            }
         }
 
         /// <summary>
@@ -184,6 +210,7 @@ namespace FinTris
         /// </summary>
         public void DeathAnim()
         {
+            //on va tout lock pour éviter des bugs visuels
             lock (this)
             {
                 Config.SaveScore();
@@ -246,32 +273,36 @@ namespace FinTris
         /// </summary>
         private void RenderNextTetro()
         {
-            int max = 10; // 10 parceque le tetromino le plus large est de 6 caractères + 4 de bordures.
-            int width = _game.NextTetromino.Width + 4;
-            int height = _game.NextTetromino.Height + 4;
-
-            // Effacer l'ancienne représentation du next tetromino.
-            for (int x = 0; x < max; x++)
+            //on va tout lock pour éviter des bugs visuels
+            lock (this)
             {
-                for (int y = 0; y < max; y++)
+                int max = 10; // 10 parceque le tetromino le plus large est de 6 caractères + 4 de bordures.
+                int width = _game.NextTetromino.Width + 4;
+                int height = _game.NextTetromino.Height + 4;
+
+                // Effacer l'ancienne représentation du next tetromino.
+                for (int x = 0; x < max; x++)
                 {
-                    Console.SetCursorPosition(_nextTetroPos.x + x * 2, _nextTetroPos.y + y);
-                    Console.Write("  ");
+                    for (int y = 0; y < max; y++)
+                    {
+                        Console.SetCursorPosition(_nextTetroPos.x + x * 2, _nextTetroPos.y + y);
+                        Console.Write("  ");
+                    }
                 }
+
+                // Dessiner la bordure.
+                DrawBorder(_nextTetroPos, width, height, ConsoleColor.Red);
+
+                // Dessiner la forme du next tetromino.
+                foreach (Vector2 posBlock in _game.NextTetromino.Blocks)
+                {
+                    Vector2 pos = posBlock + (Vector2.One * 2);
+                    Vector2 scaled = new Vector2(pos.x * MAT_SCALE.x, pos.y);
+                    DrawTile(scaled, _nextTetroPos, _game.NextTetromino.TetrominoColor);
+                }
+
+                Console.ResetColor();
             }
-
-            // Dessiner la bordure.
-            DrawBorder(_nextTetroPos, width, height, ConsoleColor.Red);
-
-            // Dessiner la forme du next tetromino.
-            foreach (Vector2 posBlock in _game.NextTetromino.Blocks)
-            {
-                Vector2 pos = posBlock + (Vector2.One * 2);
-                Vector2 scaled = new Vector2(pos.x * MAT_SCALE.x, pos.y);
-                DrawTile(scaled, _nextTetroPos, _game.NextTetromino.TetrominoColor);
-            }
-
-            Console.ResetColor();
         }
 
 #if DEBUG
