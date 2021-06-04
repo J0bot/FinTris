@@ -13,21 +13,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,10 +32,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,6 +58,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Structs\Case.cs" />
+    <Compile Include="UI\Menu.cs" />
+    <Compile Include="UI\MenuEntry.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Program.cs" />
@@ -85,13 +68,13 @@
     <Compile Include="Tetromino.cs" />
     <Compile Include="Enums\SquareState.cs" />
     <Compile Include="Enums\TetrominoState.cs" />
+    <Compile Include="Structs\Vector2.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\App.config" />
-    <None Include="Config\packages.config" />
     <None Include="config.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -101,31 +84,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 et x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleEngine\ConsoleEngine.csproj">
-      <Project>{95d36050-0783-4156-a0ae-d4cd259ab064}</Project>
-      <Name>ConsoleEngine</Name>
-    </ProjectReference>
+    <Content Include="Resources\Bowser.txt" />
+    <Content Include="Resources\bowserSound.wav" />
+    <Content Include="Resources\bowserSound2.wav" />
+    <Content Include="Resources\tetrisSoundCancel.wav" />
+    <Content Include="Resources\tetrisSoundFall.wav" />
+    <Content Include="Resources\tetrisSoundGo.wav" />
+    <Content Include="Resources\TetrisSoundKo.wav" />
+    <Content Include="Resources\tetrisSoundLvlUp.wav" />
+    <Content Include="Resources\tetrisSoundOK.wav" />
+    <Content Include="Resources\TetrisSoundPause.wav" />
+    <Content Include="Resources\tetrisSoundReady.wav" />
+    <Content Include="Resources\tetrisSoundTheme.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
