@@ -45,6 +45,7 @@ namespace FinTris
             Console.Clear();
             RenderGameBorder();
             RenderNextTetro();
+            RenderScore();
         }
 
         private void OnNextTetroSpawned(object sender, EventArgs e)
@@ -82,7 +83,7 @@ namespace FinTris
                     }
                 }
                 Console.ResetColor();
-                DrawScore();
+                RenderScore();
             }
         }
 
@@ -139,38 +140,16 @@ namespace FinTris
             
             Console.ResetColor();
 
-            // Bordure du prochain Tetromino.
+            // Prochain Tetromino.
             Console.SetCursorPosition(_nextTetroPos.x, _nextTetroPos.y - 2);
             Console.Write("NEXT TETROMINO");
-
-            //byte min = 4;
-            //byte max = 10;
-            //byte decal = 60;
-            //byte length = 10;
-
-            //Console.ForegroundColor = ConsoleColor.Gray;
-            //for (int l = min; l < max; l++)
-            //{
-            //    if (l == min || l == max - 1)
-            //    {
-            //        Console.SetCursorPosition(decal, l);
-
-            //        Console.Write(new string('█', length));
-            //    }
-            //    else
-            //    {
-            //        Console.SetCursorPosition(decal, l);
-            //        Console.Write("██"+new string(' ', length-4)+"██");
-            //    }
-
-            //}
             Console.ResetColor();
         }
 
         /// <summary>
         /// Fonction qui s'occupe de dessiner le score.
         /// </summary>
-        private void DrawScore()
+        private void RenderScore()
         {
             // Affichage du score.
             Console.SetCursorPosition(60, 15);
@@ -212,28 +191,24 @@ namespace FinTris
                 SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
                 koSound.Play();
 
+                Console.ForegroundColor = ConsoleColor.Blue;
                 for (int y = _game.Rows - 1; y >= 0; y--)
                 {
                     for (int x = _game.Columns - 1; x >= 0; x--)
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.SetCursorPosition(x * 2 + _position.x + 2, y + _position.y + 1);
-                        Console.Write("██");
+                        WriteAt("██", x * 2 + _position.x + 2, y + _position.y + 1);
                     }
                     Thread.Sleep(100);
                 }
-
-
+                
+                Console.ForegroundColor = ConsoleColor.Gray;
                 for (int y = _game.Rows; y > 0; y--)
                 {
                     for (int x = 0; x < _game.Columns; x++)
                     {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.SetCursorPosition(x * 2 + _position.x + 2, y + _position.y);
-                        Console.Write("██");
+                        WriteAt("██", x * 2 + _position.x + 2, y + _position.y);
                     }
-
-                    Thread.Sleep(8);
+                    Thread.Sleep(10);
                 }
 
 
@@ -246,15 +221,20 @@ namespace FinTris
                 int cursorX = _position.x + _game.Columns / 2;
                 int cursorY = _position.y + _game.Rows / 4;
 
-                WriteAt("╔═════════════╗", cursorX, ++cursorY);
-                WriteAt("║             ║", cursorX, ++cursorY);
-                WriteAt("║  Game Over  ║", cursorX, ++cursorY);
-                WriteAt("║             ║", cursorX, ++cursorY);
-                WriteAt("╚═════════════╝", cursorX, ++cursorY);
+                foreach (string line in Resources.game_over.Split('\n'))
+                {
+                    WriteAt(line, cursorX, ++cursorY);
+                }
+
                 cursorY += 5;
-                WriteAt("Please", cursorX += 2, ++cursorY);
-                WriteAt("Try", cursorX += 2, ++cursorY);
-                WriteAt("Again❤", cursorX += 2, ++cursorY);
+                cursorX += 2;
+
+                foreach (string line in Resources.try_again.Split('\n'))
+                {
+                    WriteAt(line, cursorX, cursorY);
+                    cursorX += 2;
+                    cursorY += 1;
+                }
 
                 Thread.Sleep(1500);
             }

@@ -176,4 +176,16 @@
  |_| \_\___|\__,_|\__,_|\__, |
                         |___/</value>
   </data>
+  <data name="game_over" xml:space="preserve">
+    <value>╔═════════════╗
+║             ║
+║  Game Over  ║
+║             ║
+╚═════════════╝</value>
+  </data>
+  <data name="try_again" xml:space="preserve">
+    <value>Please
+Try
+Again &#10084;</value>
+  </data>
 </root>
