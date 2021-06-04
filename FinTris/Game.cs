@@ -81,7 +81,6 @@ namespace FinTris
         /// </summary>
         public event EventHandler<Case[,]> BoardChanged;
         public event EventHandler NextTetroSpawned;
-
         public event EventHandler<Vector2> TetroMoved;
 
         /// <summary>
