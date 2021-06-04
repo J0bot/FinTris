@@ -11,6 +11,16 @@ namespace FinTris
     public struct Vector2
     {
         /// <summary>
+        /// Vecteur zero.
+        /// </summary>
+        public static Vector2 Zero = new Vector2(0, 0);
+
+        /// <summary>
+        /// Vecteur normalisé.
+        /// </summary>
+        public static Vector2 One = new Vector2(1, 1);
+
+        /// <summary>
         /// Vecteur normalisé orienté vers le bas.
         /// </summary>
         public static Vector2 Down = new Vector2(0, -1);
@@ -71,6 +81,21 @@ namespace FinTris
         public static Vector2 operator -(Vector2 v1, Vector2 v2)
         {
             return new Vector2(v1.x - v2.x, v1.y - v2.y);
+        }
+
+        public static Vector2 operator *(Vector2 v, int scale)
+        {
+            return new Vector2(v.x * scale, v.y * scale);
+        }
+
+        public static bool operator ==(Vector2 v1, Vector2 v2)
+        {
+            return v1.x == v2.x && v1.y == v2.y;
+        }
+
+        public static bool operator !=(Vector2 v1, Vector2 v2)
+        {
+            return v1.x != v2.x && v1.y != v2.y;
         }
     }
 }

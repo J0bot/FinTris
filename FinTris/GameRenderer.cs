@@ -21,15 +21,13 @@ namespace FinTris
         /// </summary>
         private readonly Game _game;
 
-        /// <summary>
-        /// Le déplacement horizontal du plateau.
-        /// </summary>
-        private const int SHIFT_X = 30;
+        private readonly Vector2 _nextTetroPos;
+        private readonly Vector2 _position;
 
         /// <summary>
-        /// Le déplacement vertical du plateau.
+        /// La matrice scale du console.
         /// </summary>
-        private const int SHIFT_Y = 2;
+        private static readonly Vector2 MAT_SCALE = new Vector2(2, 1);
 
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
@@ -38,12 +36,22 @@ namespace FinTris
         public GameRenderer(Game game)
         {
             _game = game;
+            _position = new Vector2(30, 2);
+            _nextTetroPos = new Vector2(60, 4);
 
             _game.BoardChanged += _game_PositionChanged;
             _game.IsDead += _game_IsDed;
+            _game.NextTetroSpawned += OnNextTetroSpawned;
+
 
             Console.Clear();
-            BorderStyle();
+            RenderGameBorder();
+            RenderNextTetro();
+        }
+
+        private void OnNextTetroSpawned(object sender, EventArgs e)
+        {
+            RenderNextTetro();
         }
 
         /// <summary>
@@ -71,61 +79,93 @@ namespace FinTris
                     for (int x = 0; x < _game.Columns; x++)
                     {
                         Console.ForegroundColor = board[x, y].Color;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.SetCursorPosition(x * 2 + _position.x + 2, y + _position.y + 1);
                         Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
                     }
                 }
                 Console.ResetColor();
                 DrawScore();
-                NextTetrominoRender();
+            }
+        }
+
+        private void DrawTile(Vector2 position)
+        {
+            Console.SetCursorPosition(position.x, position.y);
+            Console.Write("██");
+        }
+
+        private void DrawTile(Vector2 position, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(position.x, position.y);
+            Console.Write("██");
+        }
+
+        private void DrawTile(Vector2 position, Vector2 shift, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(shift.x + position.x, shift.y + position.y);
+            Console.Write("██");
+        }
+
+        private void DrawBorder(Vector2 position, int width, int height, ConsoleColor color)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                bool middle = j > 0 && j < height - 1;
+                for (int i = 0; i < (middle ? 2 : width); i++)
+                {
+                    i = middle && i > 0 ? width - 1 : i;
+                    Vector2 pos = new Vector2(i * MAT_SCALE.x, j);
+                    DrawTile(pos, position, color);
+                }
             }
         }
 
         /// <summary>
         /// Permet de créer la bordure du jeu.
         /// </summary>
-        public void BorderStyle()
+        public void RenderGameBorder()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.SetCursorPosition(SHIFT_X, SHIFT_Y);
+            Console.SetCursorPosition(_position.x, _position.y);
             Console.Write(new string('█', 26));
 
             for (int i = 0; i < 22; i++)
             {
-                Console.SetCursorPosition(SHIFT_X, i + SHIFT_Y+1);
+                Console.SetCursorPosition(_position.x, i + _position.y+1);
                 Console.Write("██"+ new string(' ', 22) + "██");
             }
-            Console.SetCursorPosition(SHIFT_X, 22 + SHIFT_Y + 1);
+            Console.SetCursorPosition(_position.x, 22 + _position.y + 1);
             Console.Write(new string('█', 26));
             
             Console.ResetColor();
 
             // Bordure du prochain Tetromino.
-            Console.SetCursorPosition(58, 2);
+            Console.SetCursorPosition(_nextTetroPos.x, _nextTetroPos.y - 2);
             Console.Write("NEXT TETROMINO");
 
-            byte min = 4;
-            byte max = 9;
-            byte decal = 60;
-            byte length = 10;
+            //byte min = 4;
+            //byte max = 10;
+            //byte decal = 60;
+            //byte length = 10;
 
-            Console.ForegroundColor = ConsoleColor.Gray;
-            for (int l = min; l < max; l++)
-            {
-                if (l == min || l == max - 1)
-                {
-                    Console.SetCursorPosition(decal, l);
+            //Console.ForegroundColor = ConsoleColor.Gray;
+            //for (int l = min; l < max; l++)
+            //{
+            //    if (l == min || l == max - 1)
+            //    {
+            //        Console.SetCursorPosition(decal, l);
 
-                    Console.Write(new string('█', length));
-                }
-                else
-                {
-                    Console.SetCursorPosition(decal, l);
-                    Console.Write("██"+new string(' ', length-4)+"██");
-                }
+            //        Console.Write(new string('█', length));
+            //    }
+            //    else
+            //    {
+            //        Console.SetCursorPosition(decal, l);
+            //        Console.Write("██"+new string(' ', length-4)+"██");
+            //    }
 
-            }
-
+            //}
             Console.ResetColor();
         }
 
@@ -138,8 +178,12 @@ namespace FinTris
             Console.SetCursorPosition(60, 15);
             Console.WriteLine($"Score : {_game.Score} pts");
 
+            // Affichage des lignes supprimées.
+            Console.SetCursorPosition(60, 17);
+            Console.WriteLine($"Lignes : {_game.RowsCleared}");
+
             // Affichage du niveau.
-            Console.SetCursorPosition(60, 18);
+            Console.SetCursorPosition(60, 19);
             Console.WriteLine($"Niveau : {_game.Level}");
         }
 
@@ -175,7 +219,7 @@ namespace FinTris
                     for (int x = _game.Columns - 1; x >= 0; x--)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y + 1);
+                        Console.SetCursorPosition(x * 2 + _position.x + 2, y + _position.y + 1);
                         Console.Write("██");
                     }
                     Thread.Sleep(100);
@@ -187,7 +231,7 @@ namespace FinTris
                     for (int x = 0; x < _game.Columns; x++)
                     {
                         Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.SetCursorPosition(x * 2 + SHIFT_X + 2, y + SHIFT_Y);
+                        Console.SetCursorPosition(x * 2 + _position.x + 2, y + _position.y);
                         Console.Write("██");
                     }
 
@@ -199,10 +243,10 @@ namespace FinTris
 
                 Console.ResetColor();
 
-                BorderStyle();
+                RenderGameBorder();
 
-                int cursorX = SHIFT_X + _game.Columns / 2;
-                int cursorY = SHIFT_Y + _game.Rows / 4;
+                int cursorX = _position.x + _game.Columns / 2;
+                int cursorY = _position.y + _game.Rows / 4;
 
                 WriteAt("╔═════════════╗", cursorX, ++cursorY);
                 WriteAt("║             ║", cursorX, ++cursorY);
@@ -219,63 +263,34 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Fonction qui va s'occuper de render le prochain Tetromino.
+        /// Fonction qui va s'occuper d'afficher le prochain Tetromino.
         /// </summary>
-        private void NextTetrominoRender()
+        private void RenderNextTetro()
         {
+            int max = 10;
+            int width = _game.NextTetromino.Width + 4;
+            int height = _game.NextTetromino.Height + 4;
 
-            int initPosX =62;
-            int initPosY =5;
-
-            Console.SetCursorPosition(initPosX, initPosY);
-
-            Console.ForegroundColor = _game.NextTetromino.TetrominoColor;
-
-            if (_game.NextTetromino.Shape == TetrominoType.ILawlet)
+            // Effacer l'ancienne représentation du next tetromino.
+            for (int x = 0; x < max; x++)
             {
-                Console.Write(  "██    ");
-                WriteAt(        "██    ", initPosX, initPosY + 1);
-                WriteAt(        "████  ", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Lawlet)
-            {
-                Console.Write(  "    ██");
-                WriteAt(        "    ██", initPosX, initPosY + 1);
-                WriteAt(        "  ████", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Pyramid)
-            {
-                Console.Write(  "      ");
-                WriteAt(        "  ██  ", initPosX, initPosY + 1);
-                WriteAt(        "██████", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Snake)
-            {
-                Console.Write(  "  ██  ");
-                WriteAt(        "████  ", initPosX, initPosY + 1);
-                WriteAt(        "██    ", initPosX, initPosY + 2);
-
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.ISnake)
-            {
-                Console.Write(  "  ██  ");
-                WriteAt(        "  ████", initPosX, initPosY + 1);
-                WriteAt(        "    ██", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Squarie)
-            {
-                Console.Write(  "██████");
-                WriteAt(        "██████", initPosX, initPosY + 1);
-                WriteAt(        "██████", initPosX, initPosY + 2);
-            }
-            else if (_game.NextTetromino.Shape == TetrominoType.Malong)
-            {
-                Console.Write(  "  ██  ");
-                WriteAt(        "  ██  ", initPosX, initPosY+1);
-                WriteAt(        "  ██  ", initPosX, initPosY+2);
+                for (int y = 0; y < max; y++)
+                {
+                    Vector2 pos = _nextTetroPos + new Vector2(x * 2, y);
+                    DrawTile(pos, Console.BackgroundColor);
+                }
             }
 
+            // Dessiner la bordure.
+            DrawBorder(_nextTetroPos, width, height, ConsoleColor.Red);
 
+            // Dessiner la forme du next tetromino.
+            foreach (Vector2 posBlock in _game.NextTetromino.Blocks)
+            {
+                Vector2 pos = posBlock + (Vector2.One * 2);
+                Vector2 scaled = new Vector2(pos.x * MAT_SCALE.x, pos.y);
+                DrawTile(scaled, _nextTetroPos, _game.NextTetromino.TetrominoColor);
+            }
 
             Console.ResetColor();
         }
@@ -382,7 +397,7 @@ namespace FinTris
 
             }
             Console.ResetColor();
-            BorderStyle();
+            RenderGameBorder();
 
         }
 #endif

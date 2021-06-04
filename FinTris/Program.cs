@@ -18,7 +18,6 @@ namespace FinTris
         /// <param name="args">Les paramètres passés après l'exécution du programme/jeu.</param>
         static void Main(string[] args)
         {
-
             // Cacher le curseur.
             Console.CursorVisible = false;
 
@@ -28,11 +27,9 @@ namespace FinTris
             // Changer le titre de la fenêtre.
             Console.Title = "FinTris";
 
-            GameManager.PlaySound(GameManager.themeSound, true);
-
             // Commencer le jeu.
+            GameManager.PlaySound(GameManager.themeSound, true);
             GameManager.MainMenu();
-
         }
 
     }
