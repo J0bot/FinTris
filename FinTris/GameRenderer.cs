@@ -43,6 +43,7 @@ namespace FinTris
             _game.NextTetroSpawned += OnNextTetroSpawned;
 
             Console.Clear();
+
             RenderGameBorder();
             RenderNextTetro();
             RenderScore();

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Media;
 using System.Threading;
 
@@ -289,11 +290,17 @@ namespace FinTris
 
             PlaySound(themeSound, true);
 
+            long lastRotation = 0;
+            long lastDrop = 0;
+            int rotCooldown = 100;
+            int dropCoolDown = 1000;
+            Stopwatch sw = Stopwatch.StartNew();
             ConsoleKey input;
 
             do
             {
                 input = Console.ReadKey(true).Key;
+
                 if (input == ConsoleKey.RightArrow)
                 {
                     _game.MoveRight();
@@ -308,7 +315,11 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Spacebar)
                 {
-                    _game.Rotate();
+                    if (sw.ElapsedMilliseconds > lastRotation + rotCooldown)
+                    {
+                        _game.Rotate();
+                        lastRotation = sw.ElapsedMilliseconds;
+                    }
                 }
                 else if (input == ConsoleKey.DownArrow)
                 {
@@ -316,7 +327,11 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.Enter)
                 {
-                    _game.DropDown();
+                    if (sw.ElapsedMilliseconds > lastDrop + dropCoolDown)
+                    {
+                        _game.DropDown();
+                        lastDrop = sw.ElapsedMilliseconds;
+                    }
                 }
                 else if (input == ConsoleKey.Escape)
                 {
@@ -342,6 +357,8 @@ namespace FinTris
                 }
 
             } while (input != ConsoleKey.Q);
+
+            sw.Stop();
         }
 
         public static void PlaySound(SoundPlayer sound, bool looping = false)

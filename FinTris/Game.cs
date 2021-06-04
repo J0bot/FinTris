@@ -313,6 +313,7 @@ namespace FinTris
             }
 
             _gameTimer.Start();
+
             SpawnNextTetromino();
         }
 
