@@ -10,6 +10,9 @@ using System.Media;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe GameManager permet de contrôler tous les aspects du jeu
+    /// </summary>
     public static class GameManager
     {
 
@@ -61,7 +64,7 @@ namespace FinTris
         /// <summary>
         /// Attribut de la propriété Muted
         /// </summary>
-        private static bool _muted = false;
+        private static bool _muted = true;
 
         /// <summary>
         /// Savoir si les sons du jeu sont activés ou pas
@@ -105,7 +108,6 @@ namespace FinTris
             else if (_menu.SelectedOption == playerName)
             {
                 Config.PlayerName = AskForInput();
-                //this is probably disgusting but I'll do it anyway
                 MainMenu();
             }
             else if (_menu.SelectedOption == credits)
@@ -322,37 +324,7 @@ namespace FinTris
         /// </summary>
         public static void Play()
         {
-            Console.Clear();
-
-            int y = 0;
-            foreach (string line in Resources.ready_title.Split('\n'))
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 14, Console.WindowHeight / 2 + y - 5);
-                Console.Write(line);
-                y++;
-            }
-
-            if (!_muted)
-            {
-                readySound.PlaySync();
-            }
-
-            Console.Clear();
-
-            y = 0;
-            foreach (string line in Resources.go_title.Split('\n'))
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2 + y - 5);
-                Console.Write(line);
-                y++;
-            }
-
-            if (!_muted)
-            {
-                goSound.PlaySync();
-            }
-
-            Console.Clear();
+            ReadyGoAnim();
 
             _game = new Game();
             _gameRenderer = new GameRenderer(_game);
@@ -440,6 +412,53 @@ namespace FinTris
             } while (input != ConsoleKey.Q);
 
             sw.Stop();
+        }
+
+        /// <summary>
+        /// Animation qui joue au début de la partie
+        /// </summary>
+        public static void ReadyGoAnim()
+        {
+            Console.Clear();
+
+            int y = 0;
+            foreach (string line in Resources.ready_title.Split('\n'))
+            {
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 14, Console.WindowHeight / 2 + y - 5);
+                Console.Write(line);
+                y++;
+            }
+
+            if (!_muted)
+            {
+                readySound.PlaySync();
+            }
+            else if (_muted)
+            {
+                System.Threading.Thread.Sleep(900);
+            }
+
+            Console.Clear();
+
+            y = 0;
+            foreach (string line in Resources.go_title.Split('\n'))
+            {
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2 + y - 5);
+                Console.Write(line);
+                y++;
+            }
+
+            if (!_muted)
+            {
+                goSound.PlaySync();
+            }
+            else if (_muted)
+            {
+                System.Threading.Thread.Sleep(900);
+            }
+
+            Console.Clear();
+            System.Threading.Thread.Sleep(100);
         }
 
         /// <summary>

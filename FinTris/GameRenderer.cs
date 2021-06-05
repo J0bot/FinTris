@@ -193,42 +193,6 @@ namespace FinTris
             }
         }
 
-        public void StartAnim()
-        {
-            Console.Clear();
-
-            int y = 0;
-            foreach (string line in Resources.ready_title.Split('\n'))
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 14, Console.WindowHeight / 2 + y - 5);
-                Console.Write(line);
-                y++;
-            }
-
-            if (!_muted)
-            {
-                readySound.PlaySync();
-            }
-
-            Console.Clear();
-
-            y = 0;
-            foreach (string line in Resources.go_title.Split('\n'))
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2 + y - 5);
-                Console.Write(line);
-                y++;
-            }
-
-            if (!_muted)
-            {
-                goSound.PlaySync();
-            }
-
-            Console.Clear();
-
-        }
-
         /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.
         /// </summary>
