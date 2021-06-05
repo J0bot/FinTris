@@ -136,20 +136,20 @@ namespace FinTris
 
             pauseMenu.ShowMenu();
 
-                if (pauseMenu.SelectedOption == goBack)
-                {
-                    _game.Resume();
-                    //_gameRenderer.ResetRender();
-                }
-                else if (pauseMenu.SelectedOption == option)
-                {
-                    ShowOptions();
-                    PauseMenu();
-                }
-                else if (pauseMenu.SelectedOption == menuBack)
-                {
-                    MainMenu();
-                }
+            if (pauseMenu.SelectedOption == goBack)
+            {
+                _game.Resume();
+                //_gameRenderer.ResetRender();
+            }
+            else if (pauseMenu.SelectedOption == option)
+            {
+                ShowOptions();
+                PauseMenu();
+            }
+            else if (pauseMenu.SelectedOption == menuBack)
+            {
+                MainMenu();
+            }
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace FinTris
                     }
                     else if (_game.State == GameState.Paused)
                     {
-                        _game.Start();
+                        _game.Resume();
                         //_gameRenderer.ResetRender();
                     }
                     else
