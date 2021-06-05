@@ -371,37 +371,31 @@ namespace FinTris
             {
                 input = Console.ReadKey(true).Key;
 
-                if (input == ConsoleKey.RightArrow)
+                if (input == ConsoleKey.RightArrow && _game.State == GameState.Playing)
                 {
                     _game.MoveRight();
                 }
-                else if (input == ConsoleKey.LeftArrow)
+                else if (input == ConsoleKey.LeftArrow && _game.State == GameState.Playing)
                 {
                     _game.MoveLeft();
                 }
-                else if (input == ConsoleKey.DownArrow)
+                else if (input == ConsoleKey.DownArrow && _game.State == GameState.Playing)
                 {
                     _game.MoveDown();
                 }
-                else if (input == ConsoleKey.Spacebar)
+                else if (input == ConsoleKey.Spacebar && _game.State == GameState.Playing && sw.ElapsedMilliseconds > lastRotation + rotCooldown)
                 {
-                    if (sw.ElapsedMilliseconds > lastRotation + rotCooldown)
-                    {
-                        _game.Rotate();
-                        lastRotation = sw.ElapsedMilliseconds;
-                    }
+                    _game.Rotate();
+                    lastRotation = sw.ElapsedMilliseconds;
                 }
-                else if (input == ConsoleKey.DownArrow)
+                else if (input == ConsoleKey.DownArrow && _game.State == GameState.Playing)
                 {
                     _game.MoveDown();
                 }
-                else if (input == ConsoleKey.Enter)
+                else if (input == ConsoleKey.Enter && _game.State == GameState.Playing && sw.ElapsedMilliseconds > lastDrop + dropCoolDown)
                 {
-                    if (sw.ElapsedMilliseconds > lastDrop + dropCoolDown)
-                    {
-                        _game.DropDown();
-                        lastDrop = sw.ElapsedMilliseconds;
-                    }
+                    _game.DropDown();
+                    lastDrop = sw.ElapsedMilliseconds;
                 }
                 else if (input == ConsoleKey.Escape)
                 {
@@ -421,22 +415,26 @@ namespace FinTris
                         MainMenu();
                     }
                 }
-                else if (input == ConsoleKey.R)
+                else if (input == ConsoleKey.R && _game.State == GameState.Playing)
                 {
                     _game.Stop();
                     _gameRenderer.DeathAnim();
                 }
-                else if (input == ConsoleKey.P)
+                else if (input == ConsoleKey.P) 
                 {
                     _game.PauseOrResume();
                 }
-                else if (input == ConsoleKey.A)
+                else if (input == ConsoleKey.A && _game.State == GameState.Playing) // Cheat code that
                 {
                     Console.Clear();
                     _game.Stop();
                     _game.State = GameState.Finished;
                     _gameRenderer.CheatCode();
                     _game.Start();
+                }
+                else if (input == ConsoleKey.K && _game.State == GameState.Playing) // Used to clean if there's some sort of mess
+                {
+                    _gameRenderer.ResetRender();
                 }
 
             } while (input != ConsoleKey.Q);

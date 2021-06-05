@@ -92,7 +92,7 @@ namespace FinTris
         /// <summary>
         /// Forme du Tetromino
         /// </summary>
-        private TetrominoType _shape;
+        private readonly TetrominoType _shape;
 
         /// <summary>
         /// Position du Tetromino dans deux dimensions
@@ -122,7 +122,7 @@ namespace FinTris
         /// <summary>
         /// Variable random qui permet de générer des nombres random
         /// </summary>
-        private Random _random;
+        private readonly Random _random;
 
         /// <summary>
         /// Largeur du Tetromino

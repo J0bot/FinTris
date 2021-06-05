@@ -9,17 +9,14 @@ using System.Timers;
 namespace FinTris
 {
     /// <summary>
-    /// Classe Game qui est  
-    /// 
-    /// 
-    /// e de toute la logique du jeu.
+    /// Classe Game qui est toute la logique du jeu.
     /// </summary>
     public class Game
     {
         /// <summary>
         /// Cette constante définit la vitesse de chute de notre Tetromino.
         /// </summary>
-        private int _speed = 600;
+        private readonly int _speed = 600;
 
         /// <summary>
         /// Attribut _tetromino.
@@ -80,8 +77,11 @@ namespace FinTris
         /// Événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu.
         /// </summary>
         public event EventHandler<Case[,]> BoardChanged;
+
+        /// <summary>
+        /// Événement qui permet de savoir si un nouveau Tetromino a été spawn
+        /// </summary>
         public event EventHandler NextTetroSpawned;
-        public event EventHandler<Vector2> TetroMoved;
 
         /// <summary>
         /// Événement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie.
@@ -179,7 +179,7 @@ namespace FinTris
             }
 
             _gameTimer = new Timer(_speed);
-            _gameTimer.Elapsed += timerHandler;
+            _gameTimer.Elapsed += TimerHandler;
             _rows = rows;
             _columns = cols;
 
@@ -322,7 +322,7 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="e">Les paramètres de l'événement.</param>
-        private void timerHandler(object sender, ElapsedEventArgs e)
+        private void TimerHandler(object sender, ElapsedEventArgs e)
         {
             Vector2 nextPos = _tetromino.Position - Vector2.Down;
 
@@ -549,7 +549,8 @@ namespace FinTris
         /// </summary>
         public void Stop()
         {
-            _gameTimer.Stop();            
+            _gameTimer.Stop();
+            _state = GameState.Waiting;
         }
 
         /// <summary>

@@ -17,17 +17,17 @@ namespace FinTris
         /// <summary>
         /// The config location.
         /// </summary>
-        static string _configLocation = "./config.cfg";
+        static readonly string _configLocation = "./config.cfg";
 
         /// <summary>
         /// string to temporarily store all the content of the configuration file.
         /// </summary>
-        static string _configStream;
+        static readonly string  _configStream;
 
         /// <summary>
         /// The list that will store the content of the configuration file, line by line
         /// </summary>
-        static List<string> _configFile = new List<string>();
+        static readonly List<string> _configFile = new List<string>();
 
         /// <summary>
         /// Initializes the Config class.
