@@ -133,6 +133,15 @@ namespace FinTris {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paused (Press P to unpause).
+        /// </summary>
+        public static string pause_text {
+            get {
+                return ResourceManager.GetString("pause_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to   ____                _       
         /// |  _ \ ___  __ _  __| |_   _ 
         /// | |_) / _ \/ _` |/ _` | | | |

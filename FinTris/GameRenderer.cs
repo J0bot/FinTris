@@ -15,13 +15,11 @@ namespace FinTris
     /// </summary>
     public class GameRenderer
     {        
-        /// <summary>
-        /// Attribut _game représentant la référance de l'instance de Game.
-        /// </summary>
+        // Attributs.
         private readonly Game _game;
-
-        private readonly Vector2 _nextTetroPos;
         private readonly Vector2 _position;
+        private readonly Vector2 _nextTetroPos;
+        private readonly Vector2 _pausedPos;
 
         /// <summary>
         /// La matrice scale du console.
@@ -37,9 +35,10 @@ namespace FinTris
             _game = game;
             _position = new Vector2(30, 2);
             _nextTetroPos = new Vector2(60, 4);
+            _pausedPos = new Vector2(60, 12);
 
             _game.BoardChanged += _game_PositionChanged;
-            _game.IsDead += _game_IsDed;
+            _game.StateChanged += OnGameStateChanged;
             _game.NextTetroSpawned += OnNextTetroSpawned;
 
             Console.Clear();
@@ -198,15 +197,23 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="e">If set to <c>true</c> e.</param>
-        private void _game_IsDed(object sender, bool e)
+        private void OnGameStateChanged(object sender, GameState newState)
         {
-            if (e == true)
+            if (newState == GameState.Finished)
             {
                 lock (this)
                 {
                     DeathAnim();
                 }
                 GameManager.Play();
+            }
+            else if (newState == GameState.Paused)
+            {
+                WriteAt(Resources.pause_text, _pausedPos.x, _pausedPos.y);
+            }
+            else if (newState == GameState.Playing)
+            {
+                WriteAt(new string('\0', Resources.pause_text.Length), _pausedPos.x, _pausedPos.y);
             }
         }
 

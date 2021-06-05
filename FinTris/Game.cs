@@ -93,7 +93,7 @@ namespace FinTris
         /// <summary>
         /// Événement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie.
         /// </summary>
-        public event EventHandler<bool> IsDead;
+        public event EventHandler<GameState> StateChanged;
 
         /// <summary>
         /// Propriété read-only qui retourne le nombre de colones dans notre plateau de jeu.
@@ -505,12 +505,21 @@ namespace FinTris
         {
             if (CollideAt(_tetromino.Position) == true)
             {
-                Config.GameScore = Score; // Must be before the IsDed Event is called
-                IsDead.Invoke(this, true);
+                Config.GameScore = Score;
                 UpdateBoard();
-                _state = GameState.Finished;
+                ChangeState(GameState.Finished);
             }
 
+        }
+
+        /// <summary>
+        /// Changer l'état du jeu.
+        /// </summary>
+        /// <param name="newState">Le nouvel état.</param>
+        private void ChangeState(GameState newState)
+        {
+            _state = newState;
+            StateChanged?.Invoke(this, newState);
         }
 
 
@@ -557,7 +566,7 @@ namespace FinTris
         public void Start()
         {
             // Mettre à jour l'état du jeu.
-            _state = GameState.Playing;
+            ChangeState(GameState.Playing);
 
             // Commencer le timer.
             _gameTimer.Start();            
@@ -577,13 +586,13 @@ namespace FinTris
         public void Pause()
         {
             _gameTimer.Stop();
-            _state = GameState.Paused;
+            ChangeState(GameState.Paused);
         }
 
         public void Resume()
         {
             _gameTimer.Start();
-            _state = GameState.Playing;
+            ChangeState(GameState.Playing);
         }
 
         public void PauseOrResume()
