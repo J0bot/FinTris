@@ -18,6 +18,7 @@ namespace FinTris
         // Attributs.
         private readonly Game _game;
         private readonly Vector2 _position;
+        private readonly Vector2 _innerPos;
         private readonly Vector2 _nextTetroPos;
         private readonly Vector2 _pausedPos;
 
@@ -33,9 +34,10 @@ namespace FinTris
         public GameRenderer(Game game)
         {
             _game = game;
-            _position = new Vector2(30, 2);
             _nextTetroPos = new Vector2(60, 4);
             _pausedPos = new Vector2(60, 12);
+            _position = new Vector2(30, 2);
+            _innerPos = _position + MAT_SCALE;
 
             _game.BoardChanged += _game_PositionChanged;
             _game.StateChanged += OnGameStateChanged;
@@ -44,7 +46,6 @@ namespace FinTris
             Console.Clear();
 
             RenderGameBorder();
-            RenderNextTetro();
             RenderScore();
         }
 
@@ -52,12 +53,13 @@ namespace FinTris
         {
             lock (this)
             {
+                RenderTetromino();
                 RenderNextTetro();
             }
         }
 
         /// <summary>
-        /// Fonction qui se déclenche quand il y a eu un changememt dans le plateau du jeu.
+        /// Fonction qui se déclenche quand il y a un changememt dans le plateau du jeu.
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
@@ -76,6 +78,7 @@ namespace FinTris
         /// <param name="board">Le tableau contenant les informations des cases.</param>
         private void Refresh(Case[,] board)
         {
+            //int startY = _game.CurrentTetromino.Position.y;
             for (int y = 0; y < _game.Rows; y++)
             {
                 for (int x = 0; x < _game.Columns; x++)
@@ -120,7 +123,7 @@ namespace FinTris
         private void DrawTile(Vector2 position, Vector2 shift, ConsoleColor color)
         {
             Console.ForegroundColor = color;
-            Console.SetCursorPosition(shift.x + position.x, shift.y + position.y);
+            Console.SetCursorPosition(shift.x + (position.x * MAT_SCALE.x), shift.y + position.y);
             Console.Write("██");
         }
 
@@ -139,7 +142,7 @@ namespace FinTris
                 for (int i = 0; i < (middle ? 2 : width); i++)
                 {
                     i = middle && i > 0 ? width - 1 : i;
-                    Vector2 pos = new Vector2(i * MAT_SCALE.x, j);
+                    Vector2 pos = new Vector2(i, j);
                     DrawTile(pos, position, color);
                 }
             }
@@ -249,7 +252,6 @@ namespace FinTris
                 Thread.Sleep(10);
             }
 
-
             Thread.Sleep(1200);
 
             Console.ResetColor();
@@ -303,11 +305,19 @@ namespace FinTris
             foreach (Vector2 posBlock in _game.NextTetromino.Blocks)
             {
                 Vector2 pos = posBlock + (Vector2.One * 2);
-                Vector2 scaled = new Vector2(pos.x * MAT_SCALE.x, pos.y);
-                DrawTile(scaled, _nextTetroPos, _game.NextTetromino.TetrominoColor);
+                DrawTile(pos, _nextTetroPos, _game.NextTetromino.Color);
             }
 
             Console.ResetColor();
+        }
+
+        private void RenderTetromino()
+        {
+            foreach (Vector2 blockPos in _game.CurrentTetromino.Blocks)
+            {
+                Vector2 pos = _game.CurrentTetromino.Position + blockPos;
+                DrawTile(pos, _innerPos, _game.CurrentTetromino.Color);
+            }
         }
 
 #if DEBUG

@@ -88,8 +88,6 @@ namespace FinTris
         /// </summary>
         public event EventHandler NextTetroSpawned;
 
-        public event EventHandler<Vector2> TetroMoved;
-
         /// <summary>
         /// Événement qui va nous permettre de lancer tout ce qui concerne les animations de fin de partie.
         /// </summary>
@@ -183,7 +181,7 @@ namespace FinTris
             }
 
             _gameTimer = new Timer(_speed);
-            _gameTimer.Elapsed += timerHandler;
+            _gameTimer.Elapsed += TimerHandler;
             _rows = rows;
             _columns = cols;
             _shapesCount = Enum.GetNames(typeof(TetrominoType)).Length;
@@ -198,8 +196,6 @@ namespace FinTris
                 }
             }
 
-            _tetromino = CreateRandomTetro();
-            _nextTetromino = CreateRandomTetro();
         }
 
         /// <summary>
@@ -226,21 +222,10 @@ namespace FinTris
         /// </summary>
         public void MoveRight()
         {
-            if (_state != GameState.Playing)
+            if (MoveTetromino(Vector2.Right))
             {
-                return;
-            }
-
-            // Le Tetromino ne va aller vers la droite que s'il ne dépasse pas les limites
-            // du terrain et qu'il n'y a pas de collisions avec tout autre bloc.
-            Vector2 nextPos = _tetromino.Position + Vector2.Right;
-
-            if (!CollideAt(nextPos))
-            {
-                _tetromino.Position = nextPos;
                 UpdateBoard();
-            }                        
-
+            }
         }
 
         /// <summary>
@@ -248,49 +233,41 @@ namespace FinTris
         /// </summary>
         public void MoveLeft()
         {
-            if (_state != GameState.Playing)
+            if (MoveTetromino(Vector2.Left))
             {
-                return;
-            }
-
-            // Le Tetromino ne va aller vers la gauche que s'il ne dépasse pas les limites
-            // du terrain et qu'il n'y a pas de collisions avec tout autre bloc.
-            Vector2 nextPos = _tetromino.Position + Vector2.Left;
-
-            if (!CollideAt(nextPos))
-            {
-                _tetromino.Position = nextPos;
                 UpdateBoard();
             }
         }
 
         /// <summary>
+        /// Déplacer le tetromino.
+        /// </summary>
+        /// <param name="direction">La direction de déplacement.</param>
+        private bool MoveTetromino(Vector2 direction)
+        {
+            Vector2 nextPos = _tetromino.Position + direction;
+            if (_state != GameState.Playing || CollideAt(nextPos))
+            {
+                return false;
+            }
+
+            _tetromino.Move(direction);
+
+            return true;
+        }
+
+        /// <summary>
         /// Fonction qui permet de faire descendre manuelement le Tetromino vers le bas, puis de mettre à jour le jeu.
-        /// 
-        /// Si on laisse la touche vers le bas enfoncée, le Tetromino va descendre encore plus vite.
-        /// 
-        /// S'il y a un risque de sortir du terrain ou qu'il entre en collision avec un bloc, il ne va plus descendre.
         /// </summary>
         public void MoveDown()
         {
-            if (_state != GameState.Playing)
+            _gameTimer.Stop();
+            if (MoveTetromino(Vector2.Up)) // Up parce que +[0,-1] = -[0,1], l'axe Y du console est inversé.
             {
-                return;
-            }
-
-            Vector2 nextPos = _tetromino.Position - Vector2.Down;
-
-            if (!CollideAt(nextPos))
-            {
-                _gameTimer.Stop();
-                _tetromino.Position = nextPos;
-
-                
-                _score += 1;
-
+                _score++;
                 UpdateBoard();
-                _gameTimer.Start();
             }
+            _gameTimer.Start();            
         }
 
         /// <summary>
@@ -309,13 +286,9 @@ namespace FinTris
 
             _gameTimer.Stop();
 
-            Vector2 nextPos = _tetromino.Position - Vector2.Down;
-
-            while (!CollideAt(nextPos))
+            while (MoveTetromino(Vector2.Up))
             {
-                _tetromino.Position = nextPos;
-                nextPos -= Vector2.Down;
-                _score += 1;
+                _score++;
                 UpdateBoard();
             }
 
@@ -330,13 +303,10 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="e">Les paramètres de l'événement.</param>
-        private void timerHandler(object sender, ElapsedEventArgs e)
+        private void TimerHandler(object sender, ElapsedEventArgs e)
         {
-            Vector2 nextPos = _tetromino.Position - Vector2.Down;
-
-            if (!CollideAt(nextPos))
+            if (MoveTetromino(Vector2.Up))
             {
-                _tetromino.Position = nextPos;
                 UpdateBoard();
             }
             else
@@ -368,12 +338,12 @@ namespace FinTris
             {
                 Vector2 pos = block + _tetromino.Position; 
                 _board[pos.x, pos.y].State = SquareState.MovingBlock;
-                _board[pos.x, pos.y].Color = _tetromino.TetrominoColor;
+                _board[pos.x, pos.y].Color = _tetromino.Color;
             }
 
 
             // Tout à la fin on va informer GameRenderer qu'il y a eu un changement dans le tableau.
-            
+
             BoardChanged?.Invoke(this, _board);
         }
 
@@ -422,7 +392,6 @@ namespace FinTris
             // On va spawn une nouvelle pièce random
             _tetromino = _nextTetromino;
             _nextTetromino = CreateRandomTetro();
-            //_tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
             for (int x = 0; x < _columns; x++)
             {
@@ -434,6 +403,7 @@ namespace FinTris
                     }
                 }
             }
+
             CheckForDeath();
 
             NextTetroSpawned?.Invoke(this, EventArgs.Empty);
@@ -445,10 +415,7 @@ namespace FinTris
         /// <returns>Retourne un nouveau tetromino.</returns>
         private Tetromino CreateRandomTetro()
         {
-            return new Tetromino((TetrominoType)_random.Next(_shapesCount))
-            {
-                Position = new Vector2(_columns / 2 - 1, 0)
-            };
+            return new Tetromino((TetrominoType)_random.Next(_shapesCount), new Vector2(_columns / 2 - 1, 0));
         }
 
         /// <summary>
@@ -565,11 +532,19 @@ namespace FinTris
         /// </summary>
         public void Start()
         {
-            // Mettre à jour l'état du jeu.
-            ChangeState(GameState.Playing);
+            if (_state == GameState.Waiting)
+            {
+                _tetromino = CreateRandomTetro();
+                _nextTetromino = CreateRandomTetro();
 
-            // Commencer le timer.
-            _gameTimer.Start();            
+                NextTetroSpawned?.Invoke(this, EventArgs.Empty);
+
+                // Mettre à jour l'état du jeu.
+                ChangeState(GameState.Playing);
+
+                // Commencer le timer.
+                _gameTimer.Start();
+            }         
         }
 
         /// <summary>
