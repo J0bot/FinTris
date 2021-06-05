@@ -75,14 +75,18 @@ namespace FinTris
         /// <summary>
         /// Constructeur avec identifiant automatique
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">nom du MenuEntry</param>
         public MenuEntry(string text)
         {
             this._id = _instanceCounter++;
             this._text = text;
         }
 
-
+        /// <summary>
+        /// Constructeur renseigné de la classe MenuEntry avec le suffixe
+        /// </summary>
+        /// <param name="text">nom du MenuEntry</param>
+        /// <param name="suffix">suffixe</param>
         public MenuEntry(string text, string suffix)
         {
             this._id = _instanceCounter++;
@@ -121,7 +125,7 @@ namespace FinTris
         /// <summary>
         /// Renvoie le numéro et le texte de l'entrée
         /// </summary>
-        /// <returns></returns>
+        /// <returns>retourne le numero et texte de l'entrée</returns>
         public override string ToString()
         {
             return $"{_text}{_suffix}";

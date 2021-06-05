@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 namespace FinTris
 {
     public static class Config
     {
-        //is this valid in .NET framework 1.6?
         /// <summary>
         /// The game score. (used in the Game class.)
         /// </summary>
@@ -217,7 +217,6 @@ namespace FinTris
             {
                 maxScores.RemoveRange(5, maxScores.Count - 5);
             }
-
             return maxScores;
         }
     }

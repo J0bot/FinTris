@@ -184,14 +184,12 @@ namespace FinTris
             set { _blocks = value; }
         }
 
-
         /// <summary>
         /// Permet de créer une nouvelle instance de Tetromino.
         /// </summary>
         /// <param name="type">Type de notre tetromino (Square, L, Malong, etc...)</param>
         /// <param name="x">Position X de notre tetromino</param>
         /// <param name="y">Position Y de notre tetromino</param>
-
         /// <param name="tetrominoState">Etat du Tetromino</param>
         public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
         {
