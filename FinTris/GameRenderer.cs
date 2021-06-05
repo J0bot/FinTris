@@ -149,19 +149,23 @@ namespace FinTris
         /// </summary>
         public void RenderGameBorder()
         {
+            int width = (_game.Columns + 2) * MAT_SCALE.x;
+            string line = new string('█', width);
+            string middle = "██" + new string(' ', 22) + "██";
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(_position.x, _position.y);
-            Console.Write(new string('█', 26));
+            Console.Write(line);
 
-            for (int i = 0; i < 22; i++)
+            for (int y = 0; y < _game.Rows; y++)
             {
-                Console.SetCursorPosition(_position.x, i + _position.y+1);
-                Console.Write("██"+ new string(' ', 22) + "██");
+                Console.SetCursorPosition(_position.x, _position.y + y + 1);
+                Console.Write(middle);
             }
-            Console.SetCursorPosition(_position.x, 22 + _position.y + 1);
-            Console.Write(new string('█', 26));
-            
-            Console.ResetColor();
+
+            Console.SetCursorPosition(_position.x, _position.y + _game.Rows + 1);
+            Console.Write(line);
+            Console.ResetColor();            
 
             // Prochain Tetromino.
             Console.SetCursorPosition(_nextTetroPos.x, _nextTetroPos.y - 2);
