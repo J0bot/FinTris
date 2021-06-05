@@ -79,6 +79,17 @@ namespace FinTris
             },
         };
 
+        private readonly static Dictionary<TetrominoType, ConsoleColor> _tetrominoColors = new Dictionary<TetrominoType, ConsoleColor>()
+        {
+            { TetrominoType.Squarie, ConsoleColor.Yellow},
+            { TetrominoType.Snake, ConsoleColor.Green},
+            { TetrominoType.ISnake, ConsoleColor.DarkRed},
+            { TetrominoType.Malong, ConsoleColor.Cyan},
+            { TetrominoType.Lawlet, ConsoleColor.DarkCyan},
+            { TetrominoType.ILawlet, ConsoleColor.DarkYellow},
+            { TetrominoType.Pyramid, ConsoleColor.DarkMagenta},
+        };
+
         /// <summary>
         /// Largeur du Tetromino.
         /// </summary>
@@ -92,7 +103,7 @@ namespace FinTris
         /// <summary>
         /// Forme du Tetromino
         /// </summary>
-        private TetrominoType _shape;
+        private readonly TetrominoType _shape;
 
         /// <summary>
         /// Position du Tetromino dans deux dimensions
@@ -193,57 +204,27 @@ namespace FinTris
         /// <param name="y">Position Y de notre tetromino</param>
 
         /// <param name="tetrominoState">Etat du Tetromino</param>
-        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
+        public Tetromino(TetrominoType type)
         {
             _random = new Random();
             _shape = type;
-            _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
 
-
-            _state = tetrominoState;
+            _state = TetrominoState.Moving;
 
             _width = _data.GetLength(0);
             _height = _data.GetLength(1);
 
             _blocks = new List<Vector2>();
 
-            //Switch pour attribuer la couleur à chaque type de Tetromino
-            switch (type)
-            {
-                case TetrominoType.Squarie:
-                    _tetrominoColor = ConsoleColor.Yellow;
-                    break;
-                case TetrominoType.Snake:
-                    _tetrominoColor = ConsoleColor.Green;
-                    break;
-                case TetrominoType.ISnake:
-                    _tetrominoColor = ConsoleColor.DarkRed;
-                    break;
-                case TetrominoType.Malong:
-                    _tetrominoColor = ConsoleColor.Cyan;
-                    break;
-                case TetrominoType.Lawlet:
-                    _tetrominoColor = ConsoleColor.DarkCyan;
-                    break;
-                case TetrominoType.ILawlet:
-                    _tetrominoColor = ConsoleColor.DarkYellow;
-                    break;
-                case TetrominoType.Pyramid:
-                    _tetrominoColor = ConsoleColor.DarkMagenta;
-                    break;
-                default:
-                    _tetrominoColor = ConsoleColor.White;
-                    break;
-            }
-
+            // Attribuer la couleur au Tetromino.
+            _tetrominoColor = _tetrominoColors[type];
 
             UpdateBlocks();
-
         }
 
         /// <summary>
-        /// Met à jour les nouvelles positions des carrés du tetromino.
+        /// Met à jour les nouvelles positions relatives des carrés du tetromino.
         /// </summary>
         private void UpdateBlocks()
         {

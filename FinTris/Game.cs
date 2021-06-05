@@ -9,10 +9,7 @@ using System.Timers;
 namespace FinTris
 {
     /// <summary>
-    /// Classe Game qui est  
-    /// 
-    /// 
-    /// e de toute la logique du jeu.
+    /// Classe Game qui contient toute la logique du jeu.
     /// </summary>
     public class Game
     {
@@ -49,7 +46,7 @@ namespace FinTris
         /// <summary>
         /// Variable random pour executer toutes les fonctions avec random.
         /// </summary>
-        private readonly Random random;
+        private readonly Random _random;
 
         /// <summary>
         /// Attribut de score.
@@ -77,9 +74,18 @@ namespace FinTris
         private readonly Case[,] _board;
 
         /// <summary>
+        /// Le nombre total de toutes les formes possibles.
+        /// </summary>
+        private readonly int _shapesCount;
+
+        /// <summary>
         /// Événement qui permet de discuter avec GameRenderer pour assuser la synchronisation en l'affichage et la logique du jeu.
         /// </summary>
         public event EventHandler<Case[,]> BoardChanged;
+
+        /// <summary>
+        /// Événement qui se déclenche quand un nouveau tetromino se génère.
+        /// </summary>
         public event EventHandler NextTetroSpawned;
 
         public event EventHandler<Vector2> TetroMoved;
@@ -165,11 +171,8 @@ namespace FinTris
         public Game(int rows = 22, int cols = 11)
         {
             // On va spawn une pièce random.
-            random = new Random();
+            _random = new Random();
             
-            _tetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
-            _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0, TetrominoState.NextTetromino);
-
             if (Config.DifficultyLevel == "Normal")
             {
                 _speed -= 100;
@@ -183,6 +186,7 @@ namespace FinTris
             _gameTimer.Elapsed += timerHandler;
             _rows = rows;
             _columns = cols;
+            _shapesCount = Enum.GetNames(typeof(TetrominoType)).Length;
 
             _board = new Case[cols, rows];
 
@@ -193,6 +197,9 @@ namespace FinTris
                     _board[i, j] = new Case();
                 }
             }
+
+            _tetromino = CreateRandomTetro();
+            _nextTetromino = CreateRandomTetro();
         }
 
         /// <summary>
@@ -205,7 +212,7 @@ namespace FinTris
                 return;
             }
 
-            // Si on peut effectuer la rotation sans collision avec les murs.
+            // Vérifier si on peut effectuer la rotation sans collision avec les murs.
             if (_tetromino.Position.x + _tetromino.Height <= _columns &&
                 _tetromino.Position.y + _tetromino.Width <= _rows)
             {
@@ -278,8 +285,8 @@ namespace FinTris
                 _gameTimer.Stop();
                 _tetromino.Position = nextPos;
 
-                // Si on accèlère la chute on gagne plus de point
-                _score += 1; // Si on presse 1 seconde on a 10 points en plus   
+                
+                _score += 1;
 
                 UpdateBoard();
                 _gameTimer.Start();
@@ -414,22 +421,34 @@ namespace FinTris
 
             // On va spawn une nouvelle pièce random
             _tetromino = _nextTetromino;
-            _nextTetromino = new Tetromino((TetrominoType)random.Next(7), 3, 0);
+            _nextTetromino = CreateRandomTetro();
             //_tetromino = new Tetromino(TetrominoType.Malong, 3, 0, (ConsoleColor)random.Next(9, 15));
 
-            for (int a = 0; a < _board.GetLength(0); a++)
+            for (int x = 0; x < _columns; x++)
             {
-                for (int j = 0; j < _board.GetLength(1); j++)
+                for (int y = 0; y < _rows; y++)
                 {
-                    if (_board[a, j].State == SquareState.MovingBlock)
+                    if (_board[x, y].State == SquareState.MovingBlock)
                     {
-                        _board[a, j].State = SquareState.SolidBlock;
+                        _board[x, y].State = SquareState.SolidBlock;
                     }
                 }
             }
             CheckForDeath();
 
             NextTetroSpawned?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Instancier un nouveau tetromino aléatoire.
+        /// </summary>
+        /// <returns>Retourne un nouveau tetromino.</returns>
+        private Tetromino CreateRandomTetro()
+        {
+            return new Tetromino((TetrominoType)_random.Next(_shapesCount))
+            {
+                Position = new Vector2(_columns / 2 - 1, 0)
+            };
         }
 
         /// <summary>
