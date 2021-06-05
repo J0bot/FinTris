@@ -489,6 +489,7 @@ namespace FinTris
                 IsDead.Invoke(this, true);
                 UpdateBoard();
                 _state = GameState.Finished;
+                _gameTimer.Stop();
             }
 
         }

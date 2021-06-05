@@ -4,7 +4,6 @@
 /// Description  : Fintris
 
 using System;
-using System.Diagnostics;
 using System.Media;
 using System.Threading;
 

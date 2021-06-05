@@ -7,12 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Media;
-using System.Threading;
 
 namespace FinTris
 {
     public static class GameManager
     {
+
         /// <summary>
         /// Attribut Game de la classe Program
         /// </summary>
@@ -22,16 +22,50 @@ namespace FinTris
         /// Attribut GameRenderer de la classe Program
         /// </summary>
         public static GameRenderer _gameRenderer;
+
+        /// <summary>
+        /// Thème principal du jeu
+        /// </summary>
         public static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
+
+        /// <summary> 
+        /// Son de ok
+        /// </summary>
         public static readonly SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
+
+        /// <summary>
+        /// Son de go
+        /// </summary>
         public static readonly SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
+
+        /// <summary>
+        /// Son de pause
+        /// </summary>
         public static readonly SoundPlayer pauseSound = new SoundPlayer(Resources.TetrisSoundPause);
+
+        /// <summary>
+        /// Son de ready
+        /// </summary>
         public static readonly SoundPlayer readySound = new SoundPlayer(Resources.tetrisSoundReady);
+
+        /// <summary>
+        /// Son de cancel
+        /// </summary>
         public static readonly SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
+
+        /// <summary>
+        /// Son de descente d'un bloc
+        /// </summary>
         public static readonly SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
 
-
+        /// <summary>
+        /// Attribut de la propriété Muted
+        /// </summary>
         private static bool _muted = false;
+
+        /// <summary>
+        /// Savoir si les sons du jeu sont activés ou pas
+        /// </summary>
         public static bool Muted
         {
             get { return _muted; }
@@ -43,7 +77,6 @@ namespace FinTris
         /// </summary>
         public static void MainMenu()
         {
-
             Menu _menu = new Menu(Resources.fintris_title);
 
             MenuEntry play = new MenuEntry("Play");
@@ -62,7 +95,7 @@ namespace FinTris
 
             if (_menu.SelectedOption == play)
             {
-                Play();                
+                Play();
             }
             else if (_menu.SelectedOption == options)
             {
@@ -88,7 +121,7 @@ namespace FinTris
         /// <summary>
         /// Méthode qui affiche le menu lorsqu'on appuie sur esc
         /// </summary>
-        public static void pauseMenu()
+        private static void PauseMenu()
         {
             _game.Pause();
 
@@ -111,7 +144,8 @@ namespace FinTris
                 }
                 else if (pauseMenu.SelectedOption == option)
                 {
-                    ShowOptionsInGame();
+                    ShowOptions();
+                    PauseMenu();
                 }
                 else if (pauseMenu.SelectedOption == menuBack)
                 {
@@ -119,6 +153,9 @@ namespace FinTris
                 }
         }
 
+        /// <summary>
+        /// Permet de montrer les credits du jeu
+        /// </summary>
         private static void PrintCredit()
         {
             Console.Clear();
@@ -147,7 +184,6 @@ namespace FinTris
             MainMenu();
         }
 
-
         /// <summary>
         /// Méthode pour choisir un nouveau nom. Assez banal pour l'instant.
         /// </summary>
@@ -168,7 +204,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Shows the options panel.
+        /// Montre le menu d'options
         /// </summary>
         private static void ShowOptions()
         {
@@ -204,52 +240,6 @@ namespace FinTris
                 }
 
             } while (optionMenu.SelectedOption != cancel && optionMenu.SelectedOption != null);
-
-        }
-
-        /// <summary>
-        /// Affiche le menu option depuis le menu pause
-        /// </summary>
-        public static void ShowOptionsInGame()
-        {
-            Menu optionMenu = new Menu("Options");
-
-            MenuEntry bestScores = new MenuEntry("Show best scores");
-            MenuEntry difficulty = new MenuEntry("Difficulty: ", Config.DifficultyLevel);
-            MenuEntry sounds = new MenuEntry("Sounds");
-            MenuEntry cancel = new MenuEntry("Return");
-
-            optionMenu.Add(bestScores);
-            optionMenu.Add(difficulty);
-            optionMenu.Add(sounds);
-            optionMenu.Add(cancel);
-
-
-            optionMenu.ShowMenu();
-            do
-            {
-
-
-                if (optionMenu.SelectedOption == bestScores)
-                {
-                    ShowBestScores();
-                }
-                else if (optionMenu.SelectedOption == difficulty)
-                {
-                    SelectDifficultyInGame();
-                }
-
-                else if (optionMenu.SelectedOption == sounds)
-                {
-                    SoundSettings();
-                }
-
-                else if (optionMenu.SelectedOption == cancel)
-                {
-                    pauseMenu();
-                }
-            } while (optionMenu.SelectedOption != cancel);
-
         }
 
         /// <summary>
@@ -274,7 +264,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Méthode qui change la difficulté du jeu
+        /// Méthode qui change la difficulté du jeu.
         /// </summary>
         private static void SelectDifficulty()
         {
@@ -299,36 +289,11 @@ namespace FinTris
             {
                 Config.DifficultyLevel = "Hard";
             }
-
         }
 
-
-        public static void SelectDifficultyInGame()
-        {
-            Menu optionMenu = new Menu("Difficulty levels");
-            MenuEntry diffEasy = new MenuEntry("Easy");
-            MenuEntry diffNormal = new MenuEntry("Normal");
-            MenuEntry diffHard = new MenuEntry("Hard");
-            optionMenu.Add(diffEasy);
-            optionMenu.Add(diffNormal);
-            optionMenu.Add(diffHard);
-            optionMenu.ShowMenu();
-
-            if (optionMenu.SelectedOption == diffEasy)
-            {
-                Config.DifficultyLevel = "Easy";
-            }
-            else if (optionMenu.SelectedOption == diffNormal)
-            {
-                Config.DifficultyLevel = "Normal";
-            }
-            else if (optionMenu.SelectedOption == diffHard)
-            {
-                Config.DifficultyLevel = "Hard";
-            }
-            ShowOptionsInGame();
-        }
-
+        /// <summary>
+        /// Menu de paramètres de son.
+        /// </summary>
         private static void SoundSettings()
         {
             Menu soundMenu = new Menu("Sounds settings");
@@ -353,7 +318,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Méthode play permet de lancer tous les éléments du jeu et de reset le jeu
+        /// Méthode play permet de lancer tous les éléments du jeu et de reset le jeu.
         /// </summary>
         public static void Play()
         {
@@ -371,7 +336,6 @@ namespace FinTris
             {
                 readySound.PlaySync();
             }
-
 
             Console.Clear();
 
@@ -444,7 +408,7 @@ namespace FinTris
                     if (_game.State == GameState.Playing)
                     {
                         _game.Pause();
-                        pauseMenu();
+                        PauseMenu();
                     }
                     else if (_game.State == GameState.Paused)
                     {
@@ -455,7 +419,6 @@ namespace FinTris
                     {
                         _game.Pause();
                         MainMenu();
-                    
                     }
                 }
                 else if (input == ConsoleKey.R)
@@ -481,6 +444,11 @@ namespace FinTris
             sw.Stop();
         }
 
+        /// <summary>
+        /// Permet de jouer un son
+        /// </summary>
+        /// <param name="sound">nom du son</param>
+        /// <param name="looping">savoir le son sera en boucle ou pas</param>
         public static void PlaySound(SoundPlayer sound, bool looping = false)
         {
             if (!_muted)
