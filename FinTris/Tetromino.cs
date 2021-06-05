@@ -221,16 +221,16 @@ namespace FinTris
                     _tetrominoColor = ConsoleColor.DarkRed;
                     break;
                 case TetrominoType.Malong:
-                    _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue
+                    _tetrominoColor = ConsoleColor.Cyan;
                     break;
                 case TetrominoType.Lawlet:
-                    _tetrominoColor = ConsoleColor.DarkYellow; // We need orange
+                    _tetrominoColor = ConsoleColor.DarkCyan;
                     break;
                 case TetrominoType.ILawlet:
-                    _tetrominoColor = ConsoleColor.Blue; //Blue
+                    _tetrominoColor = ConsoleColor.DarkYellow;
                     break;
                 case TetrominoType.Pyramid:
-                    _tetrominoColor = ConsoleColor.Magenta;
+                    _tetrominoColor = ConsoleColor.DarkMagenta;
                     break;
                 default:
                     _tetrominoColor = ConsoleColor.White;
