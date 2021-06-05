@@ -10,9 +10,24 @@ namespace FinTris
     /// </summary>
     public enum GameState
     {
+        /// <summary>
+        /// Le jeu est en attente
+        /// </summary>
         Waiting,
+
+        /// <summary>
+        /// Le jeu est en cours
+        /// </summary>
         Playing,
+
+        /// <summary>
+        /// Le jeu est en pause
+        /// </summary>
         Paused,
+
+        /// <summary>
+        /// La partie actuelle est finie
+        /// </summary>
         Finished
     }
 }
