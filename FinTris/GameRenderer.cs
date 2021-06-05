@@ -102,31 +102,9 @@ namespace FinTris
         /// Permet de dessiner une case du jeu 
         /// </summary>
         /// <param name="position">position de la case à dessiner en Vector2</param>
-        private void DrawTile(Vector2 position)
-        {
-            Console.SetCursorPosition(position.x, position.y);
-            Console.Write("██");
-        }
-
-        /// <summary>
-        /// Permet de dessiner une case du jeu 
-        /// </summary>
-        /// <param name="position">position de la case à dessiner en Vector2</param>
-        /// <param name="color">permet d'implémenter la couleur à notre Tile en ConsoleColor</param>
-        private void DrawTile(Vector2 position, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.SetCursorPosition(position.x, position.y);
-            Console.Write("██");
-        }
-
-        /// <summary>
-        /// Permet de dessiner une case du jeu 
-        /// </summary>
-        /// <param name="position">position de la case à dessiner en Vector2</param>
         /// <param name="shift">permet d'ajouter un décalement x et y en Vector2</param>
         /// <param name="color">permet d'implémenter la couleur à notre Tile en ConsoleColor</param>
-        private void DrawTile(Vector2 position, Vector2 shift, ConsoleColor color)
+        private void DrawTile(Vector2 position, Vector2 shift , ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.SetCursorPosition(shift.x + position.x, shift.y + position.y);

@@ -31,6 +31,5 @@ namespace FinTris
             GameManager.PlaySound(GameManager.themeSound, true);
             GameManager.MainMenu();
         }
-
     }
 }
