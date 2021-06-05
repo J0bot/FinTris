@@ -213,6 +213,7 @@ namespace FinTris
             }
             else if (newState == GameState.Playing)
             {
+                // Effacer le texte de pause lorsque l'on reprend le jeu.
                 WriteAt(new string('\0', Resources.pause_text.Length), _pausedPos.x, _pausedPos.y);
             }
         }

@@ -21,7 +21,13 @@ namespace FinTris
         /// <summary>
         /// Attribut GameRenderer de la classe Program
         /// </summary>
-        public static GameRenderer _gameRenderer;
+        private static GameRenderer _gameRenderer;
+
+        /// <summary>
+        /// Paramètre du son.
+        /// </summary>
+        private static bool _muted = false;
+
         public static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
         public static readonly SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
         public static readonly SoundPlayer goSound = new SoundPlayer(Resources.tetrisSoundGo);
@@ -30,8 +36,9 @@ namespace FinTris
         public static readonly SoundPlayer cancelSound = new SoundPlayer(Resources.tetrisSoundCancel);
         public static readonly SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
 
-
-        private static bool _muted = false;
+        /// <summary>
+        /// Paramètre du son.
+        /// </summary>
         public static bool Muted
         {
             get { return _muted; }
