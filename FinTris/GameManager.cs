@@ -248,15 +248,15 @@ namespace FinTris
         {
             Console.Clear();
             List<string[]> scores = Config.GetBestScores();
-            Console.CursorTop = (Console.BufferHeight / 2) - (scores.Count);
+            Console.CursorTop = (Console.WindowHeight / 2) - (scores.Count);
 
             foreach (string[] entry in scores)
             {
                 //why is there a space between the scores???
                 Console.CursorTop += 1;
-                Console.CursorLeft = (Console.BufferWidth / 2) - entry[0].Length - 2;
+                Console.CursorLeft = (Console.WindowWidth / 2) - entry[0].Length - 2;
                 Console.Write(entry[0]);
-                Console.CursorLeft = (Console.BufferWidth / 2) + 2;
+                Console.CursorLeft = (Console.WindowWidth / 2) + 2;
                 Console.WriteLine(entry[1]);
             }
             Console.ReadLine();
@@ -403,7 +403,7 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.K && _game.State == GameState.Playing) // Used to clean if there's some sort of mess
                 {
-                    //_gameRenderer.ResetRender();
+                    //_gameRenderer.Refresh();
                 }
 
             } while (input != ConsoleKey.Q);
