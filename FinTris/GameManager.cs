@@ -24,11 +24,13 @@ namespace FinTris
         /// <summary>
         /// Attribut GameRenderer de la classe Program
         /// </summary>
-        public static GameRenderer _gameRenderer;
+        private static GameRenderer _gameRenderer;
 
         /// <summary>
-        /// Thème principal du jeu
+        /// Paramètre du son.
         /// </summary>
+        private static bool _muted = false;
+
         public static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
 
         /// <summary> 
@@ -62,12 +64,7 @@ namespace FinTris
         public static readonly SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
 
         /// <summary>
-        /// Attribut de la propriété Muted
-        /// </summary>
-        private static bool _muted = true;
-
-        /// <summary>
-        /// Savoir si les sons du jeu sont activés ou pas
+        /// Paramètre du son.
         /// </summary>
         public static bool Muted
         {
@@ -142,7 +139,7 @@ namespace FinTris
                 if (pauseMenu.SelectedOption == goBack)
                 {
                     _game.Resume();
-                    _gameRenderer.ResetRender();
+                    //_gameRenderer.ResetRender();
                 }
                 else if (pauseMenu.SelectedOption == option)
                 {
@@ -379,7 +376,7 @@ namespace FinTris
                     else if (_game.State == GameState.Paused)
                     {
                         _game.Start();
-                        _gameRenderer.ResetRender();
+                        //_gameRenderer.ResetRender();
                     }
                     else
                     {
@@ -406,7 +403,7 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.K && _game.State == GameState.Playing) // Used to clean if there's some sort of mess
                 {
-                    _gameRenderer.ResetRender();
+                    //_gameRenderer.ResetRender();
                 }
 
             } while (input != ConsoleKey.Q);

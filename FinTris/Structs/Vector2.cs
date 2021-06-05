@@ -83,6 +83,12 @@ namespace FinTris
             return new Vector2(v1.x - v2.x, v1.y - v2.y);
         }
 
+        /// <summary>
+        /// Permet de multiplier les coordonnées d'un vecteurs.
+        /// </summary>
+        /// <param name="v">Le vecteur.</param>
+        /// <param name="scale">Le multiplicateur.</param>
+        /// <returns>Retourne le résultat en Vector2 de la multiplication d'un vecteur.</returns>
         public static Vector2 operator *(Vector2 v, int scale)
         {
             return new Vector2(v.x * scale, v.y * scale);
