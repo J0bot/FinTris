@@ -39,9 +39,10 @@ namespace FinTris
             _position = new Vector2(30, 2);
             _innerPos = _position + MAT_SCALE;
 
-            _game.BoardChanged += _game_PositionChanged;
+            _game.TetrominoMoved += OnTetrominoMoved;
             _game.StateChanged += OnGameStateChanged;
             _game.NextTetroSpawned += OnNextTetroSpawned;
+            _game.RowCleared += OnRowCleared;
 
             Console.Clear();
 
@@ -63,12 +64,13 @@ namespace FinTris
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
-        private void _game_PositionChanged(object sender, Case[,] board)
+        private void OnTetrominoMoved(object sender, EventArgs e)
         {
             lock (this)
             {
-                // Mettre à jour l'affichage du plateau après les nouveaux changements.
-                Refresh(board);
+                // Mettre à jour l'affichage du tetromino.
+                UpdateTetromino();
+                RenderScore();
             }
         }
 
@@ -76,42 +78,58 @@ namespace FinTris
         /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
         /// </summary>
         /// <param name="board">Le tableau contenant les informations des cases.</param>
-        private void Refresh(Case[,] board)
+        private void UpdateTetromino()
         {
-            //int startY = _game.CurrentTetromino.Position.y;
-            for (int y = 0; y < _game.Rows; y++)
+            for (int dy = -1; dy < 4 + 1; dy++) // 4 c'est la longueur maximal d'un tetromino.
             {
-                for (int x = 0; x < _game.Columns; x++)
+                for (int dx = -1; dx < 4 + 1; dx++)
                 {
-                    Console.ForegroundColor = board[x, y].Color;
-                    Console.SetCursorPosition(x * 2 + _position.x + 2, y + _position.y + 1);
-                    Console.Write(board[x, y].State == SquareState.Empty ? "  " : "██");
+                    Vector2 posRelative = new Vector2(dx, dy);
+                    Vector2 pos = _game.CurrentTetromino.PreviousPosition + posRelative;
+
+                    if (!_game.WithinRange(pos))
+                    {
+                        continue;
+                    }
+
+                    UpdateTile(pos);
                 }
             }
+
             Console.ResetColor();
-            RenderScore();
+        }
+
+        private void OnRowCleared(object sender, int rowY)
+        {
+            lock (this)
+            {
+                Vector2 from = _innerPos;
+                Vector2 size = new Vector2(_game.Columns * MAT_SCALE.x, rowY);
+                Vector2 to = from + Vector2.Up;
+                Console.MoveBufferArea(
+                    from.x, from.y,
+                    size.x, size.y,
+                    to.x, to.y
+                );
+            }
+            
         }
 
         /// <summary>
-        /// Permet de dessiner une case du jeu 
+        /// Permet de mettre à jour une case.
         /// </summary>
         /// <param name="position">position de la case à dessiner en Vector2</param>
-        private void DrawTile(Vector2 position)
+        private void UpdateTile(Vector2 position)
         {
-            Console.SetCursorPosition(position.x, position.y);
-            Console.Write("██");
-        }
-
-        /// <summary>
-        /// Permet de dessiner une case du jeu 
-        /// </summary>
-        /// <param name="position">position de la case à dessiner en Vector2</param>
-        /// <param name="color">permet d'implémenter la couleur à notre Tile en ConsoleColor</param>
-        private void DrawTile(Vector2 position, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.SetCursorPosition(position.x, position.y);
-            Console.Write("██");
+            SquareState state = _game.Board[position.x, position.y];
+            if (state == SquareState.MovingBlock)
+            {
+                DrawTile(position, _innerPos, _game.CurrentTetromino.Color);
+            }
+            else if (state == SquareState.Empty)
+            {
+                DrawTile(position, _innerPos, Console.BackgroundColor);
+            }
         }
 
         /// <summary>
