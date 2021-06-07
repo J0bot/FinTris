@@ -616,15 +616,15 @@ namespace FinTris
             }
         }
 
-        public void PauseOrResume(bool notify = true)
+        public void PauseOrResume()
         {
             if (_state == GameState.Playing)
             {
-                Pause(notify);
+                Pause();
             }
             else
             {
-                Resume(notify);
+                Resume();
             }
         }
 
