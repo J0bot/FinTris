@@ -344,12 +344,14 @@ namespace FinTris
             long lastDrop = 0;
             int rotCooldown = 100;
             int dropCoolDown = 1000;
+            string cheatCode = "   ";
             Stopwatch sw = Stopwatch.StartNew();
             ConsoleKey input;
 
             do
             {
                 input = Console.ReadKey(true).Key;
+                cheatCode += input.ToString();
 
                 if (input == ConsoleKey.RightArrow)
                 {
@@ -386,7 +388,7 @@ namespace FinTris
 
                         if (_game.State == GameState.Playing)
                         {
-                            _gameRenderer.Refresh();    
+                            _gameRenderer.Refresh();
                         }
                     }
                     else if (_game.State == GameState.Paused)
@@ -404,11 +406,11 @@ namespace FinTris
                     _game.Stop();
                     _gameRenderer.DeathAnim();
                 }
-                else if (input == ConsoleKey.P) 
+                else if (input == ConsoleKey.P)
                 {
                     _game.PauseOrResume();
                 }
-                else if (input == ConsoleKey.A) // Cheat code that
+                else if (cheatCode.Substring(cheatCode.Length - 3, 3) == Resources.cheat_code) // Cheat code
                 {
                     _game.Stop();
                     _game.State = GameState.Finished;

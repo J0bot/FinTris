@@ -95,6 +95,15 @@ namespace FinTris {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à WIN.
+        /// </summary>
+        public static string cheat_code {
+            get {
+                return ResourceManager.GetString("cheat_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ??? : Tricheur !
         ///??? : Tu ne devais pas avoir accès à cette zone !
         ///??? : Maintenant il va falloir...
