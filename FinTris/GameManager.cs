@@ -97,7 +97,7 @@ namespace FinTris
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
             MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
-            MenuEntry credits = new MenuEntry("Credits");
+            MenuEntry credits = new MenuEntry("A propos");
             MenuEntry quit = new MenuEntry("Quit");
 
             _menu.Add(play);
@@ -344,14 +344,15 @@ namespace FinTris
             long lastDrop = 0;
             int rotCooldown = 100;
             int dropCoolDown = 1000;
-            string cheatCode = "   ";
+            string inputCheat = "   ";
+            int lenCheatCode = Resources.cheat_code.Length;
             Stopwatch sw = Stopwatch.StartNew();
             ConsoleKey input;
 
             do
             {
                 input = Console.ReadKey(true).Key;
-                cheatCode += input.ToString();
+                inputCheat += input.ToString();
 
                 if (input == ConsoleKey.RightArrow)
                 {
@@ -410,7 +411,7 @@ namespace FinTris
                 {
                     _game.PauseOrResume();
                 }
-                else if (cheatCode.Substring(cheatCode.Length - 3, 3) == Resources.cheat_code) // Cheat code
+                else if (inputCheat.Substring(inputCheat.Length - lenCheatCode, lenCheatCode) == Resources.cheat_code) // Cheat code
                 {
                     _game.Stop();
                     _game.State = GameState.Finished;
