@@ -3,7 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace FinTris
 {
-
+    /// <summary>
+    /// Classe qui permet de changer la Font et la taille de la Font
+    /// </summary>
     public static class ConsoleHelper
     {
         private const int FixedWidthTrueType = 54;
@@ -23,20 +25,43 @@ namespace FinTris
 
         private static readonly IntPtr ConsoleOutputHandle = GetStdHandle(StandardOutputHandle);
 
+        /// <summary>
+        /// Information sur la police
+        /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct FontInfo
         {
             internal int cbSize;
             internal int FontIndex;
             internal short FontWidth;
+            /// <summary>
+            /// Taille de la police
+            /// </summary>
             public short FontSize;
+
+            /// <summary>
+            /// Famille de la police
+            /// </summary>
             public int FontFamily;
+
+            /// <summary>
+            /// poid de la police (gras, etc...)
+            /// </summary>
             public int FontWeight;
+
+            /// <summary>
+            /// Nom de la police
+            /// </summary>
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            //[MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.wc, SizeConst = 32)]
             public string FontName;
         }
 
+        /// <summary>
+        /// Changer la font de la Console
+        /// </summary>
+        /// <param name="font">nom de la font</param>
+        /// <param name="fontSize">taille de la font</param>
+        /// <returns>un tableau de FontInfo</returns>
         public static FontInfo[] SetCurrentFont(string font, short fontSize = 0)
         {
             Console.WriteLine("Set Current Font: " + font);

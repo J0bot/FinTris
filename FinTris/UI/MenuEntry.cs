@@ -7,6 +7,9 @@ using System;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe d'une entrée du Menu
+    /// </summary>
     public class MenuEntry
     {
         /// <summary>
@@ -49,6 +52,9 @@ namespace FinTris
             set { _text = value; }
         }
 
+        /// <summary>
+        /// Suffice de l'entrée
+        /// </summary>
         public string Suffix
         {
             get { return _suffix; }
