@@ -58,12 +58,9 @@ namespace FinTris
         /// Afficher le menu et retourner l'option sélectionnée
         /// </summary>
         /// <returns>Retourne l'option que l'on a choisit</returns>
-        public void ShowMenu(bool clear = true)
+        public void ShowMenu()
         {
-            if (clear)
-            {
-                Console.Clear();
-            }
+            Console.Clear();
 
             int y = 0;
             foreach (string line in _title.Split('\n'))

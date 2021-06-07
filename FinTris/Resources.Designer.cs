@@ -61,13 +61,14 @@ namespace FinTris {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à &quot;                                   @                                  &quot;,
-        ///&quot;                                 @@@@@                                &quot;,
-        ///&quot;                          *@@@&amp;@@@@@@@@##@@@@                         &quot;,
-        ///&quot;                         @@@@@@@@@@@@@@@@@@@@@.                       &quot;,
-        ///&quot;         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        &quot;,
-        ///&quot;       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      &quot;,
-        ///&quot;     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@ [le reste de la chaîne a été tronqué]&quot;;.
+        ///   Recherche une chaîne localisée semblable à                                  @@@@@                                
+        ///                          *@@@&amp;@@@@@@@@##@@@@                         
+        ///                         @@@@@@@@@@@@@@@@@@@@@.                       
+        ///         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        
+        ///       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      
+        ///     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@     
+        ///     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    
+        ///     @@@ [le reste de la chaîne a été tronqué]&quot;;.
         /// </summary>
         public static string Bowser {
             get {
@@ -90,6 +91,18 @@ namespace FinTris {
         public static System.IO.UnmanagedMemoryStream bowserSound2 {
             get {
                 return ResourceManager.GetStream("bowserSound2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à ??? : Tricheur !
+        ///??? : Tu ne devais pas avoir accès à cette zone !
+        ///??? : Maintenant il va falloir...
+        ///payer !.
+        /// </summary>
+        public static string cheat_string {
+            get {
+                return ResourceManager.GetString("cheat_string", resourceCulture);
             }
         }
         

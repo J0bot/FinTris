@@ -38,6 +38,11 @@ namespace FinTris
         /// </summary>
         public static readonly SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
 
+        /// <summary> 
+        /// Son de ko
+        /// </summary>
+        public static readonly SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
+
         /// <summary>
         /// Son de go
         /// </summary>
@@ -142,7 +147,7 @@ namespace FinTris
             pauseMenu.Add(option);
             pauseMenu.Add(menuBack);
 
-            pauseMenu.ShowMenu(false);
+            pauseMenu.ShowMenu();
 
             if (pauseMenu.SelectedOption == option)
             {
@@ -376,15 +381,12 @@ namespace FinTris
                 {
                     if (_game.State == GameState.Playing)
                     {
-                        Console.MoveBufferArea(0, 0, Console.WindowWidth, Console.WindowHeight, 0, Console.WindowHeight);
                         _game.Pause(false);
                         PauseMenu();
 
-                        // Si on choisit de reprendre le jeu.
                         if (_game.State == GameState.Playing)
                         {
-                            // On remet le jeu tout en haut.
-                            Console.MoveBufferArea(0, Console.WindowHeight, Console.WindowWidth, Console.WindowHeight, 0, 0);
+                            _gameRenderer.Refresh();    
                         }
                     }
                     else if (_game.State == GameState.Paused)
@@ -415,7 +417,7 @@ namespace FinTris
                 }
                 else if (input == ConsoleKey.K) // Used to clean if there's some sort of mess
                 {
-                    //_gameRenderer.Refresh();
+                    _gameRenderer.Refresh();
                 }
 
             } while (_game.State == GameState.Playing || _game.State == GameState.Paused);

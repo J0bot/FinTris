@@ -26,6 +26,8 @@ namespace FinTris
         /// </summary>
         private static readonly Vector2 MAT_SCALE = new Vector2(2, 1);
 
+        private ConsoleColor[,] _colors;
+
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
         /// </summary>
@@ -37,6 +39,7 @@ namespace FinTris
             _pausedPos = new Vector2(60, 12);
             _position = new Vector2(30, 2);
             _innerPos = _position + MAT_SCALE;
+            _colors = new ConsoleColor[_game.Columns, _game.Rows];
 
             _game.TetrominoMoved += OnTetrominoMoved;
             _game.StateChanged += OnGameStateChanged;
@@ -89,6 +92,16 @@ namespace FinTris
                     if (!_game.WithinRange(pos))
                     {
                         continue;
+                    }
+
+                    SquareState state = _game.Board[pos.x, pos.y];
+                    if (state == SquareState.MovingBlock)
+                    {
+                        _colors[pos.x, pos.y] = _game.CurrentTetromino.Color;
+                    }
+                    else if (state == SquareState.Empty)
+                    {
+                        _colors[pos.x, pos.y] = ConsoleColor.Black;
                     }
 
                     UpdateTile(pos);
@@ -244,6 +257,30 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Cette méthode permet d'actualiser l'affichage après un clear
+        /// </summary>
+        public void Refresh()
+        {
+            lock (this)
+            {
+                Console.Clear();
+                RenderGameBorder();
+                RenderScore();
+                RenderTetromino();
+                RenderNextTetro();
+
+                for (int y = 0; y < _game.Rows; y++)
+                {
+                    for (int x = 0; x < _game.Columns; x++)
+                    {
+                        DrawTile(new Vector2(x, y), _innerPos, _colors[x, y]);
+                    }
+                }
+            }
+            
+        }
+
+        /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.
         /// </summary>
         public void DeathAnim()
@@ -251,8 +288,7 @@ namespace FinTris
             Config.SaveScore();
             _game.Stop();
 
-            SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
-            koSound.Play();
+            GameManager.koSound.Play();
 
             Console.ForegroundColor = ConsoleColor.Gray;
             for (int y = _game.Rows; y > 0; y--)
@@ -323,6 +359,9 @@ namespace FinTris
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Afficher le tetromino.
+        /// </summary>
         private void RenderTetromino()
         {
             foreach (Vector2 blockPos in _game.CurrentTetromino.Blocks)
@@ -347,23 +386,21 @@ namespace FinTris
 
             int w = Console.WindowWidth;
             int h = Console.WindowHeight;
+
             Console.MoveBufferArea(0, 0, w, h, 0, h*2);
 
-            Console.SetCursorPosition(50, 14);
-            TypewriterEffect("??? : Tricheur !");
-            Thread.Sleep(200);
-
-            Console.SetCursorPosition(35, 16);
-            TypewriterEffect("??? : Tu ne devais pas avoir accès à cette zone !");
-
-            Thread.Sleep(200);
-
-            Console.SetCursorPosition(39, 18);
-            TypewriterEffect("??? : Maintenant il va falloir...");
-            Thread.Sleep(100);
-            TypewriterEffect(" payer !", 100);
-            Thread.Sleep(1000);
-
+            string[] messages = Resources.cheat_string.Split('\n');
+            int i = 0;
+            int y = (Console.WindowHeight - (messages.Length * 2)) / 2;
+            foreach (string line in messages)
+            {
+                int x = (Console.WindowWidth - line.Length) / 2;
+                bool last = i >= messages.Length - 2;
+                Console.SetCursorPosition(x, y + (i*2)) ;
+                TypewriterEffect(line);
+                Thread.Sleep(last ? 1200 : 300);
+                i++;
+            }
 
             Console.MoveBufferArea(0, 0, w, h, 0, h * 3);
 
@@ -375,18 +412,18 @@ namespace FinTris
             }
 
             // Affichage du monstre.
-
+            string[] monster = Resources.Bowser.Split('\n');
             Console.ForegroundColor = ConsoleColor.Red;
-           
             Console.SetCursorPosition(0, 0);
-            foreach (string line in Resources.Bowser.Split('\n'))
+            Console.WindowHeight = monster.Length;
+            foreach (string line in monster)
             {
                 Console.WriteLine(line);
             }
             Console.SetCursorPosition(0, 0);
 
 
-            for (int i = 0; i < 7; i++)
+            for (int j = 0; j < 7; j++)
             {
                 Console.CursorTop = h * 5;
                 Thread.Sleep(100);
@@ -395,6 +432,7 @@ namespace FinTris
             }
 
             Console.ResetColor();
+            Console.WindowHeight = h;
 
             Console.MoveBufferArea(0, h*2, w, h, 0, 0);
 
