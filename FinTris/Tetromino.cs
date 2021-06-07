@@ -18,12 +18,14 @@ namespace FinTris
         /// </summary>
         private readonly static Dictionary<TetrominoType, byte[,]> _tetrominoShapes = new Dictionary<TetrominoType, byte[,]>
         {
+            //Carré
             { TetrominoType.Squarie, new byte[,]
                 {
                     {1, 1},
                     {1, 1},
                 }
             },
+
             //Snake
             { TetrominoType.Snake, new byte[,]
                 {
@@ -33,7 +35,7 @@ namespace FinTris
                 }
             },
 
-            
+            //Snake inversé
             { TetrominoType.ISnake, new byte[,]
                 {
                     {0 ,1},
@@ -51,7 +53,7 @@ namespace FinTris
                 }
             },
 
-
+            //Lawlet inversé
             { TetrominoType.ILawlet, new byte[,]
                 {
                     {0 ,1},
