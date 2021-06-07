@@ -372,7 +372,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Si le joueur appuie sur A, il entre dans une zone interdite.
+        /// Si le joueur appuie sur WIN, il entre dans une zone interdite.
         /// </summary>
         public void CheatCode()
         {
@@ -441,7 +441,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Ecris ue texte à une position donnée. (repris de la documentation de Microsoft)
+        /// Ecris le texte à une position donnée. (repris de la documentation de Microsoft)
         /// </summary>
         /// <param name="s">Le texte à afficher.</param>
         /// <param name="x">La position X.</param>

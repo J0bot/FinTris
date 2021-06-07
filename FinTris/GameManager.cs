@@ -31,6 +31,9 @@ namespace FinTris
         /// </summary>
         private static bool _muted = false;
 
+        /// <summary>
+        /// Thème principal
+        /// </summary>
         public static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
 
         /// <summary> 
@@ -82,7 +85,7 @@ namespace FinTris
         /// Paramètre du son.
         /// </summary>
         public static bool Muted
-        {
+        { 
             get { return _muted; }
             set { _muted = value; }
         }
