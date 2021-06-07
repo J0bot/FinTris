@@ -14,7 +14,7 @@ namespace FinTris
     public class Game
     {
         /// <summary>
-        /// Cette constante définit la vitesse de chute de notre Tetromino.
+        /// Cette variable définit la vitesse de chute de notre Tetromino.
         /// </summary>
         private int _speed = 600;
 
@@ -99,6 +99,11 @@ namespace FinTris
         public event EventHandler<GameState> StateChanged;
 
         /// <summary>
+        /// Sert dans la fonction Rotate
+        /// </summary>
+        private Tetromino _rotatedTetro;
+
+        /// <summary>
         /// Propriété read-only qui retourne le nombre de colones dans notre plateau de jeu.
         /// </summary>
         public int Columns
@@ -165,6 +170,9 @@ namespace FinTris
             set { _state = value; }
         }
 
+        /// <summary>
+        /// Plateau de jeu, d'un point de vue d'état des blocs
+        /// </summary>
         public SquareState[,] Board
         {
             get { return _board; }
@@ -199,6 +207,7 @@ namespace FinTris
             _board = new SquareState[cols, rows];
         }
 
+
         /// <summary>
         /// Sert à commencer le jeu.
         /// </summary>
@@ -221,9 +230,63 @@ namespace FinTris
             }
         }
 
-        Tetromino _rotatedTetro;
+
         /// <summary>
-        /// Fonction qui permet de lancer la rotation du Tetromino actuel, puis de mettre à jour le plateau de jeu.
+        /// Sert à arrêter le jeu.
+        /// </summary>
+        public void Stop()
+        {
+            _gameTimer.Stop();
+            _state = GameState.Waiting;
+        }
+
+
+        /// <summary>
+        /// Cette méthode sert à mettre pause au jeu.
+        /// </summary>
+        /// <param name="notify">permet de savoir si on veut un message comme quoi on est en pause ou pas</param>
+        public void Pause(bool notify = true)
+        {
+            _gameTimer.Stop();
+            if (notify)
+            {
+                ChangeState(GameState.Paused);
+            }
+        }
+
+
+        /// <summary>
+        /// Permet de continuer le jeu
+        /// </summary>
+        /// <param name="notify">permet de savoir si on veut un message comme quoi on est en pause ou pas</param>
+        public void Resume(bool notify = true)
+        {
+            _gameTimer.Start();
+            if (notify)
+            {
+                ChangeState(GameState.Playing);
+            }
+        }
+
+
+        /// <summary>
+        /// Si le jeu est en cours, on fait pause, et si le jeu est en pause, on le fait tourner
+        /// </summary>
+        public void PauseOrResume()
+        {
+            if (_state == GameState.Playing)
+            {
+                Pause();
+            }
+            else
+            {
+                Resume();
+            }
+        }
+
+
+        /// <summary>
+        /// Méthode qui permet de lancer la rotation du Tetromino actuel, puis de mettre à jour le plateau de jeu.
         /// </summary>
         public void Rotate()
         {
@@ -243,19 +306,22 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
-        /// Fonction qui permet de déplacer le Tetromino actuel vers la droite, puis de mettre à jour le plateau de jeu.
+        /// Méthode qui permet de déplacer le Tetromino actuel vers la droite, puis de mettre à jour le plateau de jeu.
         /// </summary>
         public void MoveRight()
         {
+            //Si notre Tetromino peut bouger vers la droite, il va le faire
             if (MoveTetromino(Vector2.Right))
             {
                 UpdateBoard();
             }
         }
 
+
         /// <summary>
-        /// Fonction qui permet de déplacer le Tetromino actuel vers la gauche, puis de mettre à jour le plateau de jeu.
+        /// Méthode qui permet de déplacer le Tetromino actuel vers la gauche, puis de mettre à jour le plateau de jeu.
         /// </summary>
         public void MoveLeft()
         {
@@ -265,10 +331,12 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
         /// Déplacer le tetromino.
         /// </summary>
         /// <param name="direction">La direction de déplacement.</param>
+        /// <returns>false si le Tetromino ne peut pas bouger et true si le Tetromino a fait un mouvement</returns>
         private bool MoveTetromino(Vector2 direction)
         {
             Vector2 nextPos = _tetromino.Position + direction;
@@ -282,8 +350,9 @@ namespace FinTris
             return true;
         }
 
+
         /// <summary>
-        /// Fonction qui permet de faire descendre manuelement le Tetromino vers le bas, puis de mettre à jour le jeu.
+        /// Méthode qui permet de faire descendre manuelement le Tetromino vers le bas, puis de mettre à jour le jeu.
         /// </summary>
         public void MoveDown()
         {
@@ -296,8 +365,9 @@ namespace FinTris
             _gameTimer.Start();            
         }
 
+
         /// <summary>
-        /// Fonction qui permet de faire tomber le Tetromino d'un coup. 
+        /// Méthode qui permet de faire tomber le Tetromino d'un coup. 
         /// 
         /// Dès qu'on presse sur la touche Enter, le Tetromino va descendre sans s'arreter jusqu'à ce qu'il trouve un obstacle, ou qu'il risque de sortir du terrain,
         /// 
@@ -341,8 +411,9 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
-        /// Cette fonction va mettre à jour le plateau et informer GameRenderer.
+        /// Cette méthode va mettre à jour le plateau et informer GameRenderer.
         /// </summary>
         private void UpdateBoard()
         {
@@ -373,6 +444,7 @@ namespace FinTris
             TetrominoMoved?.Invoke(this, EventArgs.Empty);
         }
 
+
         /// <summary>
         /// Détecter une collision du tetromino à une position donnée.
         /// </summary>
@@ -389,9 +461,9 @@ namespace FinTris
                     return true;
                 }
             }
-
             return false;
         }
+
 
         /// <summary>
         /// Détecter une collision d'un tetromino à une position donnée.
@@ -410,9 +482,9 @@ namespace FinTris
                     return true;
                 }
             }
-
             return false;
         }
+
 
         /// <summary>
         /// Vérifier si la position données est dans le terrain de jeu.
@@ -424,6 +496,7 @@ namespace FinTris
             return pos.x >= 0 && pos.x < _columns && pos.y >= 0 && pos.y < _rows ;
         }
 
+
         /// <summary>
         /// Accelerer le jeu quand on essaie de tricher.
         /// </summary>
@@ -433,8 +506,9 @@ namespace FinTris
             UpdateScore();
         }
 
+
         /// <summary>
-        /// Fonction qui permet d'instancier un nouveau Tetromino.
+        /// Méthode qui permet d'instancier un nouveau Tetromino.
         /// 
         /// On va commencer par stopper le Tetromino actuel, puis on va instancier le nouveau Tetromino
         /// Il va falloir ensuite transformer l'ancien Tetromino en bloc solide (SquareState.SolidBlock)
@@ -467,6 +541,7 @@ namespace FinTris
             NextTetroSpawned?.Invoke(this, EventArgs.Empty);
         }
 
+
         /// <summary>
         /// Instancier un nouveau tetromino aléatoire.
         /// </summary>
@@ -476,8 +551,9 @@ namespace FinTris
             return new Tetromino((TetrominoType)_random.Next(_shapesCount), new Vector2(_columns / 2 - 1, 0));
         }
 
+
         /// <summary>
-        /// Fonction qui vérifie si une ligne est pleine ou pas.
+        /// Méthode qui vérifie si une ligne est pleine ou pas.
         /// </summary>
         private void CheckForFullRows()
         {
@@ -502,6 +578,7 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
         /// Cette fonction va supprimer la ligne spécifiée.
         /// </summary>
@@ -524,6 +601,7 @@ namespace FinTris
             RowCleared?.Invoke(this, rowY);
         }
 
+
         /// <summary>
         /// Cette fonction va vérifier si on a perdu ou pas.
         /// </summary>
@@ -535,8 +613,8 @@ namespace FinTris
                 UpdateBoard();
                 ChangeState(GameState.Finished);
             }
-
         }
+
 
         /// <summary>
         /// Changer l'état du jeu.
@@ -550,7 +628,7 @@ namespace FinTris
 
 
         /// <summary>
-        /// Fonction qui gère le score et change la vitesse des pièces qui tombent suivant le niveau.
+        /// Méthode qui gère le score et change la vitesse des pièces qui tombent suivant le niveau.
         /// </summary>
         /// <param name="rowsCount">Le nombre de lignes déruites.</param>
         private void UpdateScore(int rowsCount = 0)
@@ -585,48 +663,5 @@ namespace FinTris
 
             //GameManager.PlaySound(GameManager.fallSound);                
         }
-
-        /// <summary>
-        /// Sert à arrêter le jeu.
-        /// </summary>
-        public void Stop()
-        {
-            _gameTimer.Stop();
-            _state = GameState.Waiting;
-        }
-
-        /// <summary>
-        /// Cette méthode sert à mettre pause au jeu.
-        /// </summary>
-        public void Pause(bool notify = true)
-        {
-            _gameTimer.Stop();
-            if (notify)
-            {
-                ChangeState(GameState.Paused);
-            }
-        }
-
-        public void Resume(bool notify = true)
-        {
-            _gameTimer.Start();
-            if (notify)
-            {
-                ChangeState(GameState.Playing);
-            }
-        }
-
-        public void PauseOrResume()
-        {
-            if (_state == GameState.Playing)
-            {
-                Pause();
-            }
-            else
-            {
-                Resume();
-            }
-        }
-
     }
 }
