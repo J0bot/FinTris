@@ -128,6 +128,7 @@ namespace FinTris
             else if (_menu.SelectedOption == credits)
             {
                 PrintCredit();
+                MainMenu();
             }
             else
             {
@@ -193,8 +194,6 @@ namespace FinTris
             Console.WriteLine("Larissa Debarros");
 
             Console.ReadKey();
-
-            MainMenu();
         }
 
         /// <summary>
@@ -251,7 +250,6 @@ namespace FinTris
                 {
                     SoundSettings();
                 }
-
             } while (optionMenu.SelectedOption != cancel && optionMenu.SelectedOption != null);
         }
 
@@ -434,7 +432,7 @@ namespace FinTris
         /// <summary>
         /// Animation qui joue au début de la partie
         /// </summary>
-        public static void ReadyGoAnim()
+        private static void ReadyGoAnim()
         {
             Console.Clear();
 
