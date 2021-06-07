@@ -16,7 +16,7 @@ namespace FinTris
         /// <summary>
         /// Cette constante définit la vitesse de chute de notre Tetromino.
         /// </summary>
-        private readonly int _speed = 600;
+        private int _speed = 600;
 
         /// <summary>
         /// Attribut _tetromino.
@@ -425,6 +425,15 @@ namespace FinTris
         }
 
         /// <summary>
+        /// Accelerer le jeu quand on essaie de tricher.
+        /// </summary>
+        public void SpeedUp()
+        {
+            _speed = 20;
+            UpdateScore();
+        }
+
+        /// <summary>
         /// Fonction qui permet d'instancier un nouveau Tetromino.
         /// 
         /// On va commencer par stopper le Tetromino actuel, puis on va instancier le nouveau Tetromino
@@ -589,27 +598,33 @@ namespace FinTris
         /// <summary>
         /// Cette méthode sert à mettre pause au jeu.
         /// </summary>
-        public void Pause()
+        public void Pause(bool notify = true)
         {
             _gameTimer.Stop();
-            ChangeState(GameState.Paused);
+            if (notify)
+            {
+                ChangeState(GameState.Paused);
+            }
         }
 
-        public void Resume()
+        public void Resume(bool notify = true)
         {
             _gameTimer.Start();
-            ChangeState(GameState.Playing);
+            if (notify)
+            {
+                ChangeState(GameState.Playing);
+            }
         }
 
-        public void PauseOrResume()
+        public void PauseOrResume(bool notify = true)
         {
             if (_state == GameState.Playing)
             {
-                Pause();
+                Pause(notify);
             }
             else
             {
-                Resume();
+                Resume(notify);
             }
         }
 

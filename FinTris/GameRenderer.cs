@@ -59,7 +59,7 @@ namespace FinTris
         }
 
         /// <summary>
-        /// Fonction qui se déclenche quand il y a un changememt dans le plateau du jeu.
+        /// Méthode qui se déclenche quand le tetromino se déplace.
         /// </summary>
         /// <param name="sender">Le déclencheur de l'événement.</param>
         /// <param name="board">Le plateau du jeu contenant les état de chaque case.</param>
@@ -98,6 +98,11 @@ namespace FinTris
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Méthode qui se déclenche quand une ligne est supprimée.
+        /// </summary>
+        /// <param name="sender">L'instance qui déclenche l'événement</param>
+        /// <param name="rowY">La position Y de la ligne.</param>
         private void OnRowCleared(object sender, int rowY)
         {
             lock (this)
@@ -249,16 +254,6 @@ namespace FinTris
             SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
             koSound.Play();
 
-            Console.ForegroundColor = ConsoleColor.Blue;
-            for (int y = _game.Rows - 1; y >= 0; y--)
-            {
-                for (int x = _game.Columns - 1; x >= 0; x--)
-                {
-                    WriteAt("██", x * 2 + _position.x + 2, y + _position.y + 1);
-                }
-                Thread.Sleep(100);
-            }
-                
             Console.ForegroundColor = ConsoleColor.Gray;
             for (int y = _game.Rows; y > 0; y--)
             {
@@ -343,14 +338,17 @@ namespace FinTris
         public void CheatCode()
         {
             // Lancement de la première voix.
-            SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound2);
 
             if (!GameManager.Muted)
             {
-                bowserSound2.Play();
+                GameManager.bowserSound2.Play();
             }
-            _game.Pause();
-            Console.Clear();
+            _game.Pause(false);
+
+            int w = Console.WindowWidth;
+            int h = Console.WindowHeight;
+            Console.MoveBufferArea(0, 0, w, h, 0, h*2);
+
             Console.SetCursorPosition(50, 14);
             TypewriterEffect("??? : Tricheur !");
             Thread.Sleep(200);
@@ -365,80 +363,42 @@ namespace FinTris
             Thread.Sleep(100);
             TypewriterEffect(" payer !", 100);
             Thread.Sleep(1000);
-            Console.Clear();
+
+
+            Console.MoveBufferArea(0, 0, w, h, 0, h * 3);
 
             // Lancement de la deuxième voix.
-            SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
 
             if (!GameManager.Muted)
             {
-                bowserSound.Play();
-            }         
-
-            string[] bowserString = new string[] {
-                "                                   @                                  ",
-                "                                 @@@@@                                ",
-                "                          *@@@&@@@@@@@@##@@@@                         ",
-                "                         @@@@@@@@@@@@@@@@@@@@@.                       ",
-                "         @             @@@@@@@@@@@@@@@@@@@@@@@@@            @@        ",
-                "       @@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@          @@@@      ",
-                "     /@@@@@%        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       @@@@@@     ",
-                "     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
-                "     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
-                "      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ",
-                "        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      ",
-                "          @@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@         ",
-                "          @@@@@@@@       &@@@@@@@@@@@@@@@@@@@@.      &@@@@@@@         ",
-                "       #@@@@@@@@@@,         @@@@@@@@@@@@@@@          @@@@@@@@@@,      ",
-                "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   ",
-                "  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ",
-                " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                ".@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-                " @@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@",
-                " @@@@@@@@@@@@       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       ,@@@@@@@@@@@",
-                "  @@@@@@@@@@@*         @@@@@@,           ,@@@@@@          @@@@@@@@@@@ ",
-                "   @@@@@@@@@@@           @@                 @@.          @@@@@@@@@@@  ",
-                "     @@@@@@@@@@           @                 @           @@@@@@@@@@    ",
-                "        @@@@@@@@                                       @@@@@@@@       ",
-                "          @@@@@@@                                     @@@@@@@         ",
-                "            @@@@@@                                   @@@@@@           ",
-                "              @@@@@@     @@@              ,@@@      @@@@@.            ",
-                "               @@@@@@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@@@@@              ",
-                "                 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                ",
-                "                 (@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(                ",
-                "                  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                 ",
-                "                   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                  ",
-                "                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   ",
-                "                      &@@@@@@@@        #@@@@@@@@                      "
-            };
+                GameManager.bowserSound.Play();
+            }
 
             // Affichage du monstre.
-            // 
-            for (int i = 0; i < 5; i++)
+
+            Console.ForegroundColor = ConsoleColor.Red;
+           
+            Console.SetCursorPosition(0, 0);
+            foreach (string line in Resources.Bowser.Split('\n'))
             {
-
-                Console.ForegroundColor = ConsoleColor.Red;
-
-                //string[] bowser = File.ReadAllLines(Resources.Bowser);
-
-                //for (int w = 0; w < bowser.Length; w++)
-                //{
-                //    Console.WriteLine(bowser[w]);
-                //}
-                for (int j = 0; j < bowserString.Length; j++)
-                {
-                    Console.WriteLine(bowserString[j]);
-                }
-
-
-                Thread.Sleep(100);
-                Console.Clear();
-                Thread.Sleep(100);
-
+                Console.WriteLine(line);
             }
+            Console.SetCursorPosition(0, 0);
+
+
+            for (int i = 0; i < 7; i++)
+            {
+                Console.CursorTop = h * 5;
+                Thread.Sleep(100);
+                Console.CursorTop = 0;
+                Thread.Sleep(100);
+            }
+
             Console.ResetColor();
-            
-            //ResetRender();
+
+            Console.MoveBufferArea(0, h*2, w, h, 0, 0);
+
+            _game.SpeedUp();
             _game.Resume();
         }
 
