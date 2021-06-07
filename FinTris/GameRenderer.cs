@@ -14,7 +14,7 @@ namespace FinTris
     /// </summary>
     public class GameRenderer
     {        
-        // Attributs.
+        /// Attributs.
         private readonly Game _game;
         private readonly Vector2 _position;
         private readonly Vector2 _innerPos;
@@ -22,11 +22,15 @@ namespace FinTris
         private readonly Vector2 _pausedPos;
 
         /// <summary>
+        /// Tableau de couleurs du jeu, il stocke les informations sur les couleurs
+        /// </summary>
+        private ConsoleColor[,] _colors;
+
+        /// <summary>
         /// La matrice scale du console.
         /// </summary>
         private static readonly Vector2 MAT_SCALE = new Vector2(2, 1);
 
-        private ConsoleColor[,] _colors;
 
         /// <summary>
         /// Constructor renseigné de la classe GameRenderer.
@@ -52,6 +56,12 @@ namespace FinTris
             RenderScore();
         }
 
+
+        /// <summary>
+        /// Se déclenche quand un Tetromino est spawné
+        /// </summary>
+        /// <param name="sender">Le déclencheur de l'événement.</param>
+        /// <param name="e"></param>
         private void OnNextTetroSpawned(object sender, EventArgs e)
         {
             lock (this)
@@ -60,6 +70,7 @@ namespace FinTris
                 RenderNextTetro();
             }
         }
+
 
         /// <summary>
         /// Méthode qui se déclenche quand le tetromino se déplace.
@@ -75,6 +86,7 @@ namespace FinTris
                 RenderScore();
             }
         }
+
 
         /// <summary>
         /// Cette méthode s'occupe d'afficher le plateau du jeu en passant le tableau des états des cases en paramètre.
@@ -111,6 +123,7 @@ namespace FinTris
             Console.ResetColor();
         }
 
+
         /// <summary>
         /// Méthode qui se déclenche quand une ligne est supprimée.
         /// </summary>
@@ -132,6 +145,7 @@ namespace FinTris
             
         }
 
+
         /// <summary>
         /// Permet de mettre à jour une case.
         /// </summary>
@@ -149,6 +163,7 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
         /// Permet de dessiner une case du jeu 
         /// </summary>
@@ -161,6 +176,7 @@ namespace FinTris
             Console.SetCursorPosition(shift.x + (position.x * MAT_SCALE.x), shift.y + position.y);
             Console.Write("██");
         }
+
 
         /// <summary>
         /// Permet de dessiner un rectangle
@@ -183,10 +199,11 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
         /// Permet de créer la bordure du jeu.
         /// </summary>
-        public void RenderGameBorder()
+        private void RenderGameBorder()
         {
             int width = (_game.Columns + 2) * MAT_SCALE.x;
             string line = new string('█', width);
@@ -212,6 +229,7 @@ namespace FinTris
             Console.ResetColor();
         }
 
+
         /// <summary>
         /// Fonction qui s'occupe de dessiner le score.
         /// </summary>
@@ -229,6 +247,7 @@ namespace FinTris
             Console.SetCursorPosition(60, 19);
             Console.WriteLine($"Niveau : {_game.Level}");
         }
+
 
         /// <summary>
         /// La fonction callback de l'événement IsDead. Déclenché par la Game quand le jeu est terminé.
@@ -256,6 +275,7 @@ namespace FinTris
             }
         }
 
+
         /// <summary>
         /// Cette méthode permet d'actualiser l'affichage après un clear
         /// </summary>
@@ -279,6 +299,53 @@ namespace FinTris
             }
             
         }
+
+        
+        /// <summary>
+        /// Fonction qui va s'occuper d'afficher le prochain Tetromino.
+        /// </summary>
+        private void RenderNextTetro()
+        {
+            int max = 10; // 10 parceque le tetromino le plus large est de 6 caractères + 4 de bordures.
+            int width = _game.NextTetromino.Width + 4;
+            int height = _game.NextTetromino.Height + 4;
+
+            // Effacer l'ancienne représentation du next tetromino.
+            for (int x = 0; x < max; x++)
+            {
+                for (int y = 0; y < max; y++)
+                {
+                    Console.SetCursorPosition(_nextTetroPos.x + x * 2, _nextTetroPos.y + y);
+                    Console.Write("  ");
+                }
+            }
+
+            // Dessiner la bordure.
+            DrawBorder(_nextTetroPos, width, height, ConsoleColor.Red);
+
+            // Dessiner la forme du next tetromino.
+            foreach (Vector2 posBlock in _game.NextTetromino.Blocks)
+            {
+                Vector2 pos = posBlock + (Vector2.One * 2);
+                DrawTile(pos, _nextTetroPos, _game.NextTetromino.Color);
+            }
+
+            Console.ResetColor();
+        }
+
+
+        /// <summary>
+        /// Afficher le tetromino.
+        /// </summary>
+        private void RenderTetromino()
+        {
+            foreach (Vector2 blockPos in _game.CurrentTetromino.Blocks)
+            {
+                Vector2 pos = _game.CurrentTetromino.Position + blockPos;
+                DrawTile(pos, _innerPos, _game.CurrentTetromino.Color);
+            }
+        }
+
 
         /// <summary>
         /// Animation quand le jeu finit qui permet de remplir l'écran avec des blocs.
@@ -327,49 +394,6 @@ namespace FinTris
             Thread.Sleep(1500);
         }
 
-        /// <summary>
-        /// Fonction qui va s'occuper d'afficher le prochain Tetromino.
-        /// </summary>
-        private void RenderNextTetro()
-        {
-            int max = 10; // 10 parceque le tetromino le plus large est de 6 caractères + 4 de bordures.
-            int width = _game.NextTetromino.Width + 4;
-            int height = _game.NextTetromino.Height + 4;
-
-            // Effacer l'ancienne représentation du next tetromino.
-            for (int x = 0; x < max; x++)
-            {
-                for (int y = 0; y < max; y++)
-                {
-                    Console.SetCursorPosition(_nextTetroPos.x + x * 2, _nextTetroPos.y + y);
-                    Console.Write("  ");
-                }
-            }
-
-            // Dessiner la bordure.
-            DrawBorder(_nextTetroPos, width, height, ConsoleColor.Red);
-
-            // Dessiner la forme du next tetromino.
-            foreach (Vector2 posBlock in _game.NextTetromino.Blocks)
-            {
-                Vector2 pos = posBlock + (Vector2.One * 2);
-                DrawTile(pos, _nextTetroPos, _game.NextTetromino.Color);
-            }
-
-            Console.ResetColor();
-        }
-
-        /// <summary>
-        /// Afficher le tetromino.
-        /// </summary>
-        private void RenderTetromino()
-        {
-            foreach (Vector2 blockPos in _game.CurrentTetromino.Blocks)
-            {
-                Vector2 pos = _game.CurrentTetromino.Position + blockPos;
-                DrawTile(pos, _innerPos, _game.CurrentTetromino.Color);
-            }
-        }
 
         /// <summary>
         /// Si le joueur appuie sur WIN, il entre dans une zone interdite.
@@ -440,24 +464,26 @@ namespace FinTris
             _game.Resume();
         }
 
+
         /// <summary>
         /// Ecris le texte à une position donnée. (repris de la documentation de Microsoft)
         /// </summary>
         /// <param name="s">Le texte à afficher.</param>
         /// <param name="x">La position X.</param>
         /// <param name="y">La position Y.</param>
-        public static void WriteAt(string s, int x, int y)
+        private static void WriteAt(string s, int x, int y)
         {
             Console.SetCursorPosition(x, y);
             Console.Write(s);
         }
+
 
         /// <summary>
         /// Effect de machine à ecrire.
         /// </summary>
         /// <param name="text">Le texte à afficher.</param>
         /// <param name="time">Le temps de l'affichage.</param>
-        public void TypewriterEffect(string text, int time = 50)
+        private void TypewriterEffect(string text, int time = 50)
         {
             // On va parcourir le string et écrire lettre par lettre.
             for (int i = 0; i < text.Length; i++) 
