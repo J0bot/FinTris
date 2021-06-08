@@ -11,7 +11,6 @@ namespace Fintris.Tests
         [TestMethod]
         public void PauseTest()
         {
-
             //Arrange
             Game game = new Game();
             GameState actualState;
