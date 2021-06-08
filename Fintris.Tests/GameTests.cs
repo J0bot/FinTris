@@ -200,7 +200,7 @@ namespace Fintris.Tests
             game.MoveRight();
             actual = game.CurrentTetromino.Position;
 
-            //Assert
+            //Assert 
             Assert.AreEqual(expected, actual);
         }
             
