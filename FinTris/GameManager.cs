@@ -24,10 +24,15 @@ namespace FinTris
         /// <summary>
         /// Attribut GameRenderer de la classe Program
         /// </summary>
-        public static GameRenderer _gameRenderer;
+        private static GameRenderer _gameRenderer;
 
         /// <summary>
-        /// Thème principal du jeu
+        /// Paramètre du son.
+        /// </summary>
+        private static bool _muted = false;
+
+        /// <summary>
+        /// Thème principal
         /// </summary>
         public static readonly SoundPlayer themeSound = new SoundPlayer(Resources.tetrisSoundTheme);
 
@@ -35,6 +40,11 @@ namespace FinTris
         /// Son de ok
         /// </summary>
         public static readonly SoundPlayer okSound = new SoundPlayer(Resources.tetrisSoundOK);
+
+        /// <summary> 
+        /// Son de ko
+        /// </summary>
+        public static readonly SoundPlayer koSound = new SoundPlayer(Resources.TetrisSoundKo);
 
         /// <summary>
         /// Son de go
@@ -62,15 +72,20 @@ namespace FinTris
         public static readonly SoundPlayer fallSound = new SoundPlayer(Resources.TetrisSoundFall);
 
         /// <summary>
-        /// Attribut de la propriété Muted
+        /// Le son terrifiant de bowser.
         /// </summary>
-        private static bool _muted = true;
+        public static readonly SoundPlayer bowserSound = new SoundPlayer(Resources.bowserSound);
 
         /// <summary>
-        /// Savoir si les sons du jeu sont activés ou pas
+        /// Le son terrifiant de bowser.
+        /// </summary>
+        public static readonly SoundPlayer bowserSound2 = new SoundPlayer(Resources.bowserSound);
+
+        /// <summary>
+        /// Paramètre du son.
         /// </summary>
         public static bool Muted
-        {
+        { 
             get { return _muted; }
             set { _muted = value; }
         }
@@ -85,7 +100,7 @@ namespace FinTris
             MenuEntry play = new MenuEntry("Play");
             MenuEntry options = new MenuEntry("Options");
             MenuEntry playerName = new MenuEntry("Player name: ", Config.PlayerName);
-            MenuEntry credits = new MenuEntry("Credits");
+            MenuEntry credits = new MenuEntry("A propos");
             MenuEntry quit = new MenuEntry("Quit");
 
             _menu.Add(play);
@@ -113,6 +128,7 @@ namespace FinTris
             else if (_menu.SelectedOption == credits)
             {
                 PrintCredit();
+                MainMenu();
             }
             else
             {
@@ -125,8 +141,6 @@ namespace FinTris
         /// </summary>
         private static void PauseMenu()
         {
-            _game.Pause();
-
             Menu pauseMenu = new Menu("Pause");
 
             MenuEntry goBack = new MenuEntry("Resume");
@@ -139,20 +153,18 @@ namespace FinTris
 
             pauseMenu.ShowMenu();
 
-                if (pauseMenu.SelectedOption == goBack)
-                {
-                    _game.Resume();
-                    _gameRenderer.ResetRender();
-                }
-                else if (pauseMenu.SelectedOption == option)
-                {
-                    ShowOptions();
-                    PauseMenu();
-                }
-                else if (pauseMenu.SelectedOption == menuBack)
-                {
-                    MainMenu();
-                }
+            if (pauseMenu.SelectedOption == option)
+            {
+                ShowOptions();
+                PauseMenu();
+            }
+            else if (pauseMenu.SelectedOption == menuBack)
+            {
+                MainMenu();
+                return;
+            }
+
+            _game.Resume();
         }
 
         /// <summary>
@@ -182,8 +194,6 @@ namespace FinTris
             Console.WriteLine("Larissa Debarros");
 
             Console.ReadKey();
-
-            MainMenu();
         }
 
         /// <summary>
@@ -240,7 +250,6 @@ namespace FinTris
                 {
                     SoundSettings();
                 }
-
             } while (optionMenu.SelectedOption != cancel && optionMenu.SelectedOption != null);
         }
 
@@ -251,15 +260,15 @@ namespace FinTris
         {
             Console.Clear();
             List<string[]> scores = Config.GetBestScores();
-            Console.CursorTop = (Console.BufferHeight / 2) - (scores.Count);
+            Console.CursorTop = (Console.WindowHeight / 2) - (scores.Count);
 
             foreach (string[] entry in scores)
             {
                 //why is there a space between the scores???
                 Console.CursorTop += 1;
-                Console.CursorLeft = (Console.BufferWidth / 2) - entry[0].Length - 2;
+                Console.CursorLeft = (Console.WindowWidth / 2) - entry[0].Length - 2;
                 Console.Write(entry[0]);
-                Console.CursorLeft = (Console.BufferWidth / 2) + 2;
+                Console.CursorLeft = (Console.WindowWidth / 2) + 2;
                 Console.WriteLine(entry[1]);
             }
             Console.ReadLine();
@@ -336,35 +345,38 @@ namespace FinTris
             long lastDrop = 0;
             int rotCooldown = 100;
             int dropCoolDown = 1000;
+            string inputCheat = "   ";
+            int lenCheatCode = Resources.cheat_code.Length;
             Stopwatch sw = Stopwatch.StartNew();
             ConsoleKey input;
 
             do
             {
                 input = Console.ReadKey(true).Key;
+                inputCheat += input.ToString();
 
-                if (input == ConsoleKey.RightArrow && _game.State == GameState.Playing)
+                if (input == ConsoleKey.RightArrow)
                 {
                     _game.MoveRight();
                 }
-                else if (input == ConsoleKey.LeftArrow && _game.State == GameState.Playing)
+                else if (input == ConsoleKey.LeftArrow)
                 {
                     _game.MoveLeft();
                 }
-                else if (input == ConsoleKey.DownArrow && _game.State == GameState.Playing)
+                else if (input == ConsoleKey.DownArrow)
                 {
                     _game.MoveDown();
                 }
-                else if (input == ConsoleKey.Spacebar && _game.State == GameState.Playing && sw.ElapsedMilliseconds > lastRotation + rotCooldown)
+                else if (input == ConsoleKey.Spacebar && sw.ElapsedMilliseconds > lastRotation + rotCooldown)
                 {
                     _game.Rotate();
                     lastRotation = sw.ElapsedMilliseconds;
                 }
-                else if (input == ConsoleKey.DownArrow && _game.State == GameState.Playing)
+                else if (input == ConsoleKey.DownArrow)
                 {
                     _game.MoveDown();
                 }
-                else if (input == ConsoleKey.Enter && _game.State == GameState.Playing && sw.ElapsedMilliseconds > lastDrop + dropCoolDown)
+                else if (input == ConsoleKey.Enter && sw.ElapsedMilliseconds > lastDrop + dropCoolDown)
                 {
                     _game.DropDown();
                     lastDrop = sw.ElapsedMilliseconds;
@@ -373,13 +385,17 @@ namespace FinTris
                 {
                     if (_game.State == GameState.Playing)
                     {
-                        _game.Pause();
+                        _game.Pause(false);
                         PauseMenu();
+
+                        if (_game.State == GameState.Playing)
+                        {
+                            _gameRenderer.Refresh();
+                        }
                     }
                     else if (_game.State == GameState.Paused)
                     {
-                        _game.Start();
-                        _gameRenderer.ResetRender();
+                        _game.Resume();
                     }
                     else
                     {
@@ -387,29 +403,28 @@ namespace FinTris
                         MainMenu();
                     }
                 }
-                else if (input == ConsoleKey.R && _game.State == GameState.Playing)
+                else if (input == ConsoleKey.R)
                 {
                     _game.Stop();
                     _gameRenderer.DeathAnim();
                 }
-                else if (input == ConsoleKey.P) 
+                else if (input == ConsoleKey.P)
                 {
                     _game.PauseOrResume();
                 }
-                else if (input == ConsoleKey.A && _game.State == GameState.Playing) // Cheat code that
+                else if (inputCheat.Substring(inputCheat.Length - lenCheatCode, lenCheatCode) == Resources.cheat_code) // Cheat code
                 {
-                    Console.Clear();
                     _game.Stop();
                     _game.State = GameState.Finished;
                     _gameRenderer.CheatCode();
                     _game.Start();
                 }
-                else if (input == ConsoleKey.K && _game.State == GameState.Playing) // Used to clean if there's some sort of mess
+                else if (input == ConsoleKey.K) // Used to clean if there's some sort of mess
                 {
-                    _gameRenderer.ResetRender();
+                    _gameRenderer.Refresh();
                 }
 
-            } while (input != ConsoleKey.Q);
+            } while (_game.State == GameState.Playing || _game.State == GameState.Paused);
 
             sw.Stop();
         }
@@ -417,7 +432,7 @@ namespace FinTris
         /// <summary>
         /// Animation qui joue au début de la partie
         /// </summary>
-        public static void ReadyGoAnim()
+        private static void ReadyGoAnim()
         {
             Console.Clear();
 

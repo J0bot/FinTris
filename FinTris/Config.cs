@@ -7,6 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace FinTris
 {
+    /// <summary>
+    /// Classe de config, permet de garder des informations dans un fichier
+    /// </summary>
     public static class Config
     {
         /// <summary>

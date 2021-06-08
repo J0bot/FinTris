@@ -23,8 +23,14 @@ namespace FinTris
         /// </summary>
         private readonly List<MenuEntry> _entries = new List<MenuEntry>();
 
+        /// <summary>
+        /// index de l'entrée
+        /// </summary>
         private int _index;
 
+        /// <summary>
+        /// Propriété de l'option sélectionnée
+        /// </summary>
         public MenuEntry SelectedOption
         {
             get { return _index > -1 ? _entries[_index] : null; }

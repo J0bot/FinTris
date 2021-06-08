@@ -186,6 +186,18 @@
   <data name="try_again" xml:space="preserve">
     <value>Please
 Try
-Again &#10084;</value>
+Again ❤</value>
+  </data>
+  <data name="pause_text" xml:space="preserve">
+    <value>Paused (Press P to unpause)</value>
+  </data>
+  <data name="cheat_code" xml:space="preserve">
+    <value>WIN</value>
+  </data>
+  <data name="cheat_string" xml:space="preserve">
+    <value>??? : Tricheur !
+??? : Tu ne devais pas avoir accès à cette zone !
+??? : Maintenant il va falloir...
+payer !</value>
   </data>
 </root>

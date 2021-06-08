@@ -18,12 +18,14 @@ namespace FinTris
         /// </summary>
         private readonly static Dictionary<TetrominoType, byte[,]> _tetrominoShapes = new Dictionary<TetrominoType, byte[,]>
         {
+            //Carré
             { TetrominoType.Squarie, new byte[,]
                 {
                     {1, 1},
                     {1, 1},
                 }
             },
+
             //Snake
             { TetrominoType.Snake, new byte[,]
                 {
@@ -33,7 +35,7 @@ namespace FinTris
                 }
             },
 
-            
+            //Snake inversé
             { TetrominoType.ISnake, new byte[,]
                 {
                     {0 ,1},
@@ -51,7 +53,7 @@ namespace FinTris
                 }
             },
 
-
+            //Lawlet inversé
             { TetrominoType.ILawlet, new byte[,]
                 {
                     {0 ,1},
@@ -79,6 +81,17 @@ namespace FinTris
             },
         };
 
+        private readonly static Dictionary<TetrominoType, ConsoleColor> _tetrominoColors = new Dictionary<TetrominoType, ConsoleColor>()
+        {
+            { TetrominoType.Squarie, ConsoleColor.Yellow},
+            { TetrominoType.Snake, ConsoleColor.Green},
+            { TetrominoType.ISnake, ConsoleColor.DarkRed},
+            { TetrominoType.Malong, ConsoleColor.Cyan},
+            { TetrominoType.Lawlet, ConsoleColor.DarkCyan},
+            { TetrominoType.ILawlet, ConsoleColor.DarkYellow},
+            { TetrominoType.Pyramid, ConsoleColor.DarkMagenta},
+        };
+
         /// <summary>
         /// Largeur du Tetromino.
         /// </summary>
@@ -100,6 +113,11 @@ namespace FinTris
         private Vector2 _position;
 
         /// <summary>
+        /// L'ancienne position du tetromino.
+        /// </summary>
+        private Vector2 _prevPosition;
+
+        /// <summary>
         /// tableau qui aide aux collisions
         /// </summary>
         private byte[,] _data;
@@ -118,11 +136,6 @@ namespace FinTris
         /// Liste des positions des blocs du Tetromino
         /// </summary>
         private List<Vector2> _blocks;
-
-        /// <summary>
-        /// Variable random qui permet de générer des nombres random
-        /// </summary>
-        private readonly Random _random;
 
         /// <summary>
         /// Largeur du Tetromino
@@ -146,7 +159,14 @@ namespace FinTris
         public Vector2 Position
         {
             get { return _position; }
-            set { _position = value; }
+        }
+
+        /// <summary>
+        /// L'ancienne position du tetromino.
+        /// </summary>
+        public Vector2 PreviousPosition
+        {
+            get { return _prevPosition; }
         }
 
         /// <summary>
@@ -169,7 +189,7 @@ namespace FinTris
         /// <summary>
         /// Couleur du Tetromino.
         /// </summary>
-        public ConsoleColor TetrominoColor
+        public ConsoleColor Color
         {
             get { return _tetrominoColor; }
             set { _tetrominoColor = value; }
@@ -184,64 +204,32 @@ namespace FinTris
             set { _blocks = value; }
         }
 
+
         /// <summary>
         /// Permet de créer une nouvelle instance de Tetromino.
         /// </summary>
         /// <param name="type">Type de notre tetromino (Square, L, Malong, etc...)</param>
-        /// <param name="x">Position X de notre tetromino</param>
-        /// <param name="y">Position Y de notre tetromino</param>
-        /// <param name="tetrominoState">Etat du Tetromino</param>
-        public Tetromino(TetrominoType type = TetrominoType.Lawlet, int x = 0, int y = 0, TetrominoState tetrominoState = TetrominoState.Moving)
+        /// <param name="initalPosition">position initiale du tetromino en Vector2</param>
+        public Tetromino(TetrominoType type, Vector2 initalPosition)
         {
-            _random = new Random();
             _shape = type;
-            _position = new Vector2(x, y);
             _data = _tetrominoShapes[type];
-
-
-            _state = tetrominoState;
+            _position = initalPosition;
+            _state = TetrominoState.Moving;
 
             _width = _data.GetLength(0);
             _height = _data.GetLength(1);
 
             _blocks = new List<Vector2>();
 
-            //Switch pour attribuer la couleur à chaque type de Tetromino
-            switch (type)
-            {
-                case TetrominoType.Squarie:
-                    _tetrominoColor = ConsoleColor.Yellow;
-                    break;
-                case TetrominoType.Snake:
-                    _tetrominoColor = ConsoleColor.Green;
-                    break;
-                case TetrominoType.ISnake:
-                    _tetrominoColor = ConsoleColor.DarkRed;
-                    break;
-                case TetrominoType.Malong:
-                    _tetrominoColor = ConsoleColor.DarkBlue; //We need light blue
-                    break;
-                case TetrominoType.Lawlet:
-                    _tetrominoColor = ConsoleColor.DarkYellow; // We need orange
-                    break;
-                case TetrominoType.ILawlet:
-                    _tetrominoColor = ConsoleColor.Blue; //Blue
-                    break;
-                case TetrominoType.Pyramid:
-                    _tetrominoColor = ConsoleColor.Magenta;
-                    break;
-                default:
-                    _tetrominoColor = ConsoleColor.White;
-                    break;
-            }
-
+            // Attribuer la couleur au Tetromino.
+            _tetrominoColor = _tetrominoColors[type];
 
             UpdateBlocks();
-
         }
 
         /// <summary>
-        /// Met à jour les nouvelles positions des carrés du tetromino.
+        /// Met à jour les nouvelles positions relatives des carrés du tetromino.
         /// </summary>
         private void UpdateBlocks()
         {
@@ -263,7 +251,6 @@ namespace FinTris
         /// </summary>
         public void Rotate()
         {
-
             if (_shape == TetrominoType.Squarie)
             {
                 return;
@@ -287,7 +274,16 @@ namespace FinTris
             _data = newData;
 
             UpdateBlocks();
+        }
 
+        /// <summary>
+        /// Déplacer le tetromino.
+        /// </summary>
+        /// <param name="direction">La direction de déplacement.</param>
+        public void Move(Vector2 direction)
+        {
+            _prevPosition = _position;
+            _position += direction;
         }
     }
 }
