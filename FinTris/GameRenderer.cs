@@ -283,6 +283,7 @@ namespace FinTris
         {
             lock (this)
             {
+                Console.CursorVisible = false;
                 Console.Clear();
                 RenderGameBorder();
                 RenderScore();
