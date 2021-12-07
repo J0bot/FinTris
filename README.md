@@ -18,3 +18,8 @@ Si le lien ne fonctionne pas, c'est parce que vous ne faites pas partie de l'ETM
 
 Toute la documentation se trouve dans le rayon wiki si vous n'avez pas accès au OneNote.
   
+## Comment faire tourner le jeu :
+1. Installer visual studio 2019 en activant C# console avec framework 6.1.1
+2. Ouvrir le fichier `.sln`
+3. Cliquer sur compiler et run
+4. Le .exe se trouve dans bin
