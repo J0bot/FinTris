@@ -2,6 +2,9 @@
 
 Vous êtes dans la branche main
 
+![image](https://user-images.githubusercontent.com/65437977/159890710-f727a254-202c-42b3-933f-75ad6a6d0e14.png)
+
+
 L'idée est de pouvoir créer un jeu du Tetris dans la console.
 
 Pour ce faire, nous avons utilisé : 
